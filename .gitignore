@@ -1,0 +1,4 @@
+.DS_Store
+# Personal settings never belong in this repo
+config.md
+Lecture_Notes/

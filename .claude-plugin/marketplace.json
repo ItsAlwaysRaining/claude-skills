@@ -1,0 +1,17 @@
+{
+  "name": "claude-skills",
+  "owner": {
+    "name": "ItsAlwaysRaining"
+  },
+  "metadata": {
+    "description": "A growing collection of Claude Code skills."
+  },
+  "plugins": [
+    {
+      "name": "course-notes",
+      "source": "./plugins/course-notes",
+      "description": "Turn online course transcripts into structured study notes in Notion and/or Markdown.",
+      "category": "productivity"
+    }
+  ]
+}

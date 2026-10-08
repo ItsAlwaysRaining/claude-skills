@@ -1,0 +1,77 @@
+Hey, welcome back. In the last video we looked at frames and groups, so if you skipped that one
+
+go back and watch it first.
+
+Okay, so in this video we're going to talk about auto layout, which honestly is the feature that changed
+
+how I design in Fig ma more than anything else.
+
+Auto layout is basically a set of rules you give a frame so that the things inside it arrange themselves.
+
+Think of it like a little stack. You tell it, stack these vertically, put 16 pixels between each
+
+one, and give me 24 pixels of padding around the outside, and it just does it.
+
+And the magic is that when you change something, say the text in a button gets longer, the whole
+
+thing resizes automatically. You never have to nudge things by hand again.
+
+So let's make a button. I've got a text layer here that just says sign up. I'm going to select it and
+
+press shift a. Shift a is the shortcut for adding auto layout.
+
+And you can see Fig ma has wrapped it in a frame. Over in the right hand panel we now have an auto layout
+
+section.
+
+The first thing here is direction. This arrow pointing down means vertical, this one pointing right means
+
+horizontal. For a button with an icon and a label you'd usually want horizontal.
+
+Next to that is the gap. This is the space between each item inside the frame. I'll set that to 8.
+
+Then we have pad ding. This is the space between the edge of the frame and the content. You can set
+
+it for all sides at once or click this little icon to set each side separately. Buttons usually look better
+
+with more padding on the left and right than on the top and bottom, so I'll do 12 top and bottom, 24 left and
+
+right.
+
+Now here's the part that confuses everybody, and it's the resizing settings. You'll see width and height
+
+each have three options. Fixed with, hug contents, and fill container.
+
+Fixed means it stays exactly the size you set, no matter what's inside.
+
+Hug contents means the frame shrinks or grows to wrap tightly around whatever is inside it. That's what you
+
+want for a button, because if the label changes the button changes with it.
+
+And fill container means stretch to fill whatever space the parent frame gives you. So if this button
+
+sits inside a card and I set its width to fill container, it'll stretch to the full width of the card.
+
+A really common mistake is people set everything to fixed and then wonder why their auto layout isn't doing
+
+anything. If your layout isn't responding, check your resizing settings first. Nine times out of ten that's
+
+the problem.
+
+One more tip. You can nest auto layout frames inside each other. So a card might be a vertical auto layout,
+
+and inside it there's a horizontal auto layout for the row of buttons. Building things this way is how you get
+
+layouts that actually behave like real web pages, which your developers will thank you for, because it maps
+
+pretty closely to how flexbox works in CSS.
+
+If you want to go deeper, Figma's own help center has a really good article on auto layout, I'll put the link
+
+in the resources for this lecture.
+
+Alright, if you're enjoying the course so far, it would mean a lot if you left a review, it really helps.
+
+In the next video we'll take this button and turn it into a component, so you can reuse it everywhere.
+
+See you there.

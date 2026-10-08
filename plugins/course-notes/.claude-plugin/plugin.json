@@ -1,0 +1,11 @@
+{
+  "name": "course-notes",
+  "version": "1.0.0",
+  "description": "Turn online course lecture transcripts into structured study notes (vocabulary, concepts, how-to steps, tips, review questions) published to Notion and/or saved as Markdown.",
+  "author": {
+    "name": "ItsAlwaysRaining"
+  },
+  "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
+  "license": "MIT",
+  "keywords": ["notes", "study", "transcripts", "notion", "udemy", "education"]
+}
