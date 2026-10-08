@@ -7,6 +7,7 @@ A collection of [skills](https://docs.claude.com/en/docs/claude-code/skills) I'v
 | Skill | What it does |
 |---|---|
 | [**course-notes**](plugins/course-notes/) | Turns online course transcripts into structured study notes (vocabulary, concepts, how-to steps, review questions), published to Notion and/or saved as Markdown. |
+| [**learning-calendar**](plugins/learning-calendar/) | Logs what you learned each day to a Notion calendar as short topics with summaries, gathered from your Claude sessions and your own list, and pushed only after you approve them. |
 
 [![course-notes class page in Notion](plugins/course-notes/examples/notion-class-page.png)](plugins/course-notes/)
 

@@ -12,6 +12,12 @@
       "source": "./plugins/course-notes",
       "description": "Turn online course transcripts into structured study notes in Notion and/or Markdown.",
       "category": "productivity"
+    },
+    {
+      "name": "learning-calendar",
+      "source": "./plugins/learning-calendar",
+      "description": "Log what you learned today to a Notion calendar, from your Claude sessions and your own list, after you approve the topics.",
+      "category": "productivity"
     }
   ]
 }

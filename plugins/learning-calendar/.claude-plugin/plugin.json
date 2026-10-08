@@ -1,0 +1,11 @@
+{
+  "name": "learning-calendar",
+  "version": "1.0.0",
+  "description": "Log what you learned today to a Notion calendar: 1–2 word topics with short summaries, gathered from your Claude sessions and your own list, pushed only after you approve them.",
+  "author": {
+    "name": "ItsAlwaysRaining"
+  },
+  "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
+  "license": "MIT",
+  "keywords": ["learning", "calendar", "notion", "study", "journal"]
+}
