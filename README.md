@@ -8,6 +8,8 @@ A collection of [skills](https://docs.claude.com/en/docs/claude-code/skills) I'v
 |---|---|
 | [**course-notes**](plugins/course-notes/) | Turns online course transcripts into structured study notes (vocabulary, concepts, how-to steps, review questions), published to Notion and/or saved as Markdown. |
 
+[![course-notes class page in Notion](plugins/course-notes/examples/notion-class-page.png)](plugins/course-notes/)
+
 ## Install
 
 This repo is a Claude Code plugin marketplace. To add it and install a skill:

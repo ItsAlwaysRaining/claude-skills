@@ -12,8 +12,15 @@ Paste a transcript from Udemy, Coursera, Skillshare, LinkedIn Learning or YouTub
 
 See it in action: [sample transcript](examples/sample-transcript.txt) → [generated notes](examples/sample-notes.md).
 
-<!-- Screenshot: add a screenshot of a Notion lecture page here, e.g.
-![Lecture page in Notion](examples/notion-lecture-page.png) -->
+### What it looks like in Notion
+
+**Home page.** Every class you're taking, in one place:
+
+![Notion home page listing classes](examples/notion-learning-page.png)
+
+**Class page.** Sections link to lecture notes, and every vocabulary term is collected in a glossary you can filter by lecture or section:
+
+![Notion class page with sections and glossary](examples/notion-class-page.png)
 
 ## Setup
 
