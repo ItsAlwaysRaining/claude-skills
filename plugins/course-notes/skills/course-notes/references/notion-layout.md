@@ -8,6 +8,7 @@ Notion uses its own "enhanced Markdown". Before writing page content, read `noti
 
 ```
 <Home page>                     from config: home_page_id
+├── Learning Calendar           inline database at the top of the page, one entry per topic per day
 └── <Class page>                page, one per class, icon = an emoji fitting the subject
     ├── <Section page>          page, one per course section
     │   └── <Lecture page>      page, one per lecture
@@ -134,6 +135,48 @@ Add one row per vocabulary term to the class's Glossary data source (`create-pag
 - **Select options can't contain commas.** Use a short lecture name without commas for the Lecture tag (e.g. `Fills / Gradients / Strokes`).
 - If row creation rejects a new section or lecture value, add the option to the data source schema with `update-data-source` first.
 
+## Learning Calendar
+
+A calendar at the top of the home page showing what the user learned each day. Each entry is a 1–2 word topic; clicking it opens a short summary plus links to that day's related lecture notes. Update it after every lecture published to Notion.
+
+### Adding today's topic
+
+1. Get today's date in the user's local time (`date +%F`).
+2. Query `calendar_data_source` (from config) for entries whose `Date` is today. Fetch each one to see its topic and linked notes.
+3. **If one of today's entries already covers this lecture's topic** (same subject; e.g. a second lecture in the same section usually fits), add the lecture to it: append `- <mention-page url="<lecture page url>"/>` under "📝 Related notes" with `update_content`, and adjust the summary only if it no longer describes everything linked. This also applies to entries the user added by hand with no notes yet: link the lecture to it rather than adding a near-duplicate.
+4. **Otherwise** create a new entry (`create-pages` with parent `data_source_id`):
+   - **Topic**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
+   - **Date**: today (`date:Date:start`, `date:Date:is_datetime` = 0).
+   - Icon: an emoji fitting the topic.
+   - Content:
+     ```
+     <callout icon="💬" color="purple_bg">
+     	<One or two sentences, max, on what the topic is about, drawn from the notes.>
+     </callout>
+     ## 📝 Related notes {color="purple"}
+     - <mention-page url="<lecture page url>"/>
+     ```
+5. **Topic groups:** if the config has a `## Topic groups` section and the lecture fits one, it goes under that umbrella entry as a subtopic sub-page instead of as its own entry: bullets of the points covered, each with a one- or two-sentence sub-bullet, plus a link to the lecture. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
+6. Keep summaries faithful to the lectures (Step 5 of SKILL.md) and no longer than two sentences, even after adding more notes to an entry.
+
+### Creating the calendar (only when the config has no `calendar_data_source`)
+
+1. Create the database with parent = the home page, title `Learning Calendar`:
+   ```
+   CREATE TABLE ("Topic" TITLE, "Date" DATE)
+   ```
+2. Set it inline (`update-data-source` with `is_inline: true`).
+3. Add a calendar view: `create-view` with `database_id`, type `calendar`, name `Calendar`, configure `CALENDAR BY "Date"; SHOW "Topic"`. Rename the default table view to `All topics` with `SORT BY "Date" DESC`.
+4. The database lands at the end of the home page. Fetch the page and `replace_content` with this block first, followed by the existing content, keeping every `<page>` and `<database>` tag exactly as fetched:
+   ```
+   ## 📅 What I'm Learning {color="purple"}
+   Each day's topics. Click one for a quick summary and links to that day's notes.
+   <database ...the calendar's tag as fetched...>Learning Calendar</database>
+   ---
+   ```
+5. Save `calendar_database_id` and `calendar_data_source` to the config's `## Notion` section.
+6. Tell the user the table tab shows first; to open on the calendar, drag the **Calendar** tab to the left in Notion (the tools can't reorder tabs).
+
 ## Replacing a lecture
 
-If the user chose to replace existing notes (Step 6 of SKILL.md), replace the lecture page's content with `replace_content` instead of creating a new page, and update its glossary rows rather than adding duplicates.
+If the user chose to replace existing notes (Step 6 of SKILL.md), replace the lecture page's content with `replace_content` instead of creating a new page, and update its glossary rows rather than adding duplicates. Its calendar link already points to the same page, so leave the calendar alone.

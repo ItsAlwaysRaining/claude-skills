@@ -47,6 +47,8 @@ output: notion            # notion | local | both
 ## Notion
 home_page_title: Learning
 home_page_id: <id from Notion>
+calendar_database_id: <added automatically when the Learning Calendar is created>
+calendar_data_source: collection://<id>
 
 ## Local
 local_folder: ~/Documents/Lecture_Notes
