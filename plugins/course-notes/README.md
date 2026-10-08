@@ -77,6 +77,28 @@ If you don't use Notion, choose **local files only**. Notes are saved as:
 ```
 Plain Markdown works well with Obsidian, VS Code, or a git repo.
 
+### 4. Skip permission prompts (optional)
+
+By default, Claude Code asks before writing each file and before each Notion action. A single lecture can involve a dozen of these. To let the skill work without asking, add allow rules to `~/.claude/settings.json`, using your own notes folder:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Edit(~/Documents/Lecture_Notes/**)",
+      "Edit(~/.claude/course-notes/**)",
+      "mcp__notion"
+    ]
+  }
+}
+```
+
+- **`Edit(...)`** lets Claude create and update files inside that folder only. Files anywhere else still ask first.
+- **`~/.claude/course-notes/**`** covers the settings file the skill keeps updated.
+- **`mcp__notion`** allows all Notion actions. Use the name your Notion connection shows in `/mcp`. If you connected through Claude.ai, it's usually `mcp__claude_ai_Notion`.
+
+If `settings.json` already has a `permissions.allow` list, add these lines to it instead of replacing it. Leave out the Notion rule if you only save notes locally, or the folder rule if you only use Notion.
+
 ## Usage
 
 Paste a transcript, ideally with the class and section on the first line:
