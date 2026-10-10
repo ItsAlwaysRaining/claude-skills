@@ -1,0 +1,28 @@
+{
+  "name": "Harbor & Field",
+  "description": "Navy and teal for trust, rose and gold for warmth, on cool blue-grey neutrals.",
+  "seeds": ["#2C517A", "#265E70", "#B77D88", "#D59E27"],
+  "brand": [
+    { "key": "navy", "name": "Navy", "usage": "Primary buttons, links, headers",
+      "light": { "base": "#2C517A", "strong": "#1E3752", "soft": "#729CCA", "surface": "#E9EFF7" },
+      "dark":  { "base": "#7FA6D4", "strong": "#A8C4E6", "soft": "#34506F", "surface": "#1C2533" } },
+    { "key": "teal", "name": "Teal", "usage": "Secondary actions, success, data",
+      "light": { "base": "#265E70", "strong": "#1A404C", "soft": "#75B3C7", "surface": "#EAF3F6" },
+      "dark":  { "base": "#62A9BE", "strong": "#93C8D8", "soft": "#2B5664", "surface": "#1A292E" } },
+    { "key": "rose", "name": "Rose", "usage": "Highlights, badges, illustration",
+      "light": { "base": "#B77D88", "strong": "#8B4858", "soft": "#D9B6BD", "surface": "#F7EEF0" },
+      "dark":  { "base": "#D39CA7", "strong": "#E8C0C8", "soft": "#6B4450", "surface": "#2A2024" } },
+    { "key": "gold", "name": "Gold", "usage": "Accents, warnings, key numbers",
+      "light": { "base": "#D59E27", "strong": "#826117", "soft": "#EACA86", "surface": "#FBF2E1" },
+      "dark":  { "base": "#E0B04A", "strong": "#EDCB80", "soft": "#6B5320", "surface": "#29231A" } }
+  ],
+  "neutrals": {
+    "text":  { "light": "#2B2F34", "dark": "#E3E7EC" },
+    "muted": { "light": "#5D666F", "dark": "#A3ACB6" },
+    "line":  { "light": "#9EA8B3", "dark": "#4D5560" },
+    "page":  { "light": "#ECF0F4", "dark": "#1A1E23" }
+  },
+  "notes": [
+    { "mode": "light", "text": "The darkest neutral (#2B2F34) also covers headings and body text, so the grey row is complete as is." }
+  ]
+}

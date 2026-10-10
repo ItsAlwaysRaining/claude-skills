@@ -1,0 +1,268 @@
+<title>__TITLE__ Palette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a swatch board per mode (brand tiles with step chips, neutral tiles with labels,
+   notes column on the right), then the checks behind it. Page chrome uses the palette's own neutrals. */
+/*__THEME_CSS__*/
+:root {
+  --font-ui: "Instrument Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --step--1: 0.75rem; --step-0: 0.875rem; --step-1: 1.0625rem; --step-2: 1.375rem; --step-3: 2rem;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--c-bg); color: var(--c-fg);
+  font-family: var(--font-ui); font-size: var(--step-0); line-height: 1.5;
+  padding-inline: 16px; padding-block: 0 64px;
+}
+.wrap { max-width: 1080px; margin-inline: auto; display: flex; flex-direction: column; gap: 40px; }
+h1, h2 { text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: var(--step-3); font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: var(--step-2); font-weight: 600; }
+p { margin: 0; max-width: 65ch; }
+code { font-family: var(--font-mono); font-size: 0.92em; }
+.muted { color: var(--c-muted); }
+.eyebrow { font-family: var(--font-mono); font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--c-muted); }
+:focus-visible { outline: 2px solid var(--c-focus); outline-offset: 2px; }
+
+/* header */
+header { display: flex; flex-direction: column; gap: 12px; padding-top: 40px; }
+.seeds { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seed { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: var(--step--1); }
+.seed i { width: 14px; height: 14px; border-radius: 4px; display: block; box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.3); }
+.stats { font-family: var(--font-mono); font-size: var(--step--1); color: var(--c-muted); font-variant-numeric: tabular-nums; }
+
+/* board */
+.board { background: var(--b-bg); color: var(--b-fg); border: 1px solid var(--c-line); border-radius: 18px; padding: 24px 28px 36px; display: flex; flex-direction: column; gap: 28px; }
+.board-grid { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 32px 56px; align-items: start; }
+.swatches { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 104px)); gap: 44px 22px; align-items: start; }
+.sw { margin: 0; display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.tile { position: relative; width: 100%; aspect-ratio: 104 / 74; }
+.tile > button, .chips button { border: 0; padding: 0; cursor: pointer; display: block; box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.16); }
+.tile > button { position: absolute; inset: 0; border-radius: 24px; }
+.chips { position: absolute; left: 7%; right: 7%; bottom: -12%; display: flex; gap: 4%; }
+.chips button { width: 27%; aspect-ratio: 28 / 21; border-radius: 5px; }
+.sw figcaption { font-family: var(--font-mono); font-size: var(--step--1); line-height: 1.4; overflow-wrap: break-word; }
+.sw figcaption span { display: block; color: var(--b-muted); }
+.sw.neutral { gap: 14px; }
+.notes { font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5; display: flex; flex-direction: column; gap: 10px; max-width: 62ch; min-width: 0; }
+.notes ul { list-style: none; margin: 2px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.notes li { position: relative; padding-left: 1.1em; }
+.notes li::before { content: "•"; position: absolute; left: 0.15em; }
+.notes .fix { color: var(--b-alert); }
+.board .eyebrow { color: var(--b-muted); }
+
+/* checks */
+section { display: flex; flex-direction: column; gap: 16px; }
+details { border: 1px solid var(--c-line); border-radius: 12px; background: var(--c-bg); }
+summary { cursor: pointer; padding: 12px 16px; font-weight: 600; }
+summary span { font-weight: 400; color: var(--c-muted); }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: var(--step--1); }
+th, td { text-align: left; padding: 8px 16px; border-top: 1px solid var(--c-line); vertical-align: middle; }
+th { font-weight: 600; color: var(--c-muted); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.6875rem; }
+td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sample { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 28px; border-radius: 6px; font-weight: 600; box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.25); }
+.req { font-family: var(--font-mono); font-size: 0.6875rem; color: var(--c-muted); }
+.pass { font-weight: 600; } .fail { font-weight: 700; text-decoration: underline; } .na { color: var(--c-muted); }
+.vision-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); gap: 16px; }
+.vision-panel { background: var(--b-bg); color: var(--b-fg); border: 1px solid var(--c-line); border-radius: 12px; padding: 16px; overflow-x: auto; }
+.vision { display: grid; grid-template-columns: 112px repeat(var(--n), minmax(26px, 1fr)); gap: 5px; align-items: center; min-width: 420px; margin-top: 10px; }
+.vision .vl { font-family: var(--font-mono); font-size: 0.6875rem; line-height: 1.25; }
+.vision .vl small { display: block; color: var(--b-muted); font-size: 0.625rem; }
+.vision .ch { font-family: var(--font-mono); font-size: 0.625rem; color: var(--b-muted); text-align: center; line-height: 1.2; }
+.vision .chip { height: 26px; border-radius: 5px; box-shadow: inset 0 0 0 1px rgb(127 127 127 / 0.2); }
+pre { margin: 0; padding: 16px; overflow-x: auto; background: var(--c-panel); border-radius: 12px; font-family: var(--font-mono); font-size: var(--step--1); line-height: 1.6; max-height: 360px; }
+.btn-row { display: flex; gap: 12px; align-items: center; }
+.btn { font: inherit; font-weight: 600; background: var(--c-fg); color: var(--c-bg); border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+.toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); background: var(--c-fg); color: var(--c-bg);
+  font-family: var(--font-mono); font-size: var(--step--1); padding: 8px 14px; border-radius: 999px; }
+
+@media (max-width: 880px) {
+  .board-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .board { padding: 18px 16px 28px; }
+  .swatches { gap: 36px 12px; }
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Brand palette</span>
+    <h1 id="name"></h1>
+    <p id="desc" class="muted"></p>
+    <div class="seeds" id="seeds"></div>
+    <p class="stats" id="stats"></p>
+  </header>
+
+  <div id="boards" class="wrap" style="gap: 24px"></div>
+
+  <section aria-labelledby="checks-h">
+    <h2 id="checks-h">The checks behind the notes</h2>
+    <p class="muted">Every ratio on the boards is measured, never estimated. Required pairs must reach WCAG AA (4.5:1 for text). Other pairs are listed so you know where a color stops working.</p>
+    <div id="tables" class="wrap" style="gap: 12px"></div>
+  </section>
+
+  <section aria-labelledby="vision-h">
+    <h2 id="vision-h">Color blindness preview</h2>
+    <p class="muted">Brand colors and chart fills as people with each type of color blindness see them.</p>
+    <div class="vision-panels" id="vision"></div>
+  </section>
+
+  <section aria-labelledby="tokens-h">
+    <h2 id="tokens-h">CSS tokens</h2>
+    <p class="muted">Light and dark values. They follow the system setting and also respond to <code>data-theme="light"</code> or <code>data-theme="dark"</code> on the root element.</p>
+    <pre id="css"></pre>
+    <div class="btn-row"><button type="button" class="btn" id="copy-css">Copy CSS</button></div>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script id="palette-data" type="application/json">__DATA_JSON__</script>
+<script>
+(function () {
+  const D = JSON.parse(document.getElementById('palette-data').textContent);
+  const report = D.report;
+  const MODES = ['light', 'dark'];
+  const N = Object.fromEntries(D.neutrals.map((n) => [n.job, n]));
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; };
+
+  let toastTimer;
+  function toast(msg) { const t = $('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => (t.hidden = true), 1400); }
+  // Copy to clipboard; if the viewer blocks it, select the text so it can be copied by hand.
+  function copy(text, node, msg) {
+    const selectNode = () => { if (!node) return; const r = document.createRange(); r.selectNodeContents(node); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); };
+    try { navigator.clipboard.writeText(text).then(() => toast(msg), () => { selectNode(); toast(text); }); } catch (e) { selectNode(); toast(text); }
+  }
+  function swatchButton(hex, label) {
+    const b = el('button'); b.type = 'button'; b.style.background = hex;
+    b.title = label + ' ' + hex; b.setAttribute('aria-label', label + ' ' + hex + ', copy');
+    b.addEventListener('click', () => copy(hex, null, 'Copied ' + hex));
+    return b;
+  }
+  function paint(node, mode) {
+    node.style.setProperty('--b-bg', D.canvas[mode]);
+    node.style.setProperty('--b-fg', N.text[mode]);
+    node.style.setProperty('--b-muted', N.muted[mode]);
+    node.style.setProperty('--b-alert', N.text[mode]);
+  }
+
+  // header
+  $('name').textContent = D.name;
+  if (D.description) $('desc').textContent = D.description; else $('desc').hidden = true;
+  if (D.seeds && D.seeds.length) {
+    $('seeds').append(el('span', 'eyebrow', 'Built from'));
+    D.seeds.forEach((s) => { const c = el('span', 'seed'); const i = el('i'); i.style.background = s; c.append(i, s); $('seeds').append(c); });
+  } else $('seeds').hidden = true;
+  const c = report.counts;
+  $('stats').textContent = c.aa_pass + '/' + c.pairs + ' required pairs pass AA · ' + c.aaa_pass + ' also pass AAA · ' +
+    c.cvd_warnings + (c.cvd_warnings === 1 ? ' color-blindness overlap flagged' : ' color-blindness overlaps flagged');
+
+  // boards
+  MODES.forEach((mode) => {
+    const names = D.stepNames[mode];
+    const m = report.modes[mode];
+    const board = el('section', 'board'); paint(board, mode);
+    board.setAttribute('aria-label', (mode === 'light' ? 'Light' : 'Dark') + ' mode palette');
+    board.append(el('span', 'eyebrow', mode === 'light' ? 'Light mode' : 'Dark mode'));
+    const grid = el('div', 'board-grid');
+
+    const sw = el('div', 'swatches');
+    sw.style.setProperty('--cols', Math.max(D.brand.length, D.neutrals.length));
+    D.brand.forEach((b) => {
+      const f = el('figure', 'sw');
+      const tile = el('div', 'tile');
+      tile.append(swatchButton(b[mode].base, b.name));
+      const chips = el('div', 'chips');
+      ['strong', 'soft', 'surface'].forEach((step) => chips.append(swatchButton(b[mode][step], names[step] + ' ' + b.name.toLowerCase())));
+      tile.append(chips);
+      const cap = el('figcaption', null, b.name); cap.append(el('span', null, b.usage));
+      f.append(tile, cap);
+      sw.append(f);
+    });
+    for (let i = D.brand.length; i < Math.max(D.brand.length, D.neutrals.length); i++) sw.append(el('span'));
+    D.neutrals.forEach((n) => {
+      const f = el('figure', 'sw neutral');
+      const tile = el('div', 'tile'); tile.append(swatchButton(n[mode], n.label));
+      f.append(tile, el('figcaption', null, n.label));
+      sw.append(f);
+    });
+
+    const notes = el('div', 'notes');
+    m.sections.forEach((s) => {
+      const block = el('div');
+      block.append(el('p', s.heading === 'Must fix:' ? 'fix' : null, s.heading));
+      const ul = el('ul');
+      s.items.forEach((t) => ul.append(el('li', null, t)));
+      block.append(ul);
+      notes.append(block);
+    });
+    m.notes.forEach((t) => notes.append(el('p', null, t)));
+
+    grid.append(sw, notes);
+    board.append(grid);
+    $('boards').append(board);
+  });
+
+  // contrast tables
+  MODES.forEach((mode) => {
+    const pairs = report.modes[mode].pairs;
+    const req = pairs.filter((p) => p.required);
+    const d = el('details');
+    const sum = el('summary', null, (mode === 'light' ? 'Light' : 'Dark') + ' mode ');
+    sum.append(el('span', null, '· ' + req.filter((p) => p.aa).length + '/' + req.length + ' required pairs pass, ' + pairs.length + ' pairs checked'));
+    d.append(sum);
+    const wrap = el('div', 'scroll'); const t = el('table');
+    const head = el('tr'); ['Sample', 'Pair', 'Used for', 'Ratio', 'AA', 'AAA'].forEach((h) => head.append(el('th', null, h)));
+    const thead = el('thead'); thead.append(head); t.append(thead);
+    const tb = el('tbody');
+    pairs.forEach((p) => {
+      const tr = el('tr');
+      const s = el('span', 'sample', 'Aa'); s.style.background = p.bg_hex; s.style.color = p.fg_hex;
+      const td0 = el('td'); td0.append(s);
+      const td1 = el('td', null, p.fg_name + ' on ' + p.bg_name.toLowerCase());
+      td1.append(el('br'), el('code', 'muted', p.fg_hex + ' / ' + p.bg_hex));
+      const td2 = el('td', null, p.use); td2.append(el('br'), el('span', 'req', p.required ? 'required' : 'for reference'));
+      const aa = p.aa ? el('td', 'pass', 'Pass') : el('td', p.required ? 'fail' : 'na', p.required ? 'Fail' : 'No');
+      const aaa = el('td', p.aaa ? 'pass' : 'na', p.aaa == null ? 'n/a' : (p.aaa ? 'Pass' : 'No'));
+      tr.append(td0, td1, td2, el('td', 'num', p.ratio.toFixed(2) + ':1'), aa, aaa);
+      tb.append(tr);
+    });
+    t.append(tb); wrap.append(t); d.append(wrap);
+    $('tables').append(d);
+  });
+
+  // color blindness preview
+  const VISIONS = ['typical', 'protanopia', 'deuteranopia', 'tritanopia', 'grayscale'];
+  const VNAME = { typical: 'Typical vision', protanopia: 'Protanopia', deuteranopia: 'Deuteranopia', tritanopia: 'Tritanopia', grayscale: 'Grayscale' };
+  MODES.forEach((mode) => {
+    const panel = el('div', 'vision-panel'); paint(panel, mode);
+    panel.append(el('span', 'eyebrow', mode === 'light' ? 'Light mode' : 'Dark mode'));
+    const cols = [];
+    D.brand.forEach((b) => cols.push({ key: b.key + '-base', label: b.name, hex: b[mode].base }));
+    D.brand.forEach((b) => cols.push({ key: b.key + '-soft', label: D.stepNames[mode].soft + ' ' + b.name.toLowerCase(), hex: b[mode].soft }));
+    const g = el('div', 'vision'); g.style.setProperty('--n', cols.length);
+    g.append(el('span'));
+    cols.forEach((col) => g.append(el('span', 'ch', col.label)));
+    VISIONS.forEach((v) => {
+      const lab = el('span', 'vl', VNAME[v]); if (D.visionNotes[v]) lab.append(el('small', null, D.visionNotes[v]));
+      g.append(lab);
+      cols.forEach((col) => {
+        const hex = v === 'typical' ? col.hex : report.modes[mode].simulated[v][col.key];
+        const chip = el('span', 'chip'); chip.style.background = hex; chip.title = col.label + ': ' + hex;
+        g.append(chip);
+      });
+    });
+    panel.append(g);
+    $('vision').append(panel);
+  });
+
+  // tokens
+  $('css').textContent = D.css;
+  $('copy-css').addEventListener('click', () => copy(D.css, $('css'), 'Copied CSS'));
+})();
+</script>

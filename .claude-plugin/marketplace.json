@@ -18,6 +18,12 @@
       "source": "./plugins/learning-calendar",
       "description": "Log what you learned today to a Notion calendar, from your Claude sessions and your own list, after you approve the topics.",
       "category": "productivity"
+    },
+    {
+      "name": "brand-palette",
+      "source": "./plugins/brand-palette",
+      "description": "Build an accessible light and dark brand color palette, checked for contrast and color blindness, as a swatch board with plain-language notes.",
+      "category": "design"
     }
   ]
 }

@@ -1,0 +1,11 @@
+{
+  "name": "brand-palette",
+  "version": "1.0.0",
+  "description": "Build an accessible brand color palette with light and dark mode values, checked against WCAG 2.2 AA and simulated for color blindness, published as a swatch board: brand colors with Dark, Light and Surface steps, labeled neutrals, and plain-language notes.",
+  "author": {
+    "name": "ItsAlwaysRaining"
+  },
+  "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
+  "license": "MIT",
+  "keywords": ["color", "palette", "branding", "accessibility", "wcag", "dark-mode", "design-tokens"]
+}
