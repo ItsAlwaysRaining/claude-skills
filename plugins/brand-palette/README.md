@@ -15,6 +15,8 @@ It returns a swatch board for light mode and another for dark mode:
 - **A notes column** in plain language: what each step is for, which text works on which color ("Gold: white text fails at about 2.4:1. Put your darkest neutral on it for text, or use the Dark gold (#826117, about 5.7:1) when you need white text"), which colors look alike to color-blind readers, and anything else to watch, like placeholder contrast.
 - **Below the boards:** every contrast check behind the notes, a color-blindness preview, and CSS tokens for both modes. Click any swatch to copy its hex.
 
+**Every palette starts somewhere different.** A small script draws three random directions, each with a primary hue family (plum, petrol, ochre, mulberry…), a color scheme and a character (dusty, earthy, jewel-toned, clear). It leans away from the usual red/blue/green/yellow and from primaries you've used recently. Claude picks the one that fits the brand and mentions the other two.
+
 Your seed colors are used exactly as given. When white text doesn't work on one, the notes say so and point to the step or neutral that does.
 
 ## How the checks work
@@ -34,6 +36,7 @@ You can also run the script on its own:
 python3 check_palette.py --pair "#767676" "#ffffff"      # one pair
 python3 check_palette.py palette.json --all              # every pair in a palette
 python3 check_palette.py palette.json --html out.html    # build the swatch board
+python3 directions.py                                    # draw 3 random starting directions
 ```
 
 See [`examples/sample-palette.json`](examples/sample-palette.json) for a full palette file.

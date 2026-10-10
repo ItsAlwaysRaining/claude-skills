@@ -15,9 +15,11 @@ Exit codes: 0 every required pair passes AA, 1 at least one fails, 2 bad input.
 Standard library only.
 """
 import argparse
+import datetime
 import html
 import json
 import math
+import os
 import re
 import sys
 from pathlib import Path
@@ -55,6 +57,17 @@ VISION_NOTES = {
     "tritanopia": "blue-blind, rare",
     "grayscale": "no color vision, or grayscale print",
 }
+
+# Named hue families by OKLCH hue angle, used to name colors and to vary starting points.
+FAMILIES = [
+    (5, "raspberry"), (25, "brick"), (42, "terracotta"), (58, "copper"), (75, "ochre"), (95, "mustard"),
+    (112, "olive"), (130, "moss"), (150, "jade"), (170, "pine"), (190, "teal"), (210, "petrol"),
+    (230, "steel"), (250, "cobalt"), (268, "indigo"), (285, "iris"), (305, "plum"), (325, "orchid"),
+    (345, "mulberry"),
+]
+# Primary colors from these families make every palette look the same (red, blue, green, yellow).
+USUAL_FAMILIES = {"brick", "mustard", "ochre", "moss", "steel", "cobalt"}
+HISTORY = Path.home() / ".claude" / "brand-palette" / "history.json"
 
 HEX_RE = re.compile(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 KEY_RE = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -223,6 +236,42 @@ def suggest(change_hex, against_hex, target):
 def deepen(hex_, amount):
     L, C, h = to_oklch(hex_)
     return from_oklch(max(0, L - amount), C, h)
+
+
+def family_of(hex_or_hue):
+    h = hex_or_hue if isinstance(hex_or_hue, (int, float)) else to_oklch(hex_or_hue)[2]
+    return min(FAMILIES, key=lambda f: min(abs(f[0] - h), 360 - abs(f[0] - h)))[1]
+
+
+# ---------- history (kept on this machine, outside the repo) ----------
+
+def history_path():
+    return Path(os.environ.get("BRAND_PALETTE_HISTORY", HISTORY))
+
+
+def recent_families(n=6):
+    try:
+        entries = json.loads(history_path().read_text())
+    except (OSError, ValueError):
+        return []
+    return [e.get("family") for e in entries[-n:]]
+
+
+def record_history(palette):
+    """Remember the primary hue of a finished palette, so the next draws lean away from it."""
+    path = history_path()
+    try:
+        entries = json.loads(path.read_text())
+    except (OSError, ValueError):
+        entries = []
+    primary = palette["brand"][0]["light"]["base"]
+    entries.append({"name": palette["name"], "primary": primary, "family": family_of(primary),
+                    "date": datetime.date.today().isoformat()})
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(entries[-50:], indent=2))
+    except OSError:
+        pass  # history only steers future draws; never fail a build over it
 
 
 # ---------- loading ----------
@@ -614,6 +663,7 @@ def main():
             print("Not writing the board: fix the 'Must fix' items first (or pass --allow-failures).", file=sys.stderr)
             return 1
         write_html(palette, report, args.html)
+        record_history(palette)
     return 0 if report["ok"] else 1
 
 

@@ -40,6 +40,8 @@ Ratios are never rounded up: 4.49:1 fails. The notes use "about" with the ratio 
 
 ## Making the colors
 
+- **Start from a draw:** `scripts/directions.py` picks the hues and writes the first draft, steps included. The rules below are for adjusting that draft, not for picking hues from scratch.
+
 - **Seeds:** use each seed's exact hex as a `base`. Don't adjust a seed to make white text pass. The notes will point to the strong step or the darkest neutral instead, which is how real brand systems handle light brand colors such as gold.
 - **Strong step:** same hue, about 10–20 OKLCH lightness points darker than base in light mode. If the notes say white text still fails on it, darken it further. The script's `Try #XXXXXX` gives the smallest change that passes.
 - **Soft and surface:** the soft step is a mid-light tint (light mode) or a mid-dark shade (dark mode). The surface step is barely tinted, close to the page color.

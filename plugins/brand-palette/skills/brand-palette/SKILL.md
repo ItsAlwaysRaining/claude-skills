@@ -17,15 +17,38 @@ Accept any mix of these:
 - **Seed hex codes, 1 to 4:** existing brand colors. Each seed becomes a brand color's `base`, exactly as given. If more than 4 are given, ask which 4 matter most.
 - **An image or logo:** look at it and pick out 2–4 dominant brand colors. Ignore the background, anti-aliasing and shadows. Tell the user which hex codes you took from it, since your reading is approximate. If they know the exact values, those win.
 
-If there's nothing to go on (e.g. just "make me a palette"), ask one short question: what is the brand, and are there existing colors? Otherwise, don't ask. Make reasonable choices and say what you assumed. With only a description, 3–4 brand colors is a good default.
+If there's nothing to go on (e.g. just "make me a palette"), ask one short question: what is the brand, and are there existing colors? Otherwise, don't ask. Make reasonable choices and say what you assumed.
 
-## Step 2: Draft the palette
+## Step 2: Draw a direction
+
+**Don't pick the hues yourself.** Left to judgment, every palette drifts to a blue primary with a red, a green and a gold. Draw random starting points instead:
+
+```bash
+python3 scripts/directions.py                          # no seeds
+python3 scripts/directions.py --seed-hex "#2C517A"     # seeds stay as given; the rest is drawn
+```
+
+It prints 3 directions. Each one has a primary hue family (plum, petrol, ochre, mulberry…), a color scheme (split-complementary, triadic, analogous…) and a character (dusty, earthy, jewel-toned, clear). Primaries from the plain red/blue/green/yellow families are less likely to be drawn, and so are primaries used in recent palettes.
+
+Pick the direction that suits the brand best. A bank can wear plum or petrol; it probably shouldn't wear clear orchid. If none of the three could work, draw again, once. Only override the draw when the user asked for specific colors or a mood the draws can't reach ("make it red"). Then draft it:
+
+```bash
+python3 scripts/directions.py --rng <draw number> --pick <N> --name "<Brand>" --out <scratchpad>/<brand>-palette.json
+```
+
+The draft fills every step for both modes and tints the neutrals toward the primary. Copy the exact command the script prints, since it includes any seed or count flags.
+
+## Step 3: Finish the draft
 
 Read `references/palette-format.md`. It covers the steps and their jobs, the four neutrals, what is required versus only noted, how to build the dark mode, and the JSON format.
 
-Write the palette JSON to the scratchpad directory (or a temp folder if there isn't one), e.g. `<scratchpad>/<brand>-palette.json`. Give every brand color a 2–5 word `usage` label ("Primary buttons, links, headers") and all four steps for both modes.
+In the draft JSON:
+- Write every brand color's `usage` label, 2–5 words ("Primary buttons, links, headers"). The checker refuses the draft until you do.
+- Rename the colors from hue families to brand words when that helps ("Petrol" → "River"). Keep the hex values.
+- Add the `description`.
+- Adjust a hex only to fix something the checker reports. Don't nudge it back toward a familiar hue.
 
-## Step 3: Check and fix
+## Step 4: Check and fix
 
 Run from this skill's folder:
 
@@ -41,25 +64,26 @@ It prints each board's notes column exactly as it will appear.
 
 Use `--all` to see every checked pair, and `--pair FG BG` to test one combination quickly.
 
-## Step 4: Build the board
+## Step 5: Build the board
 
 ```bash
 python3 scripts/check_palette.py <palette.json> --html <out-dir>/<brand>-palette.html
 ```
 
-This fills in `references/page-template.html`: a light-mode board and a dark-mode board in the layout above, then the full contrast tables, a color-blindness preview and copyable CSS tokens. Clicking any swatch copies its hex. Don't edit the generated HTML by hand. Change the JSON and run the script again.
+This fills in `references/page-template.html`: a light-mode board and a dark-mode board in the layout above, then the full contrast tables, a color-blindness preview and copyable CSS tokens. Clicking any swatch copies its hex. Building the board also records the primary hue in `~/.claude/brand-palette/history.json`, so the next draws lean away from it. Don't edit the generated HTML by hand. Change the JSON and run the script again.
 
 Save it to the user's current working directory unless they named another place. Then:
 - If the Artifact tool is available, publish the file as a private artifact (icon `palette`, description: one sentence naming the brand and the mood).
 - If it isn't, tell the user the file path and say to open it in a browser.
 
-## Step 5: Report back
+## Step 6: Report back
 
 Keep the chat summary short:
 - the link or file path
 - one line on the direction ("Navy and teal for trust, rose and gold for warmth; dark mode on blue-black")
+- the other two directions from the draw, in a few words each, so the user can ask for one instead
 - the counts from the script (required pairs passed, AAA passes)
 - the two or three caveats that matter most, in a few words each, e.g. "Gold needs dark text; white only works on Dark gold"
 - any assumptions you made, such as hex codes read from an image
 
-If the user asks for changes ("warmer", "swap the teal", "add a fifth color"), edit the JSON, run Steps 3–4 again, and republish to the same artifact.
+If the user asks for changes ("warmer", "swap the teal", "add a fifth color"), edit the JSON, run Steps 4–5 again, and republish to the same artifact. If they want a different direction altogether, draft another from the same draw, or draw again.
