@@ -1,6 +1,6 @@
 ---
 name: course-notes
-description: Turn online course lecture transcripts (Udemy, Coursera, Skillshare, LinkedIn Learning, YouTube courses, etc.) into structured study notes with vocabulary first, then main concepts, how-to steps, tips, and takeaways, published to Notion (class → section → lecture, plus a class glossary) and/or saved as Markdown files. Use this whenever the user pastes or points to a lecture/video transcript and wants notes, a summary, key points, study material, or "the important stuff" pulled out of it, even if they don't say "notes" — e.g. "here's the transcript from lecture 12", "what do I need to know from this video", or a raw pasted transcript with little explanation.
+description: Turn online course lecture transcripts (Udemy, Coursera, Skillshare, LinkedIn Learning, YouTube courses, etc.) into structured study notes with key takeaways and resources up top, then vocabulary, main concepts, how-to steps, and tips, published to Notion (class → section → lecture, plus a class glossary) and/or saved as Markdown files. Use this whenever the user pastes or points to a lecture/video transcript and wants notes, a summary, key points, study material, or "the important stuff" pulled out of it, even if they don't say "notes" — e.g. "here's the transcript from lecture 12", "what do I need to know from this video", or a raw pasted transcript with little explanation.
 ---
 
 # Course Notes
@@ -49,13 +49,19 @@ Use this layout for every lecture. Omit a section entirely if the lecture has no
 # [Lecture title]
 *Class: [class name] · Section: [if known]*
 
+## Key Takeaways
+- 3–5 bullets: what someone should remember a month from now.
+
+## Resources Mentioned
+- People, tools, studies, websites, books, with any detail given (date, version, link).
+
 ## Vocabulary
 - **Term**: definition in plain words, as the instructor used it.
 
 ## Main Concepts
 ### [Concept name]
-Short explanation (2–5 sentences or bullets). Include the instructor's
-examples, evidence, and reasoning: the "why", not just the "what".
+- 2–4 short bullets, one idea each: the point, plus the "why" in a
+  few words. Keep only the example that makes it click.
 
 ## How-to Steps
 ### [Task name]
@@ -73,12 +79,6 @@ examples, evidence, and reasoning: the "why", not just the "what".
 - ⚠️ Warnings and common mistakes the instructor flagged.
 - 💡 Pro tips and recommendations.
 
-## Resources Mentioned
-- People, tools, studies, websites, books, with any detail given (date, version, link).
-
-## Key Takeaways
-- 3–5 bullets: what someone should remember a month from now.
-
 ## Review Questions
 1. Question testing understanding (not trivia)?
    <details><summary>Answer</summary>Answer drawn from the lecture.</details>
@@ -88,8 +88,11 @@ examples, evidence, and reasoning: the "why", not just the "what".
 
 ### Section guidance
 
-- **Vocabulary goes first** because it's what the user needs to understand everything below it. Include terms the lecture introduces or relies on: named concepts, technical terms, tool features. Use the instructor's framing. If the instructor uses a term without defining it (e.g. it was covered in an earlier lecture), give a brief standard definition and mark it *(not defined in this lecture)* so the user knows where it came from.
+- **Key Takeaways and Resources go at the top** so the user gets the gist and the links at a glance before diving in.
+- **Vocabulary comes next** because it's what the user needs to understand everything below it. Include terms the lecture introduces or relies on: named concepts, technical terms, tool features. Use the instructor's framing. If the instructor uses a term without defining it (e.g. it was covered in an earlier lecture), give a brief standard definition and mark it *(not defined in this lecture)* so the user knows where it came from.
 - **Main Concepts** are the ideas, arguments, and mental models. Attribute contestable opinions to the instructor ("The instructor argues…") so the user can tell taught fact from viewpoint.
+- **Keep summaries tight.** The notes are for quick review, not a transcript rewrite. Aim for bullets of one line (two at most), and a lecture's Main Concepts should read in about a minute. Cut asides, repeated points, and anything already covered in Vocabulary, Tips, or How-to. When a detail is a number or setting, it belongs in the Shortcuts & Settings table rather than a concept bullet. Merge closely related concepts under one heading rather than giving each its own.
+- **Key Takeaways** and **Review Questions** answers: one sentence each.
 - **How-to Steps** should be followable without the video: name the panel, the option, the value. Merge rambling demo narration into clean numbered steps.
 - **Shortcuts, Settings & Code**: capture exactly. Translate spoken shortcuts into standard notation ("hold command and shift and press P" → `Cmd + Shift + P`).
 - **Review Questions**: 3–5 questions that make the user recall and apply, with answers hidden in `<details>` so they can self-test.
@@ -120,7 +123,7 @@ Do whichever of these the config's `output` setting calls for.
 In short:
 1. Find the class page under the home page (check the config cache first); create it, with its Glossary, if the class is new.
 2. Find the section page under the class; create it if new, keeping sections in order above the glossary.
-3. Create the lecture page under the section, converting the notes into the Notion layout.
+3. Create the lecture page under the section, converting the notes into the Notion layout. New class, section, and lecture pages are made full width by duplicating the config's `full_width_template_id` page (details in the layout reference).
 4. Add the lecture's new vocabulary terms as rows in the class Glossary.
 5. Log today's topic in the **Learning Calendar** at the top of the home page: reuse today's entry if it already covers this lecture's topic (add a link to the new lecture), otherwise add a new 1–2 word topic with a one- or two-sentence summary and a link to the lecture. Create the calendar first if the config has no `calendar_data_source`.
 
@@ -139,4 +142,4 @@ If you can't write files (e.g. a chat-only environment), output the notes in the
 
 ## Finish
 
-Tell the user where the notes went (Notion link and/or file path) and give a 2–3 line summary in chat. Don't repeat the full notes; they're already saved.
+Tell the user where the notes went (Notion link and/or file path) and give a one- or two-sentence summary in chat. Don't repeat the full notes; they're already saved.
