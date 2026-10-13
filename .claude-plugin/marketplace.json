@@ -24,6 +24,12 @@
       "source": "./plugins/brand-palette",
       "description": "Build an accessible light and dark brand color palette, checked for contrast and color blindness, as a swatch board with plain-language notes.",
       "category": "design"
+    },
+    {
+      "name": "ship-pr",
+      "source": "./plugins/ship-pr",
+      "description": "Commit, push and open a GitHub pull request after checking the repo, branch and changes. Never merges or pushes to main.",
+      "category": "development"
     }
   ]
 }
