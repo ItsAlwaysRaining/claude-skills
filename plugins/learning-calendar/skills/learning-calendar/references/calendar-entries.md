@@ -52,6 +52,36 @@ New sub-pages land at the end of the umbrella page, which is why "Subtopics" is 
 
 **Converting existing entries into a group** (the user groups entries already on the calendar): use `move-pages` to move those entries under the umbrella entry, with new parent = `{"type": "page_id", "page_id": "<umbrella entry id>"}`. They leave the calendar. Never delete entries. Then rewrite each moved page into the subtopic bullet format above, and flatten anything nested inside it (move its pages up to the umbrella or turn them into bullets). If the umbrella was itself one of the topics, turn its old content into a subtopic page too, so every subtopic looks the same.
 
+## History file (use instead of querying Notion)
+
+Notion's free plan limits how often a database can be queried, so both skills keep a plain-text log of recent calendar entries and read it instead of querying the calendar.
+
+**Where:** `learning-calendar-history.md`, in the same folder as the config the calendar settings came from (`~/.claude/course-notes/` or `~/.claude/learning-calendar/`).
+
+**Format:**
+
+```markdown
+# Learning Calendar history
+Entries on the Notion Learning Calendar for the last 10 days, kept by the course-notes and learning-calendar skills so they don't have to query Notion. Safe to edit by hand.
+
+covers_from: 2026-10-12
+
+2026-10-13 | Minimalism | 3f8bd4600b7981d4b87ef3a513288cce | notes: 3f8bd4600b798196b40ce173a08b9fa0, 3f8bd4600b79814ebe8cd98edf844fe7
+2026-10-12 | Claude Skills | 3f8bd4600b7981acbdc0d6cde93f2f98 | subtopics: Brand Palette Skill
+2026-10-12 | Color Contrast | 3f8bd4600b798150b8d1c23425517313
+```
+
+- One line per calendar entry, newest day first: date, topic, the entry's page ID, then `notes:` (IDs of linked note pages) and `subtopics:` (names of a group's sub-pages), each left off when empty.
+- `covers_from` is the earliest day the log is complete for. Days before it may have entries the log doesn't know about.
+
+**Reading.** To find a day's entries, read the log:
+
+- **Day on or after `covers_from`:** the log is the full list, so don't query. Fetch an entry's page only when you're about to edit it (fetching doesn't count against the query limit).
+- **Day before `covers_from`, or no log yet:** query `calendar_data_source` once for every entry from 9 days ago to today, write them all to the log, and set `covers_from` to 9 days ago. If the query is refused (usage limit), search the calendar data source instead, tell the user the list may be incomplete, and leave `covers_from` unchanged.
+- **Entries added by hand in Notion** aren't in the log. If the user mentions one, or a draft topic might already be on the calendar, search for it and add what you find to the log.
+
+**Writing.** After each successful create or update, add the entry's line or update it (new note IDs, new subtopics, renamed topic). Never log a call that failed. Then remove lines older than 10 days, and if `covers_from` is more than 9 days ago, move it up to 9 days ago.
+
 ## Updating an existing entry
 
 Fetch the entry first, then use `update-page` with `update_content`:

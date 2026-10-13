@@ -17,6 +17,20 @@ Notion uses its own "enhanced Markdown". Before writing page content, read `noti
 
 Look up classes in the config's "Known classes" cache first. If a class isn't there, fetch the home page and check its child `<page>` tags (the user may have created or renamed pages by hand). Add anything you create or find to the cache.
 
+## Creating pages (full width)
+
+Class, section, and lecture pages should open in full width. The Notion tools can't set that directly, but a duplicated page keeps it. So when the config has a `full_width_template_id`, make every new class, section, and lecture page from that template:
+
+1. `duplicate-page` with the template's ID. The copy lands next to the template, on the home page. Make one copy at a time: wait until a copy loads before starting the next, because simultaneous duplicates can leave one stuck as a blank, unmovable block.
+2. The duplicate finishes in the background: fetch the returned ID until it loads (a few tries).
+3. `move-pages` the copy to its real parent (home page for a class, class page for a section, section page for a lecture).
+4. `update-page` with `update_properties` to set the title, plus `icon` for the page's emoji.
+5. `update-page` with `replace_content` to swap the template's text for the page's layout below.
+
+If there's no `full_width_template_id`, or the template is gone or a step fails, create the page with `create-pages` as usual, and at the end tell the user which new pages to set to full width by hand (••• → Full width). If the move or rename fails after the copy exists, tell the user where the stray copy is so they can delete it (the Notion tools can't delete pages).
+
+Database rows (glossary terms, calendar entries) are created directly; this applies only to the three page types.
+
 ## Placing new pages
 
 New child pages are appended to the **end** of their parent. That's fine on the home page and on section pages (their children are the last thing on the page). On a **class page**, though, the end is below the Glossary, so a new section would land in the wrong place. After creating a section page:
@@ -26,7 +40,7 @@ New child pages are appended to the **end** of their parent. That's fine on the 
 
 ## Class page (only when the class is new)
 
-Create under the home page, icon = an emoji that fits the subject:
+Create under the home page (see "Creating pages"), icon = an emoji that fits the subject:
 
 ```
 <callout icon="🎓" color="purple_bg">
@@ -53,7 +67,7 @@ Finally fetch the class page and change that database tag's `inline="false"` to 
 
 ## Section page (only when the section is new)
 
-Title: `Section N: <Name>` when the number is known, otherwise just `<Name>`. Pick a fitting emoji icon. Content:
+Create it as described in "Creating pages". Title: `Section N: <Name>` when the number is known, otherwise just `<Name>`. Pick a fitting emoji icon. Content:
 
 ```
 <callout icon="🧭" color="gray_bg">
@@ -64,17 +78,25 @@ Title: `Section N: <Name>` when the number is known, otherwise just `<Name>`. Pi
 
 ## Lecture page
 
-Title = lecture title (prefix the lecture number if known, e.g. `12. Auto Layout Basics`). Pick a fitting emoji icon. Convert the Markdown notes to this layout, keeping the same section order and omitting any section the notes don't have:
+Create it as described in "Creating pages". Title = lecture title (prefix the lecture number if known, e.g. `12. Auto Layout Basics`). Pick a fitting emoji icon. Convert the Markdown notes to this layout, keeping the same section order and omitting any section the notes don't have:
 
 ```
 <callout icon="<class emoji>" color="gray_bg">
 	**Class:** <class name> · **Section N:** <section name>
 </callout>
+## ✅ Key Takeaways {color="purple"}
+<callout icon="⭐" color="green_bg">
+	- takeaway
+	- takeaway
+</callout>
+## 🔗 Resources Mentioned {color="purple"}
+- bullets
+---
 ## 🔤 Vocabulary {color="purple"}
 <table fit-page-width="true" header-row="true">
 	<colgroup>
-		<col color="purple_bg">
-		<col>
+		<col color="purple_bg" width="220">
+		<col width="888">
 	</colgroup>
 	<tr>
 		<td>Term</td>
@@ -95,7 +117,7 @@ Title = lecture title (prefix the lecture number if known, e.g. `12. Auto Layout
 	1. Step
 	2. Step
 ## ⌨️ Shortcuts & Settings {color="purple"}
-<table fit-page-width="true" header-row="true"> … Action | How, first column gray_bg; shortcuts in `code` …</table>
+<table fit-page-width="true" header-row="true"> … Action | How, columns gray_bg width="220" and width="888"; shortcuts in `code` …</table>
 (code blocks for code/commands go here too)
 ---
 ## 📌 Tips & Gotchas {color="purple"}
@@ -105,14 +127,7 @@ Title = lecture title (prefix the lecture number if known, e.g. `12. Auto Layout
 <callout icon="💡" color="blue_bg">
 	Tip text
 </callout>
-## 🔗 Resources Mentioned {color="purple"}
-- bullets
 ---
-## ✅ Key Takeaways {color="purple"}
-<callout icon="⭐" color="green_bg">
-	- takeaway
-	- takeaway
-</callout>
 ## ❓ Review Questions {color="purple"}
 <details>
 <summary>1. Question?</summary>
@@ -126,12 +141,14 @@ Title = lecture title (prefix the lecture number if known, e.g. `12. Auto Layout
 
 Use one callout per tip, not one callout holding all of them; separate cards are easier to read.
 
+Always give both table columns explicit widths as shown. Without them Notion auto-sizes the columns narrow and the table doesn't span the page, even with `fit-page-width="true"`.
+
 ## Glossary rows
 
 Add one row per vocabulary term to the class's Glossary data source (`create-pages` with parent `data_source_id`):
 
 - **Term**, **Definition** (short, plain text; keep the *(not defined in this lecture)* marker as plain parentheses), **Section**, **Lecture**.
-- Skip terms already in the glossary (query or fetch the data source first).
+- Skip terms already in the glossary: query the data source for the lecture's terms (case-insensitive) before creating rows, every time. The Notion tools can't delete rows, so a duplicate has to be removed by hand.
 - **Select options can't contain commas.** Use a short lecture name without commas for the Lecture tag (e.g. `Fills / Gradients / Strokes`).
 - If row creation rejects a new section or lecture value, add the option to the data source schema with `update-data-source` first.
 
@@ -142,7 +159,7 @@ A calendar at the top of the home page showing what the user learned each day. E
 ### Adding today's topic
 
 1. Get today's date in the user's local time (`date +%F`).
-2. Query `calendar_data_source` (from config) for entries whose `Date` is today. Fetch each one to see its topic and linked notes.
+2. Find today's entries in the history file (see "Calendar history file" below), not with a Notion query: the free plan limits queries. Fetch an entry only when you're about to edit it.
 3. **If one of today's entries already covers this lecture's topic** (same subject; e.g. a second lecture in the same section usually fits), add the lecture to it: append `- <mention-page url="<lecture page url>"/>` under "📝 Related notes" with `update_content`, and adjust the summary only if it no longer describes everything linked. This also applies to entries the user added by hand with no notes yet: link the lecture to it rather than adding a near-duplicate.
 4. **Otherwise** create a new entry (`create-pages` with parent `data_source_id`):
    - **Topic**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
@@ -158,6 +175,26 @@ A calendar at the top of the home page showing what the user learned each day. E
      ```
 5. **Topic groups:** if the config has a `## Topic groups` section and the lecture fits one, it goes under that umbrella entry as a subtopic sub-page instead of as its own entry: bullets of the points covered, each with a one- or two-sentence sub-bullet, plus a link to the lecture. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
 6. Keep summaries faithful to the lectures (Step 5 of SKILL.md) and no longer than two sentences, even after adding more notes to an entry.
+7. Record the new entry, or the new lecture link on an existing one, in the calendar history file.
+
+### Calendar history file
+
+`~/.claude/course-notes/learning-calendar-history.md` lists every calendar entry from the last 10 days, so neither this skill nor learning-calendar has to query Notion to see what's already there. It's shared with the learning-calendar skill, which uses the same format.
+
+```markdown
+# Learning Calendar history
+Entries on the Notion Learning Calendar for the last 10 days, kept by the course-notes and learning-calendar skills so they don't have to query Notion. Safe to edit by hand.
+
+covers_from: 2026-10-12
+
+2026-10-13 | Minimalism | 3f8bd4600b7981d4b87ef3a513288cce | notes: 3f8bd4600b798196b40ce173a08b9fa0, 3f8bd4600b79814ebe8cd98edf844fe7
+2026-10-12 | Claude Skills | 3f8bd4600b7981acbdc0d6cde93f2f98 | subtopics: Brand Palette Skill
+```
+
+- One line per entry, newest day first: date, topic, entry page ID, then `notes:` (linked note page IDs) and `subtopics:` (a group's sub-page names), each left off when empty. `covers_from` is the earliest day the log is complete for.
+- **Reading:** for today (or any day on or after `covers_from`) the log is the full list, so don't query. If the log is missing or doesn't cover the day, query `calendar_data_source` once for every entry from 9 days ago to today, write them all to the log, and set `covers_from` to 9 days ago. If that query is refused (usage limit), search the calendar data source instead and leave `covers_from` unchanged.
+- **Writing:** after each successful create or update, add or update the entry's line; never log a failed call. Then remove lines older than 10 days and move `covers_from` up to 9 days ago if it's older.
+- Entries the user adds by hand in Notion aren't in the log. If they mention one, search for it and add it.
 
 ### Creating the calendar (only when the config has no `calendar_data_source`)
 
@@ -174,7 +211,7 @@ A calendar at the top of the home page showing what the user learned each day. E
    <database ...the calendar's tag as fetched...>Learning Calendar</database>
    ---
    ```
-5. Save `calendar_database_id` and `calendar_data_source` to the config's `## Notion` section.
+5. Save `calendar_database_id` and `calendar_data_source` to the config's `## Notion` section, and create the calendar history file with `covers_from: <today>`.
 6. Tell the user the table tab shows first; to open on the calendar, drag the **Calendar** tab to the left in Notion (the tools can't reorder tabs).
 
 ## Replacing a lecture

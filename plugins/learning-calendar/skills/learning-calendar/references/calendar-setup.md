@@ -45,4 +45,6 @@ Each day's topics. Click one for a quick summary and links to that day's notes.
   calendar_data_source: collection://<id>
   ```
 
+Also create `learning-calendar-history.md` next to that config, with `covers_from: <today>` (the calendar is new, so the file is complete). Format: "History file" in `references/calendar-entries.md`.
+
 Tell the user the table tab shows first. To open on the calendar, they can drag the **Calendar** tab to the left in Notion (the tools can't reorder tabs).
