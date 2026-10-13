@@ -1,6 +1,6 @@
 ---
 name: learning-calendar
-description: Log what the user learned today to their Notion Learning Calendar as short 1–2 word topics with a one- or two-sentence summary each, linked to any notes from that day. Pulls topics from the questions they asked Claude today, the subjects covered in today's sessions, and any list they give, then shows a draft list to edit and approve before anything is pushed. Use whenever the user wants to log, record, track or add today's learning or topics to their calendar, e.g. "add what I learned today to my calendar", "log today's topics", "put CSS grid and flexbox on my learning calendar", or "what did I learn today?" when they keep a learning calendar.
+description: Log what the user learned today, or on any of the past 7 days, to their Notion Learning Calendar as short 1–2 word topics with a one- or two-sentence summary each, linked to any notes from that day. Pulls topics from the questions they asked Claude today, the subjects covered in today's sessions, and any list they give, then shows a draft list to edit and approve before anything is pushed. Use whenever the user wants to log, record, track or add today's learning or topics to their calendar, e.g. "add what I learned today to my calendar", "log today's topics", "put CSS grid and flexbox on my learning calendar", "log what I learned on Monday", or "what did I learn today?" when they keep a learning calendar.
 ---
 
 # Learning Calendar
@@ -14,19 +14,30 @@ Calendar settings are shared with the course-notes skill, so both write to the s
 1. Read `~/.claude/course-notes/config.md`. If it has `calendar_data_source`, use it, and note `home_page_id`, the "Known classes" cache, and any `## Topic groups`.
 2. Otherwise read `~/.claude/learning-calendar/config.md` for the same keys.
 3. If neither has a calendar, set one up: read `references/calendar-setup.md`. Do this after the list is approved (Step 3), so the user isn't held up before they've seen anything.
+4. Read `learning-calendar-history.md` in the same folder as that config. It lists the calendar's entries for the last 10 days, so you can check what's already there without querying Notion (the free plan limits queries). The format and rules are in `references/calendar-entries.md` under "History file".
 
 If the Notion tools aren't available, still build and approve the list, then give the user the approved list in chat and explain that Notion needs connecting (claude.ai → Settings → Connectors → Notion, or `claude mcp add --transport http notion https://mcp.notion.com/mcp`, then restart Claude).
 
 ## Step 1: Gather candidate topics
 
-The date is today in the user's local time (`date +%F`) unless they name another day ("yesterday", "for Monday"). Use that date throughout.
+### Pick the day
+
+The user can log any day from today back to 7 days ago. Get today's date in their local time (`date +%F`) first.
+
+- **They named a day** ("yesterday", "for Monday", "Oct 3"): use it, as long as it's within the last 7 days.
+- **They didn't:** ask which day before gathering anything. Use the AskUserQuestion tool if it's available, with options **Today (<date>)**, **Yesterday (<date>)** and **Earlier this week**, where the user can also type a date. If they pick "Earlier this week", ask which day and list the remaining dates with their weekdays (e.g. "Mon Oct 5"). Without the tool, ask the same thing in one short chat message.
+- **More than 7 days ago, or in the future:** say the calendar can only be filled for the past 7 days, and ask for another day.
+
+Use that date for every step below, and put it in the draft's heading so the user can see which day they're approving.
+
+For a past day, this conversation only counts if it happened that day. The session script and that day's notes are the main sources.
 
 Collect from every source that applies:
 
 - **The user's own list.** Anything they typed after the command or in their message ("add React hooks, CSS grid"). Always include these. They're the one source that never gets filtered.
 - **This conversation.** Questions the user asked and subjects you explained or worked through together.
 - **Today's other Claude Code sessions.** Run `python3 scripts/todays_prompts.py <date>` (path relative to this skill's folder). It prints what the user typed in every Claude Code session that day, grouped by project. Claude.ai chats on the web or in the app aren't stored on this machine, so they can't be included; mention this if the user expects them.
-- **Notes from that day.** If the course-notes skill published lecture notes that day, they're a topic source and the links for the calendar. Check that date's existing calendar entries (query `calendar_data_source` for rows whose `Date` is that date, then fetch each one), and look for lecture pages under the home page created that day (Notion search, or fetch the section pages in the config cache and check each lecture's last-edited time).
+- **Notes from that day.** If the course-notes skill published lecture notes that day, they're a topic source and the links for the calendar. Check that date's existing calendar entries in the history file (not with a Notion query, unless the log says it doesn't cover that day), and look for lecture pages under the home page created that day (Notion search, or fetch the section pages in the config cache and check each lecture's last-edited time).
 
 If the user says "just my list" or "only this", skip the other sources.
 
@@ -89,6 +100,8 @@ Read `references/calendar-entries.md` for the exact entry format, then for each 
 - **Already on the calendar that day** (same or clearly same subject, including entries the user added by hand): add any new note links under "📝 Related notes", and update the summary only if the user changed it or it no longer covers everything linked.
 - **New:** create the entry with the topic, date, icon, summary and links.
 - **Group:** one calendar entry for the umbrella topic, with each subtopic as a sub-page inside it. If the umbrella entry already exists that day, add only the subtopics it doesn't have yet.
+
+After each successful create or update, record it in the history file (see "History file" in `references/calendar-entries.md`).
 
 Never claim an entry was created if the call failed. Say which ones failed and why.
 

@@ -4,6 +4,7 @@ A Claude skill that keeps a calendar in Notion of what you learn each day. Each 
 
 Ask Claude to "add what I learned today to my calendar", optionally with your own list ("…plus CSS grid and flexbox"), and it:
 
+- **Asks which day** to log: today, or any day in the past week. You can also name the day up front ("log what I learned on Monday").
 - **Gathers topics** from the questions you asked Claude today, the subjects you worked on in today's Claude Code sessions, any notes published that day, and your list.
 - **Shows you a draft table first**, with each topic's summary, links and source. Edit it as much as you like: drop, rename, merge, add, or rewrite summaries.
 - **Pushes only after you approve.** Topics already on the calendar for that day get new links, not duplicates.

@@ -15,6 +15,7 @@ Ask the user (one question, with these options):
 1. **Check the connection.** Look for Notion tools (names containing `notion`, e.g. `notion-search`). If none are available, Notion isn't connected yet. Explain how to connect it (see "Connecting Notion" below), offer to save notes locally until then, and write the config with `output: local` so their first lecture isn't lost. They can rerun setup once Notion is connected.
 2. **Ask for the home page:** the Notion page that should hold all their classes (e.g. "Learning" or "Courses"). Search Notion for it. If there are several matches, ask which one. If it doesn't exist, offer to create it as a private page.
 3. Record the page's ID and title in the config.
+4. **Full-width template (optional).** Notion's tools can't make pages full width, so offer this: create a page called `Full-width template` under the home page with a short callout saying the course-notes skill copies it and it shouldn't be deleted. Ask the user to open it and turn on ••• → Full width, then record its ID as `full_width_template_id`. New pages are duplicated from it so they open full width. If they skip this, pages use Notion's default width.
 
 ### Connecting Notion
 
@@ -47,6 +48,7 @@ output: notion            # notion | local | both
 ## Notion
 home_page_title: Learning
 home_page_id: <id from Notion>
+full_width_template_id: <id of the full-width template page, if set up>
 calendar_database_id: <added automatically when the Learning Calendar is created>
 calendar_data_source: collection://<id>
 
