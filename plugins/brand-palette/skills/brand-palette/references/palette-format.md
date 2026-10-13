@@ -33,14 +33,15 @@
 - border grey as placeholder text (4.5:1) and as input outlines (3:1)
 - soft steps as chart fills against the page (3:1)
 - base and strong steps as colored text on the page
-- color blindness: every pair of brand bases and every pair of soft steps, simulated for protanopia, deuteranopia and tritanopia (Machado 2009). Pairs closer than CIEDE2000 10 are flagged.
+- color blindness: every pair of brand bases and every pair of soft steps, simulated for protanopia, deuteranopia and tritanopia (Machado 2009). Pairs closer than ΔEOK 0.07 (straight-line distance in OKLab) are flagged, and so are unsimulated pairs that close, which look alike for everyone.
 - halation: dark-mode body text above 15:1 can blur for readers with astigmatism
 
 Ratios are never rounded up: 4.49:1 fails. The notes use "about" with the ratio rounded down (about 8:1, about 3.4:1).
 
 ## Making the colors
 
-- **Start from a draw:** `scripts/directions.py` picks the hues and writes the first draft, steps included. The rules below are for adjusting that draft, not for picking hues from scratch.
+- **Start from the industry directions:** `scripts/directions.py --industry <key>` picks the hues and writes the first draft, steps included. The rules below are for adjusting that draft, not for picking hues from scratch.
+- **Spacing:** the draft places brand bases at least ΔEOK 0.15 apart in light mode and 0.10 apart in dark mode (where lightness is compressed), with soft steps at least 0.08 apart and hues at least 25° apart. Keep that spacing when you adjust a color.
 
 - **Seeds:** use each seed's exact hex as a `base`. Don't adjust a seed to make white text pass. The notes will point to the strong step or the darkest neutral instead, which is how real brand systems handle light brand colors such as gold.
 - **Strong step:** same hue, about 10–20 OKLCH lightness points darker than base in light mode. If the notes say white text still fails on it, darken it further. The script's `Try #XXXXXX` gives the smallest change that passes.

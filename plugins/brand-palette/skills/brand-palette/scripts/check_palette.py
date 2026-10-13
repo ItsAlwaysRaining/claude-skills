@@ -15,11 +15,9 @@ Exit codes: 0 every required pair passes AA, 1 at least one fails, 2 bad input.
 Standard library only.
 """
 import argparse
-import datetime
 import html
 import json
 import math
-import os
 import re
 import sys
 from pathlib import Path
@@ -42,7 +40,7 @@ WHITE = "#FFFFFF"
 MAX_BRAND = 6
 
 TEXT_AA, TEXT_AAA, UI_AA = 4.5, 7.0, 3.0
-TOO_CLOSE = 10.0  # CIEDE2000; below this, two colors are hard to tell apart at a glance
+TOO_CLOSE = 0.07  # ΔEOK (OKLab distance); below this, two colors are hard to tell apart at a glance
 HALATION = 15.0   # dark-mode body text above this ratio can blur for readers with astigmatism
 
 # Machado, Oliveira & Fernandes (2009), severity 1.0, applied to linear RGB.
@@ -58,16 +56,14 @@ VISION_NOTES = {
     "grayscale": "no color vision, or grayscale print",
 }
 
-# Named hue families by OKLCH hue angle, used to name colors and to vary starting points.
+# Named hue families by OKLCH hue angle, used to name colors and to pick industry hues.
 FAMILIES = [
     (5, "raspberry"), (25, "brick"), (42, "terracotta"), (58, "copper"), (75, "ochre"), (95, "mustard"),
     (112, "olive"), (130, "moss"), (150, "jade"), (170, "pine"), (190, "teal"), (210, "petrol"),
     (230, "steel"), (250, "cobalt"), (268, "indigo"), (285, "iris"), (305, "plum"), (325, "orchid"),
     (345, "mulberry"),
 ]
-# Primary colors from these families make every palette look the same (red, blue, green, yellow).
-USUAL_FAMILIES = {"brick", "mustard", "ochre", "moss", "steel", "cobalt"}
-HISTORY = Path.home() / ".claude" / "brand-palette" / "history.json"
+FAMILY_HUE = {name: hue for hue, name in FAMILIES}
 
 HEX_RE = re.compile(r"^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 KEY_RE = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -118,61 +114,6 @@ def about(r):
     return f"{int(r)}:1" if r >= 7 else f"{math.floor(r * 10) / 10:.1f}:1"
 
 
-def to_lab(rgb):
-    r, g, b = (lin(c) for c in rgb)
-    x = (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047
-    y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b
-    z = (0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / 1.08883
-
-    def f(t):
-        return t ** (1 / 3) if t > (6 / 29) ** 3 else t / (3 * (6 / 29) ** 2) + 4 / 29
-
-    fx, fy, fz = f(x), f(y), f(z)
-    return 116 * fy - 16, 500 * (fx - fy), 200 * (fy - fz)
-
-
-def delta_e2000(lab1, lab2):
-    L1, a1, b1 = lab1
-    L2, a2, b2 = lab2
-    cbar = (math.hypot(a1, b1) + math.hypot(a2, b2)) / 2
-    g = 0.5 * (1 - math.sqrt(cbar ** 7 / (cbar ** 7 + 25 ** 7)))
-    a1p, a2p = (1 + g) * a1, (1 + g) * a2
-    c1p, c2p = math.hypot(a1p, b1), math.hypot(a2p, b2)
-    h1p = math.degrees(math.atan2(b1, a1p)) % 360
-    h2p = math.degrees(math.atan2(b2, a2p)) % 360
-
-    dlp, dcp = L2 - L1, c2p - c1p
-    if c1p * c2p == 0:
-        dhp = 0
-    else:
-        dhp = h2p - h1p
-        if dhp > 180:
-            dhp -= 360
-        elif dhp < -180:
-            dhp += 360
-    dHp = 2 * math.sqrt(c1p * c2p) * math.sin(math.radians(dhp / 2))
-
-    lbp, cbp = (L1 + L2) / 2, (c1p + c2p) / 2
-    if c1p * c2p == 0:
-        hbp = h1p + h2p
-    elif abs(h1p - h2p) <= 180:
-        hbp = (h1p + h2p) / 2
-    elif h1p + h2p < 360:
-        hbp = (h1p + h2p + 360) / 2
-    else:
-        hbp = (h1p + h2p - 360) / 2
-
-    t = (1 - 0.17 * math.cos(math.radians(hbp - 30)) + 0.24 * math.cos(math.radians(2 * hbp))
-         + 0.32 * math.cos(math.radians(3 * hbp + 6)) - 0.20 * math.cos(math.radians(4 * hbp - 63)))
-    dtheta = 30 * math.exp(-(((hbp - 275) / 25) ** 2))
-    rc = 2 * math.sqrt(cbp ** 7 / (cbp ** 7 + 25 ** 7))
-    sl = 1 + 0.015 * (lbp - 50) ** 2 / math.sqrt(20 + (lbp - 50) ** 2)
-    sc = 1 + 0.045 * cbp
-    sh = 1 + 0.015 * cbp * t
-    rt = -math.sin(math.radians(2 * dtheta)) * rc
-    return math.sqrt((dlp / sl) ** 2 + (dcp / sc) ** 2 + (dHp / sh) ** 2 + rt * (dcp / sc) * (dHp / sh))
-
-
 def simulate(hex_, vision):
     if vision == "grayscale":
         y = delin(luminance(hex_))
@@ -181,23 +122,29 @@ def simulate(hex_, vision):
     return to_hex(tuple(delin(row[0] * r + row[1] * g + row[2] * b) for row in CVD[vision]))
 
 
-def distance(a_hex, b_hex):
-    return delta_e2000(to_lab(parse_hex(a_hex)), to_lab(parse_hex(b_hex)))
-
-
 def cbrt(x):
     return math.copysign(abs(x) ** (1 / 3), x)
 
 
-def to_oklch(hex_):
+def to_oklab(hex_):
     r, g, b = (lin(c) for c in parse_hex(hex_))
     l_ = cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b)
     m_ = cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b)
     s_ = cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b)
-    L = 0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_
-    a = 1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_
-    bb = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_
-    return L, math.hypot(a, bb), math.degrees(math.atan2(bb, a)) % 360
+    return (0.2104542553 * l_ + 0.7936177850 * m_ - 0.0040720468 * s_,
+            1.9779984951 * l_ - 2.4285922050 * m_ + 0.4505937099 * s_,
+            0.0259040371 * l_ + 0.7827717662 * m_ - 0.8086757660 * s_)
+
+
+def to_oklch(hex_):
+    L, a, b = to_oklab(hex_)
+    return L, math.hypot(a, b), math.degrees(math.atan2(b, a)) % 360
+
+
+def distance(a_hex, b_hex):
+    """ΔEOK: straight-line distance in OKLab, where equal steps look equally different.
+    About 0.02 is just noticeable side by side; under TOO_CLOSE is hard to tell apart at a glance."""
+    return math.dist(to_oklab(a_hex), to_oklab(b_hex))
 
 
 def from_oklch(L, C, h):
@@ -241,37 +188,6 @@ def deepen(hex_, amount):
 def family_of(hex_or_hue):
     h = hex_or_hue if isinstance(hex_or_hue, (int, float)) else to_oklch(hex_or_hue)[2]
     return min(FAMILIES, key=lambda f: min(abs(f[0] - h), 360 - abs(f[0] - h)))[1]
-
-
-# ---------- history (kept on this machine, outside the repo) ----------
-
-def history_path():
-    return Path(os.environ.get("BRAND_PALETTE_HISTORY", HISTORY))
-
-
-def recent_families(n=6):
-    try:
-        entries = json.loads(history_path().read_text())
-    except (OSError, ValueError):
-        return []
-    return [e.get("family") for e in entries[-n:]]
-
-
-def record_history(palette):
-    """Remember the primary hue of a finished palette, so the next draws lean away from it."""
-    path = history_path()
-    try:
-        entries = json.loads(path.read_text())
-    except (OSError, ValueError):
-        entries = []
-    primary = palette["brand"][0]["light"]["base"]
-    entries.append({"name": palette["name"], "primary": primary, "family": family_of(primary),
-                    "date": datetime.date.today().isoformat()})
-    try:
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(entries[-50:], indent=2))
-    except OSError:
-        pass  # history only steers future draws; never fail a build over it
 
 
 # ---------- loading ----------
@@ -428,7 +344,7 @@ def check(palette):
                     for vision in list(CVD) + ["grayscale"]:
                         de = distance(simulate(ha, vision), simulate(hb, vision))
                         cvd_rows.append({"step": step, "a": a["key"], "b": b["key"], "vision": vision,
-                                         "delta_e": round(de, 1), "close": de < TOO_CLOSE})
+                                         "delta_eok": round(de, 3), "close": de < TOO_CLOSE})
                         if de < TOO_CLOSE and vision in CVD:
                             close.append(vision)
                     pair = f"{a['name'].lower()}/{b['name'].lower()}"
@@ -663,7 +579,6 @@ def main():
             print("Not writing the board: fix the 'Must fix' items first (or pass --allow-failures).", file=sys.stderr)
             return 1
         write_html(palette, report, args.html)
-        record_history(palette)
     return 0 if report["ok"] else 1
 
 

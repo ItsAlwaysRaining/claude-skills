@@ -15,7 +15,7 @@ It returns a swatch board for light mode and another for dark mode:
 - **A notes column** in plain language: what each step is for, which text works on which color ("Gold: white text fails at about 2.4:1. Put your darkest neutral on it for text, or use the Dark gold (#826117, about 5.7:1) when you need white text"), which colors look alike to color-blind readers, and anything else to watch, like placeholder contrast.
 - **Below the boards:** every contrast check behind the notes, a color-blindness preview, and CSS tokens for both modes. Click any swatch to copy its hex.
 
-**Every palette starts somewhere different.** A small script draws three random directions, each with a primary hue family (plum, petrol, ochre, mulberry…), a color scheme and a character (dusty, earthy, jewel-toned, clear). It leans away from the usual red/blue/green/yellow and from primaries you've used recently. Claude picks the one that fits the brand and mentions the other two.
+**Colors that fit the industry, plus one surprise.** A small script suggests three directions from the brand's industry (finance, food, wellness, tech and 16 more). The primary and supporting hues are the families that industry's customers expect, like cobalt and pine for a bank or brick and mustard for a restaurant. One wildcard color per direction is drawn at random, leaning toward hues that still suit the industry, so two palettes for the same industry don't match. Every color is spaced in OKLCH so it stays a clear distance from the others in both light and dark mode. Claude picks the direction that fits the brand and mentions the other two.
 
 Your seed colors are used exactly as given. When white text doesn't work on one, the notes say so and point to the step or neutral that does.
 
@@ -24,7 +24,7 @@ Your seed colors are used exactly as given. When white text doesn't work on one,
 Claude doesn't estimate any of the numbers. A bundled script, [`check_palette.py`](skills/brand-palette/scripts/check_palette.py) (standard-library Python), does all of the math:
 
 - WCAG 2.x contrast ratios, never rounded up
-- color-blindness simulation with the Machado (2009) matrices, and CIEDE2000 color difference for the pairs that need to stay distinct
+- color-blindness simulation with the Machado (2009) matrices, and OKLab distance (ΔEOK) for the pairs that need to stay distinct
 - a tip about halation (glowing or blurry text for readers with astigmatism) when dark-mode text is very bright
 - for every failing required pair, a fix with the same hue and just enough lightness change to pass
 
@@ -36,7 +36,8 @@ You can also run the script on its own:
 python3 check_palette.py --pair "#767676" "#ffffff"      # one pair
 python3 check_palette.py palette.json --all              # every pair in a palette
 python3 check_palette.py palette.json --html out.html    # build the swatch board
-python3 directions.py                                    # draw 3 random starting directions
+python3 directions.py --industries                       # list the industries
+python3 directions.py --industry finance                 # 3 directions for a finance brand
 ```
 
 See [`examples/sample-palette.json`](examples/sample-palette.json) for a full palette file.
