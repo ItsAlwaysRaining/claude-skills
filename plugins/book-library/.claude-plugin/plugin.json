@@ -1,0 +1,11 @@
+{
+  "name": "book-library",
+  "version": "1.0.0",
+  "description": "Add books to a Notion Library and move them between shelves (TBR, Currently Reading, Read & Reviewed). Each book page gets a summary, a 'Why I Picked This Book' section, a notes sub-page, and a review section once it's finished.",
+  "author": {
+    "name": "ItsAlwaysRaining"
+  },
+  "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
+  "license": "MIT",
+  "keywords": ["books", "reading", "notion", "library", "reviews"]
+}

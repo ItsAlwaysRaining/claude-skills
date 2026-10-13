@@ -30,6 +30,12 @@
       "source": "./plugins/ship-pr",
       "description": "Commit, sync with main (resolving merge conflicts), push and open a GitHub pull request after checking the repo, branch and changes. Never merges or pushes to main.",
       "category": "development"
+    },
+    {
+      "name": "book-library",
+      "source": "./plugins/book-library",
+      "description": "Add books to a Notion Library and move them between shelves, with a summary, a 'Why I Picked This Book' section, a notes sub-page, and a review section once finished.",
+      "category": "productivity"
     }
   ]
 }
