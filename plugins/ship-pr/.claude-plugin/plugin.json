@@ -1,7 +1,7 @@
 {
   "name": "ship-pr",
-  "version": "1.0.0",
-  "description": "Commit, push and open a GitHub pull request after checking the destination repo, the branch and what's on it. Never merges and never pushes to main.",
+  "version": "1.1.0",
+  "description": "Commit, bring the branch up to date with main (resolving merge conflicts), push and open a GitHub pull request after checking the destination repo, the branch and what's on it. Never merges and never pushes to main.",
   "author": {
     "name": "ItsAlwaysRaining"
   },
