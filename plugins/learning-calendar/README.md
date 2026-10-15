@@ -1,6 +1,6 @@
 # Learning Calendar
 
-A Claude skill that keeps a calendar in Notion of what you learn each day. Each day shows short 1–2 word topics. Click one to see a one- or two-sentence summary and links to that day's notes.
+A Claude skill that keeps a calendar in Notion of what you learn each day. Each day shows a few entries, one per class, project, and Claude & AI, so the calendar doesn't fill up with 20 items. Click one to see a one-sentence summary, links to that day's notes, and the day's topics as short subtopic pages inside it.
 
 Ask Claude to "add what I learned today to my calendar", optionally with your own list ("…plus CSS grid and flexbox"), and it:
 
@@ -9,7 +9,7 @@ Ask Claude to "add what I learned today to my calendar", optionally with your ow
 - **Shows you a draft table first**, with each topic's summary, links and source. Edit it as much as you like: drop, rename, merge, add, or rewrite summaries.
 - **Pushes only after you approve.** Topics already on the calendar for that day get new links, not duplicates.
 
-It shares its calendar with the [course-notes](../course-notes) skill, which adds a topic automatically whenever it publishes lecture notes.
+It shares its calendar with the [course-notes](../course-notes) skill, which adds each lecture as a subtopic of that day's class entry whenever it publishes lecture notes.
 
 Your Claude Code prompts are read locally from `~/.claude/projects`. Chats on claude.ai aren't stored on your computer, so they aren't included.
 

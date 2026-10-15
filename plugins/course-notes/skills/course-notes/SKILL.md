@@ -125,7 +125,7 @@ In short:
 2. Find the section page under the class; create it if new, keeping sections in order above the glossary.
 3. Create the lecture page under the section, converting the notes into the Notion layout. New class, section, and lecture pages are made full width by duplicating the config's `full_width_template_id` page (details in the layout reference).
 4. Add the lecture's new vocabulary terms as rows in the class Glossary.
-5. Log today's topic in the **Learning Calendar** at the top of the home page: reuse today's entry if it already covers this lecture's topic (add a link to the new lecture), otherwise add a new 1–2 word topic with a one- or two-sentence summary and a link to the lecture. Create the calendar first if the config has no `calendar_data_source`.
+5. Log the lecture in the **Learning Calendar** at the top of the home page: one entry per class per day, named with the class's short name, with the lecture's topic as a 1–2 word subtopic inside it (points covered and a link to the lecture). Reuse today's class entry and subtopic if they already exist. Create the calendar first if the config has no `calendar_data_source`.
 
 If the Notion tools aren't available or a call keeps failing, tell the user Notion publishing was skipped and why, and point them to the Notion section of `references/setup.md`. If `output` is `notion` only, give them the notes in chat so nothing is lost. Never claim a publish succeeded when it didn't.
 

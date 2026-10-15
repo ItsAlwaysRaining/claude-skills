@@ -8,7 +8,7 @@ Notion uses its own "enhanced Markdown". Before writing page content, read `noti
 
 ```
 <Home page>                     from config: home_page_id
-├── Learning Calendar           inline database at the top of the page, one entry per topic per day
+├── Learning Calendar           inline database at the top of the page, one entry per class per day
 └── <Class page>                page, one per class, icon = an emoji fitting the subject
     ├── <Section page>          page, one per course section
     │   └── <Lecture page>      page, one per lecture
@@ -154,28 +154,29 @@ Add one row per vocabulary term to the class's Glossary data source (`create-pag
 
 ## Learning Calendar
 
-A calendar at the top of the home page showing what the user learned each day. Each entry is a 1–2 word topic; clicking it opens a short summary plus links to that day's related lecture notes. Update it after every lecture published to Notion.
+A calendar at the top of the home page showing what the user learned each day. To keep busy days readable, each class gets **one entry per day**, named with the class's short name, and each lecture topic is a **subtopic** sub-page inside it. Clicking the entry opens a one-sentence summary of the day's lectures and the subtopics. Update it after every lecture published to Notion. (The learning-calendar skill groups the user's other topics the same way: per project, and Claude & AI.)
 
-### Adding today's topic
+### Adding today's lecture
 
 1. Get today's date in the user's local time (`date +%F`).
 2. Find today's entries in the history file (see "Calendar history file" below), not with a Notion query: the free plan limits queries. Fetch an entry only when you're about to edit it.
-3. **If one of today's entries already covers this lecture's topic** (same subject; e.g. a second lecture in the same section usually fits), add the lecture to it: append `- <mention-page url="<lecture page url>"/>` under "📝 Related notes" with `update_content`, and adjust the summary only if it no longer describes everything linked. This also applies to entries the user added by hand with no notes yet: link the lecture to it rather than adding a near-duplicate.
-4. **Otherwise** create a new entry (`create-pages` with parent `data_source_id`):
-   - **Topic**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
+3. **Find or create today's class entry.** If today already has an entry for this class (its short name, or a by-hand entry clearly about the class), use it. Otherwise create one (`create-pages` with parent `data_source_id`):
+   - **Topic**: the class's short name, up to 3 words (e.g. `Product Design` for "Mastering Digital Product Design: UX Research & UI Design"). Use the same short name every day; save it as `calendar_name:` under the class in the config's "Known classes" cache the first time.
    - **Date**: today (`date:Date:start`, `date:Date:is_datetime` = 0).
-   - Icon: an emoji fitting the topic.
+   - Icon: an emoji fitting the class.
    - Content:
      ```
      <callout icon="💬" color="purple_bg">
-     	<One or two sentences, max, on what the topic is about, drawn from the notes.>
+     	<One sentence on what today's lectures covered.>
      </callout>
-     ## 📝 Related notes {color="purple"}
-     - <mention-page url="<lecture page url>"/>
+     ## 🔹 Subtopics {color="purple"}
      ```
-5. **Topic groups:** if the config has a `## Topic groups` section and the lecture fits one, it goes under that umbrella entry as a subtopic sub-page instead of as its own entry: bullets of the points covered, each with a one- or two-sentence sub-bullet, plus a link to the lecture. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
+4. **Add the lecture as a subtopic.** If the entry already has a subtopic covering this lecture's topic (a second lecture on the same subject usually fits), append its new points to that sub-page with `insert_content` and add the lecture link under its "📝 Related notes". Otherwise create a sub-page of the class entry (`create-pages` with parent `{"type": "page_id", "page_id": "<class entry id>"}`):
+   - **title**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
+   - Content: bullets of the points covered, each with a one- or two-sentence sub-bullet, then `## 📝 Related notes {color="purple"}` and `- <mention-page url="<lecture page url>"/>`. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
+5. Update the class entry's one-sentence summary if it no longer covers all of today's lectures.
 6. Keep summaries faithful to the lectures (Step 5 of SKILL.md) and no longer than two sentences, even after adding more notes to an entry.
-7. Record the new entry, or the new lecture link on an existing one, in the calendar history file.
+7. Record the class entry in the calendar history file, with the lecture under `notes:` and the subtopic under `subtopics:`.
 
 ### Calendar history file
 
