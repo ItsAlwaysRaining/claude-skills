@@ -129,6 +129,6 @@ Fetch the entry first, then use `update-page` with `update_content`:
 - **Add a link:** append `- <mention-page url="…"/>` after the last item under "📝 Related notes". If the entry has no such heading yet, add the heading and list after the callout.
 - **Change the summary:** replace the text inside the callout. Keep it to two sentences.
 - **Rename:** `update_properties` with the new `Topic`.
-- **Fill tags or note:** `update_properties` with `category` and/or `note`, only for fields the fetched entry has blank (see "Tags and note"). An approved change to a field the user filled replaces it with the approved value.
+- **Fill tags or note:** `update_properties` with `category` and/or `note`, only for fields the fetched entry has blank (see "Tags and note"). An approved change to a field the user filled replaces it with the approved value. Properties only change with the `update_properties` command: passing them alongside `update_content` silently does nothing, so make a separate call.
 
 Don't add a link that's already there.
