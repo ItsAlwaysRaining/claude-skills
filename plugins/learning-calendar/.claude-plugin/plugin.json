@@ -1,7 +1,7 @@
 {
   "name": "learning-calendar",
   "version": "1.1.0",
-  "description": "Log what you learned today to a Notion calendar, grouped into one entry per class, project, and Claude & AI with short topics inside, gathered from your Claude sessions and your own list, pushed only after you approve them.",
+  "description": "Log what you learned today to a Notion calendar, grouped into one entry per class, Claude & AI, and computing concept with short topics inside, gathered from your Claude sessions and your own list, pushed only after you approve them.",
   "author": {
     "name": "ItsAlwaysRaining"
   },

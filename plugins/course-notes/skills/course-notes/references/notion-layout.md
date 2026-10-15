@@ -154,7 +154,7 @@ Add one row per vocabulary term to the class's Glossary data source (`create-pag
 
 ## Learning Calendar
 
-A calendar at the top of the home page showing what the user learned each day. To keep busy days readable, each class gets **one entry per day**, named with the class's short name, and each lecture topic is a **subtopic** sub-page inside it. Clicking the entry opens a one-sentence summary of the day's lectures and the subtopics. Update it after every lecture published to Notion. (The learning-calendar skill groups the user's other topics the same way: per project, and Claude & AI.)
+A calendar at the top of the home page showing what the user learned each day. To keep busy days readable, each class gets **one entry per day**, named with the class's short name, and each lecture topic is a **subtopic** sub-page inside it. Clicking the entry opens a one-sentence summary of the day's lectures and the subtopics. Update it after every lecture published to Notion. (The learning-calendar skill groups the user's other topics the same way: Claude & AI, and computing concepts such as App Hosting or GitHub.)
 
 ### Adding today's lecture
 

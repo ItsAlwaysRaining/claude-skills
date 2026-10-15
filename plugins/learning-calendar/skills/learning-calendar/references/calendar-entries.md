@@ -8,7 +8,7 @@ Notion uses its own "enhanced Markdown". Before writing page content, read `noti
 
 The calendar database has two properties:
 
-- **Topic** (title): the umbrella entry's name, i.e. the class, project or subject (up to 3 words), or a 1–2 word topic for a lone entry.
+- **Topic** (title): the umbrella entry's name, i.e. the class, computing concept or subject (up to 3 words), or a 1–2 word topic for a lone entry.
 - **Date** (date): the day learned, no time.
 
 ## New entry
@@ -31,7 +31,7 @@ With no notes to link, leave out the "Related notes" heading and list entirely. 
 
 ## Group entry (umbrella topic with subtopics)
 
-This is the usual shape: class, project, Claude & AI and subject entries are all group entries. Only a lone "other" topic uses the plain entry above.
+This is the usual shape: class, Claude & AI, concept and subject entries are all group entries. Only a lone "other" topic uses the plain entry above.
 
 1. Create the umbrella entry in the calendar as above. Its callout holds one sentence covering the whole group, then add any "📝 Related notes", then end the page with this heading:
    ```
