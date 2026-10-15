@@ -6,16 +6,54 @@ Notion uses its own "enhanced Markdown". Before writing page content, read `noti
 
 ## Schema
 
-The calendar database has two properties:
+The calendar database has four properties:
 
 - **Topic** (title): the umbrella entry's name, i.e. the class, computing concept or subject (up to 3 words), or a 1–2 word topic for a lone entry.
 - **Date** (date): the day learned, no time.
+- **category** (multi-select): 1–3 broad tags. See "Tags and note" below.
+- **note** (text): a short keyword hint of what the entry covered. See "Tags and note" below.
+
+Older calendars may not have `category` or `note` yet. If the fetched schema lacks them, leave them out and don't add them unless the user asks.
+
+## Tags and note
+
+The user fills these in by hand too, so match their style.
+
+**category tags.** Use the existing options:
+
+| Tag | Use for |
+|---|---|
+| `git` | Git and GitHub: branches, PRs, issues, secrets, Actions |
+| `AI` | AI in general: Claude & AI entries, spec-driven design, AI workflows |
+| `claude` | Claude and Claude Code themselves: skills, plugins, artifacts, hooks, permissions |
+| `database` | Databases, schemas, SQL, Notion databases |
+| `web-dev` | Building web apps: frontend, frameworks, APIs, app hosting |
+| `ui` | Interface screens, components and Figma work |
+| `ux` | User research, usability and user flows |
+| `design` | Visual design principles: color, typography, layout, grids, aesthetics |
+| `automation` | Anything that runs on its own: hooks, GitHub Actions, scheduled jobs, Claude automations |
+| `communication` | Thinking styles, cognition, writing, explaining |
+| `project` | Work on one of the user's own projects (the Spotify app, pollen data). Always add the concept's tag too |
+| `class` | Came from a course lecture. Always add the subject's tag too (Product Design → `class, design`) |
+
+- Use 1–3 tags per entry, the broadest that fit. Examples from the user's rows: GitHub → `git`; Claude Skills → `claude, AI`; Claude Automations → `claude, AI, automation`; Minimalism (lecture) → `class, design`; Spotify API → `project, web-dev`.
+- Reuse the existing options. Add a new one only when none fits, and mark it **new tag** in the draft so the user can say no.
+- Set the property as a JSON array: `"category": ["git", "automation"]`.
+
+**note.** 1–5 lowercase words, comma-separated, like a reminder to themselves. Either:
+
+- the subtopics in plain words: `secrets, git issues`, `actions`, `skills`, `Claude Artifacts, Claude Monitoring` (keep proper names capitalised), or
+- the specific angle: `color perception`, `pollen counts`.
+
+For project work, name the project first: `spotify: drill downs`, `spotify app hosting options`. No full sentences and no trailing punctuation. Don't copy question marks from the user's notes (`mood?`); those show their own uncertainty.
+
+**Never overwrite the user's values.** Fill `category` or `note` only when it is blank. If an entry the user already tagged now has a subtopic that needs another tag, or a new subtopic the note doesn't mention, show the change in the draft as a suggestion and apply it only if they approve.
 
 ## New entry
 
 `create-pages` with parent `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}`:
 
-- properties: `"Topic": "<topic>"`, `"date:Date:start": "<YYYY-MM-DD>"`, `"date:Date:is_datetime": 0`
+- properties: `"Topic": "<topic>"`, `"date:Date:start": "<YYYY-MM-DD>"`, `"date:Date:is_datetime": 0`, `"category": ["<tag>", …]`, `"note": "<note>"`
 - icon: an emoji that fits the topic
 - content:
 
@@ -91,5 +129,6 @@ Fetch the entry first, then use `update-page` with `update_content`:
 - **Add a link:** append `- <mention-page url="…"/>` after the last item under "📝 Related notes". If the entry has no such heading yet, add the heading and list after the callout.
 - **Change the summary:** replace the text inside the callout. Keep it to two sentences.
 - **Rename:** `update_properties` with the new `Topic`.
+- **Fill tags or note:** `update_properties` with `category` and/or `note`, only for fields the fetched entry has blank (see "Tags and note"). An approved change to a field the user filled replaces it with the approved value.
 
 Don't add a link that's already there.

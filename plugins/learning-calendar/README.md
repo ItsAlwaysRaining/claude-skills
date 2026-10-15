@@ -1,6 +1,6 @@
 # Learning Calendar
 
-A Claude skill that keeps a calendar in Notion of what you learn each day. Each day shows a few entries, one per class, one for Claude & AI, and one per computing concept (App Hosting, Databases, GitHub…), so the calendar doesn't fill up with 20 items. Click one to see a one-sentence summary, links to that day's notes, and the day's topics as short subtopic pages inside it.
+A Claude skill that keeps a calendar in Notion of what you learn each day. Each day shows a few entries, one per class, one for Claude & AI, and one per computing concept (App Hosting, Databases, GitHub…), so the calendar doesn't fill up with 20 items. Each entry is tagged by category (git, claude, design…) with a short note, so you can filter the table. Click one to see a one-sentence summary, links to that day's notes, and the day's topics as short subtopic pages inside it.
 
 Ask Claude to "add what I learned today to my calendar", optionally with your own list ("…plus CSS grid and flexbox"), and it:
 

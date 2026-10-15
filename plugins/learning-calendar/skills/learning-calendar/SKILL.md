@@ -1,6 +1,6 @@
 ---
 name: learning-calendar
-description: Log what the user learned today, or on any of the past 7 days, to their Notion Learning Calendar, grouped into a few entries a day (one per class, one for Claude & AI, and one per computing concept such as App Hosting, Databases or GitHub) with each topic as a short subtopic inside, linked to any notes from that day. Pulls topics from the questions they asked Claude today, the subjects covered in today's sessions, and any list they give, then shows a draft list to edit and approve before anything is pushed. Use whenever the user wants to log, record, track or add today's learning or topics to their calendar, e.g. "add what I learned today to my calendar", "log today's topics", "put CSS grid and flexbox on my learning calendar", "log what I learned on Monday", or "what did I learn today?" when they keep a learning calendar.
+description: Log what the user learned today, or on any of the past 7 days, to their Notion Learning Calendar, grouped into a few entries a day (one per class, one for Claude & AI, and one per computing concept such as App Hosting, Databases or GitHub) with each topic as a short subtopic inside, tagged by category with a short note, and linked to any notes from that day. Pulls topics from the questions they asked Claude today, the subjects covered in today's sessions, and any list they give, then shows a draft list to edit and approve before anything is pushed. Use whenever the user wants to log, record, track or add today's learning or topics to their calendar, e.g. "add what I learned today to my calendar", "log today's topics", "put CSS grid and flexbox on my learning calendar", "log what I learned on Monday", or "what did I learn today?" when they keep a learning calendar.
 ---
 
 # Learning Calendar
@@ -69,6 +69,7 @@ Put each topic in the **first** bucket that fits:
 
 - **Umbrella names** are the class, concept or subject name (up to 3 words). **Subtopic names** are 1–2 words.
 - The umbrella's summary is one sentence covering the whole entry for that day.
+- Each entry gets 1–3 **category** tags (e.g. `git`, `claude, AI`, `class, design`, `project, web-dev`) and a short lowercase **note** of 1–5 words naming what it covered (`secrets, git issues`, `spotify: drill downs`). The tag list and note style are under "Tags and note" in `references/calendar-entries.md`. Read it before writing the draft.
 - Each subtopic gets a bullet list of the high-level points covered, each with a one- or two-sentence description as a sub-bullet. Draw them from what was actually discussed or taught, not general knowledge. For a topic from the user's list with nothing else to go on, write one plain point and mark it *(from your list; edit if you like)* in the draft.
 - **One level deep only:** calendar entry → subtopic pages, and nothing below that. More detail goes into a subtopic's bullets, never into a deeper page.
 - Merge closely related subtopics within an entry rather than listing near-duplicates.
@@ -82,12 +83,12 @@ Show the calendar entries in chat as a numbered table, one row per umbrella entr
 ```markdown
 **Learning Calendar draft for 2026-10-08** (not on the calendar yet): 4 entries
 
-| # | Entry | Kind | Summary | Subtopics | Links |
-|---|---|---|---|---|---|
-| 1 | Product Design | class | One sentence on the day's lectures. | 1a Aesthetics · 1b Balance | 3 lecture notes |
-| 2 | GitHub | concept | One sentence on the day's work. | 2a GitHub Secrets · 2b Issue Writing | none |
-| 3 | Claude & AI | Claude & AI | One sentence. | 3a Claude Skills · 3b Claude Monitor | none |
-| 4 | CSS Grid | other | One sentence. | (none) | none |
+| # | Entry | Kind | Tags | Note | Summary | Subtopics | Links |
+|---|---|---|---|---|---|---|---|
+| 1 | Product Design | class | class, design | aesthetics, balance | One sentence on the day's lectures. | 1a Aesthetics · 1b Balance | 3 lecture notes |
+| 2 | GitHub | concept | git | secrets, git issues | One sentence on the day's work. | 2a GitHub Secrets · 2b Issue Writing | none |
+| 3 | Claude & AI | Claude & AI | claude, AI | skills, monitor | One sentence. | 3a Claude Skills · 3b Claude Monitor | none |
+| 4 | CSS Grid | other | web-dev, design | grid layout | One sentence. | (none) | none |
 
 **1. Product Design** (from: notes · already on calendar)
 - **1a Aesthetics**
@@ -100,12 +101,13 @@ Show the calendar entries in chat as a numbered table, one row per umbrella entr
   - **Point covered**: one or two sentences.
 …
 
-Edit anything: e.g. "drop 2b", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", or "add a link to my Figma notes".
+Edit anything: e.g. "drop 2b", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", "tag 2 as automation", "note 3: skills, hooks", or "add a link to my Figma notes".
 Say **approve** to push these to the calendar.
 ```
 
 - **Kind** is class, Claude & AI, concept, a saved group, or other. **From** (after each entry's heading) says where its topics came from (your list / asked / covered here / notes / another session's project), so the user can judge them.
 - Flag entries and subtopics **already on the calendar** for that day. On push, they only get new subtopics, links or summary changes, never a duplicate entry.
+- For an entry already on the calendar, fetch it and show its current tags and note. Propose values only for blank fields. A change to a field the user filled is shown as a suggestion ("add `automation`?"), and a tag that isn't an existing option is marked **new tag**.
 - Apply each round of edits, then show the **whole updated table** again. Repeat until the user approves.
 - Only an explicit approval of the latest table counts ("approve", "looks good, push it", "yes"). A reply that includes edits is not approval, even if it says "fine": apply the edits and show the table again. Approval in an earlier run doesn't carry over.
 - If the user approves only some items ("push 1 and 2"), push just those.
@@ -114,9 +116,9 @@ Say **approve** to push these to the calendar.
 
 Read `references/calendar-entries.md` for the exact entry format, then for each approved entry:
 
-- **New umbrella entry:** create the calendar entry (name, date, icon, one-sentence summary, any links), then each subtopic as a sub-page inside it.
-- **Umbrella entry already on the calendar that day** (same or clearly same class, concept or subject, including entries the user added by hand): add only the subtopics it doesn't have yet, append new points to subtopics it has, and add any new note links.
-- **Entry with no subtopics** (a lone "other" topic): create it with the summary and links, as a plain entry.
+- **New umbrella entry:** create the calendar entry (name, date, category tags, note, icon, one-sentence summary, any links), then each subtopic as a sub-page inside it.
+- **Umbrella entry already on the calendar that day** (same or clearly same class, concept or subject, including entries the user added by hand): add only the subtopics it doesn't have yet, append new points to subtopics it has, add any new note links, and fill its tags and note if they're blank (plus any approved suggestions).
+- **Entry with no subtopics** (a lone "other" topic): create it with the tags, note, summary and links, as a plain entry.
 - **Approved moves** of existing standalone entries under an umbrella: follow "Converting existing entries into a group" in `references/calendar-entries.md`. Never delete entries.
 After each successful create or update, record it in the history file (see "History file" in `references/calendar-entries.md`).
 

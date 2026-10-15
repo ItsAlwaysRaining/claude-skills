@@ -10,7 +10,7 @@ Ask which Notion page the calendar should sit at the top of (e.g. "Learning"). I
 
 1. `create-database` with parent = the home page, title `Learning Calendar`, schema:
    ```
-   CREATE TABLE ("Topic" TITLE, "Date" DATE)
+   CREATE TABLE ("Topic" TITLE, "Date" DATE, "category" MULTI_SELECT('git':orange, 'AI':red, 'database':brown, 'claude':green, 'web-dev':default, 'ui':purple, 'ux':yellow, 'design':blue, 'automation':pink, 'communication':default, 'project':gray, 'class':pink), "note" RICH_TEXT)
    ```
 2. Make it inline: `update-data-source` with `is_inline: true`.
 3. Add a calendar view: `create-view` with `database_id`, type `calendar`, name `Calendar`, configure `CALENDAR BY "Date"; SHOW "Topic"`.
