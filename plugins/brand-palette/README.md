@@ -42,6 +42,34 @@ python3 directions.py --industry finance                 # 3 directions for a fi
 
 See [`examples/sample-palette.json`](examples/sample-palette.json) for a full palette file.
 
+## Brand Builder
+
+This plugin has a second skill, **brand-builder**, that turns a palette into a full brand reference page: a one-page design system with a sticky section nav and an Auto/Light/Dark switch. Ask for "a brand guide", "a design reference" or "the full brand page" and it builds:
+
+- **Brand:** the concept, one motif per brand color with its job, the personality (what the brand is and isn't) and how to write the name
+- **Color:** seven neutrals, each brand color with its steps and usage rule, and a contrast table for both modes
+- **Charts:** chart colors with their own mid-tone steps, a 10-step heatmap ramp, live example charts and series rules
+- **Signature:** the brand's one recognisable move, with do and don't examples and the CSS for it
+- **Typography, Layout and Components:** font specimens and a type scale, the grid and spacing scale, and live buttons, KPI cards, tabs, form fields, notices, rows and tags
+- **Accessibility and Tokens:** what passes, what to watch and what to always do, plus copyable CSS tokens for both modes
+
+Claude writes the words and draws the art (the hero and motif SVGs) in a small brand spec. [`build_brand.py`](skills/brand-builder/scripts/build_brand.py) measures everything else with the same checker, using standard-library Python:
+
+- card, raised and divider surfaces derived from the palette's page and border grey
+- an error red that passes in both modes
+- a fill step per brand color for buttons: the base, or the strong step when no text passes on the base
+- chart steps that are at least 3:1 on the page and on cards, spaced apart in lightness so they stay distinct under simulated color blindness
+- the contrast table, the stats and the accessibility notes
+
+If there's no palette yet, it builds one first with brand-palette.
+
+```bash
+python3 build_brand.py brand.json --check             # print the measurements
+python3 build_brand.py brand.json --out brand.html    # build the page
+```
+
+See [`examples/story-structure-brand.json`](examples/story-structure-brand.json) for a full brand spec, built on [`examples/story-structure-palette.json`](examples/story-structure-palette.json).
+
 ## Install
 
 In Claude Code, run:
@@ -55,6 +83,7 @@ Or copy it manually:
 git clone https://github.com/ItsAlwaysRaining/claude-skills.git
 mkdir -p ~/.claude/skills
 cp -r claude-skills/plugins/brand-palette/skills/brand-palette ~/.claude/skills/
+cp -r claude-skills/plugins/brand-palette/skills/brand-builder ~/.claude/skills/   # optional; needs brand-palette next to it
 ```
 
 It needs Python 3 and nothing else. No accounts or setup.
