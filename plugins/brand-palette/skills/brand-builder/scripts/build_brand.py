@@ -21,6 +21,7 @@ Exit codes: 0 built, 1 the palette fails a required pair, 2 bad input.
 Standard library only.
 """
 import argparse
+import base64
 import html
 import json
 import math
@@ -500,12 +501,30 @@ def google_fonts(fonts):
             f'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?{"&".join(fams)}&display=swap">')
 
 
-def write_html(data, out):
+def font_faces(fonts, base):
+    """@font-face rules with the font files inlined, for fonts with "files" (from brand-typography,
+    for fonts that aren't on Google Fonts). Paths are relative to the spec, or absolute."""
+    rules, seen = [], set()
+    for f in fonts.values():
+        for w, p in (f.get("files") or {}).items():
+            if (f["family"], w) in seen:
+                continue
+            seen.add((f["family"], w))
+            path = Path(base) / p
+            fmt = {".otf": ("font/otf", "opentype"), ".woff2": ("font/woff2", "woff2"),
+                   ".woff": ("font/woff", "woff")}.get(path.suffix.lower(), ("font/ttf", "truetype"))
+            b64 = base64.b64encode(path.read_bytes()).decode()
+            rules.append(f'@font-face {{ font-family: "{f["family"]}"; font-weight: {w}; font-style: normal; '
+                         f'font-display: swap; src: url(data:{fmt[0]};base64,{b64}) format("{fmt[1]}"); }}')
+    return f"<style>\n{chr(10).join(rules)}\n</style>" if rules else ""
+
+
+def write_html(data, out, base="."):
     tpl = (HERE.parent / "references" / "brand-template.html").read_text()
     spec = data["spec"]
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
     page = (tpl.replace("__TITLE__", html.escape(spec.get("title") or f'{spec["name"]} Brand'))
-               .replace("__FONTS__", google_fonts(data["fonts"]))
+               .replace("__FONTS__", "\n".join(x for x in (google_fonts(data["fonts"]), font_faces(data["fonts"], base)) if x))
                .replace("/*__TOKENS__*/", data["css"])
                .replace("/*__SIGNATURE_CSS__*/", (spec.get("signature") or {}).get("css", ""))
                .replace("__DATA__", payload))
@@ -552,7 +571,11 @@ def main():
         print("\nThe palette fails a required pair. Fix it with brand-palette's check_palette.py first.", file=sys.stderr)
         return 1
     if args.out and not args.check:
-        write_html(data, args.out)
+        try:
+            write_html(data, args.out, Path(args.spec).parent)
+        except OSError as e:
+            print(f"error: can't read a font file: {e}", file=sys.stderr)
+            return 2
         print(f"\nWrote {args.out}")
     return 0
 

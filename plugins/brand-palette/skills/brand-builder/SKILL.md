@@ -28,7 +28,7 @@ Decide these yourself from the brief, without asking, and say what you assumed:
 - **Roles.** Choose which brand color is `primary` (buttons, links, focus: usually the deepest seed), `accent` (one warm or light moment), `data` (the first chart series and info states) and `highlight` (tags and a third series). Components use the roles, so this choice shapes the whole page.
 - **The concept.** One sentence on where the look comes from (a reference image, the name, the method) and one job per brand color. Those jobs become the motifs.
 - **The signature move.** One rule that makes the brand recognisable and that people could overdo, like "one glow per view" or "one story thread per view". Write a do example and a don't example in HTML using the page's classes and your own `css`. The don't example should break a real rule the checker reports, such as light text on a light accent.
-- **Fonts.** Two or three Google Fonts that fit the personality: a display face if the brand has a voice, a UI face and a mono face. Give each one a role, a sample and a use line.
+- **Fonts.** Don't pick them by eye. Follow the brand-typography skill (`../brand-typography/SKILL.md`) Steps 1–4 with this palette: it shortlists three free pairings, measures them against WCAG 2.2, APCA, the BDA Dyslexia Style Guide and letter-shape legibility, and fixes the scale. Then export the pick as this spec's `type` block (its Step 7). If the user already named fonts, keep them; brand-typography builds around them. Only build its specimen page if the user wants to compare options; otherwise name the two runners-up in your report.
 - **Art.** Draw the hero as an inline SVG (viewBox `0 0 400 320`), plus a 64×40 glyph for each motif. Color them only with `style="fill:var(--token)"` or `style="stroke:var(--token)"`, using brand, chart and neutral tokens, so the art follows the theme switch. Use `--<key>-text` for strokes that must read on the card in both modes, and give any `<pattern>` or gradient a unique id.
 - **Sample copy.** Write button labels, KPIs, tabs, notices and table rows in the brand's real domain, never lorem ipsum.
 - **Mode and status.** If the user says to prioritize one mode, set `default_theme` and judge trade-offs, such as which chart series to keep, by that mode's measurements. If the palette already has a red or coral, set `error` to it instead of adding a derived red.
@@ -61,7 +61,7 @@ If the Artifact tool is available, publish the HTML as a private artifact. Use t
 Keep the summary short:
 - the link or file path
 - one line on the concept and the roles ("Forest is structure and primary actions, blush is the one story thread, ink is the data")
-- the fonts, and the signature move in a few words
+- the fonts with their readability results from brand-typography (fails fixed, watches left), the two runners-up, and the signature move in a few words
 - the counts (required pairs passing AA and AAA) and the two or three Watch items that matter most
 - your assumptions (roles, fonts, any copy you invented for the samples)
 

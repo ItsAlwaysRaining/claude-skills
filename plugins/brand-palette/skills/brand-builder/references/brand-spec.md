@@ -96,7 +96,8 @@ Classes you can use in the examples: `btn primary`, `btn secondary`, `btn accent
 }
 ```
 
-- Fonts load from Google Fonts. Set `"google": false` for a font that isn't on Google Fonts, and add `"fallback"` to change its fallback stack.
+- Write this block with brand-typography's `check_type.py --brand-type <option>`, not by hand, so the fonts and scale are the ones it checked.
+- Fonts load from Google Fonts. Set `"google": false` for a font that isn't on Google Fonts, and add `"fallback"` to change its fallback stack. To show such a font on the page, add `"files": {"400": "fonts/general-sans-400.ttf", …}`: one font file per weight, relative to this spec or absolute. The builder inlines them. brand-typography fills this in for Fontshare and local fonts.
 - Leave out `display` (or give it the same family as `ui`) for a brand with one face. The page then shows two font cards.
 - `scale` rows take `font` (`display`, `ui` or `mono`), `size`, `weight`, `line`, `muted: true` for secondary text and `tabular: true` for figures. Show 6–8 rows that cover the real UI.
 
