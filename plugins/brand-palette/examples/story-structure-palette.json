@@ -1,0 +1,97 @@
+{
+  "name": "Story and Structure",
+  "description": "Deep forest green and blush pink for warmth and craft, with orchid and ink indigo for data and structure, on green-tinted neutrals.",
+  "seeds": [
+    "#1F4D3A",
+    "#F2C9D0"
+  ],
+  "brand": [
+    {
+      "key": "forest",
+      "name": "Forest",
+      "usage": "Primary buttons, links, headers",
+      "light": {
+        "base": "#1F4D3A",
+        "strong": "#002A1B",
+        "soft": "#8CA699",
+        "surface": "#EEF5F2"
+      },
+      "dark": {
+        "base": "#7DA290",
+        "strong": "#9ABAAA",
+        "soft": "#293D34",
+        "surface": "#1B2420"
+      }
+    },
+    {
+      "key": "blush",
+      "name": "Blush",
+      "usage": "Highlights, callouts, soft backgrounds",
+      "light": {
+        "base": "#F2C9D0",
+        "strong": "#C6A1A7",
+        "soft": "#DEC8CB",
+        "surface": "#F8F2F3"
+      },
+      "dark": {
+        "base": "#F5D4DA",
+        "strong": "#F3D5DA",
+        "soft": "#665457",
+        "surface": "#271F21"
+      }
+    },
+    {
+      "key": "orchid",
+      "name": "Orchid",
+      "usage": "Accents, secondary charts, tags",
+      "light": {
+        "base": "#975A9B",
+        "strong": "#6E3772",
+        "soft": "#C8A5CA",
+        "surface": "#FAF0FA"
+      },
+      "dark": {
+        "base": "#D39FD6",
+        "strong": "#EABCEC",
+        "soft": "#563B58",
+        "surface": "#291D2A"
+      }
+    },
+    {
+      "key": "ink",
+      "name": "Ink",
+      "usage": "Data viz, code, info states",
+      "light": {
+        "base": "#4555C2",
+        "strong": "#2A389A",
+        "soft": "#8C9DD7",
+        "surface": "#EFF3FF"
+      },
+      "dark": {
+        "base": "#7D95E9",
+        "strong": "#99B0FB",
+        "soft": "#2A3562",
+        "surface": "#1C2130"
+      }
+    }
+  ],
+  "neutrals": {
+    "text": {
+      "light": "#212825",
+      "dark": "#E0E6E3"
+    },
+    "muted": {
+      "light": "#5B6661",
+      "dark": "#A3AEA8"
+    },
+    "line": {
+      "light": "#A4ADA9",
+      "dark": "#474F4B"
+    },
+    "page": {
+      "light": "#EEF3F1",
+      "dark": "#151917"
+    }
+  },
+  "notes": []
+}

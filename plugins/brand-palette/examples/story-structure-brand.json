@@ -1,0 +1,131 @@
+{
+  "palette": "story-structure-palette.json",
+  "name": "Story and Structure",
+  "title_accent": "Structure",
+  "kicker": "UI/UX design · data engineering · brand reference",
+  "lede": "How the studio looks and why. Deep forest green holds the structure, blush pink carries the story, and ink and orchid show the data underneath. We design the interface and build the pipeline behind it, so the brand has to feel human and exact at the same time.",
+  "hero_label": "A blueprint grid with forest-green layout blocks, ink bar charts and orchid connected nodes, crossed by one flowing blush-pink line: structure with a story running through it",
+  "hero_svg": "<svg viewBox=\"0 0 400 320\" aria-hidden=\"true\"><defs><pattern id=\"bp-grid\" width=\"32\" height=\"32\" patternUnits=\"userSpaceOnUse\"><path d=\"M32 0H0V32\" style=\"fill:none;stroke:var(--divider)\" stroke-width=\"1\"/></pattern></defs><rect width=\"400\" height=\"320\" fill=\"url(#bp-grid)\"/><g style=\"fill:none;stroke:var(--forest-text)\" stroke-width=\"3\"><rect x=\"40\" y=\"40\" width=\"120\" height=\"88\" rx=\"10\"/><rect x=\"40\" y=\"144\" width=\"120\" height=\"136\" rx=\"10\"/><rect x=\"176\" y=\"40\" width=\"184\" height=\"88\" rx=\"10\"/><rect x=\"176\" y=\"144\" width=\"184\" height=\"136\" rx=\"10\"/></g><g style=\"fill:var(--forest-soft)\"><rect x=\"58\" y=\"60\" width=\"70\" height=\"9\" rx=\"4.5\"/><rect x=\"58\" y=\"80\" width=\"84\" height=\"7\" rx=\"3.5\"/><rect x=\"58\" y=\"96\" width=\"56\" height=\"7\" rx=\"3.5\"/></g><g style=\"stroke:var(--orchid)\" stroke-width=\"2.5\" fill=\"none\"><path d=\"M204 100 L246 66 L292 92 L334 62\"/></g><g style=\"fill:var(--orchid)\"><circle cx=\"204\" cy=\"100\" r=\"6\"/><circle cx=\"246\" cy=\"66\" r=\"6\"/><circle cx=\"292\" cy=\"92\" r=\"6\"/><circle cx=\"334\" cy=\"62\" r=\"6\"/></g><g style=\"fill:var(--chart-ink)\"><rect x=\"196\" y=\"220\" width=\"24\" height=\"44\" rx=\"3\"/><rect x=\"228\" y=\"196\" width=\"24\" height=\"68\" rx=\"3\"/><rect x=\"260\" y=\"208\" width=\"24\" height=\"56\" rx=\"3\"/><rect x=\"292\" y=\"176\" width=\"24\" height=\"88\" rx=\"3\"/><rect x=\"324\" y=\"162\" width=\"24\" height=\"102\" rx=\"3\"/></g><path d=\"M20 256 C 84 196, 112 300, 178 236 S 296 116, 384 148\" style=\"fill:none;stroke:var(--blush)\" stroke-width=\"11\" stroke-linecap=\"round\"/><circle cx=\"20\" cy=\"256\" r=\"8\" style=\"fill:var(--forest)\"/></svg>",
+  "brand": {
+    "title": "A good story needs a sound structure",
+    "lede": "The name is the method. Every project starts with the story a person needs to follow, then builds the structure (the interface, the data model, the pipeline) that keeps it true. Each brand color has one of those jobs."
+  },
+  "motifs": [
+    {"name": "Forest", "color": "forest", "role": "structure and primary actions",
+     "glyph_svg": "<svg width=\"64\" height=\"40\" viewBox=\"0 0 64 40\" aria-hidden=\"true\"><g style=\"fill:none;stroke:var(--forest-text)\" stroke-width=\"2.5\"><rect x=\"2\" y=\"2\" width=\"26\" height=\"36\" rx=\"4\"/><rect x=\"34\" y=\"2\" width=\"28\" height=\"16\" rx=\"4\"/><rect x=\"34\" y=\"22\" width=\"28\" height=\"16\" rx=\"4\"/></g></svg>",
+     "text": "The frame everything hangs on: navigation, primary buttons, headings, links. Deep and steady, it carries white text at about 9:1."},
+    {"name": "Blush", "color": "blush", "role": "the story thread",
+     "glyph_svg": "<svg width=\"64\" height=\"40\" viewBox=\"0 0 64 40\" aria-hidden=\"true\"><path d=\"M4 30 C 16 6, 26 38, 36 18 S 54 6, 60 14\" style=\"fill:none;stroke:var(--blush)\" stroke-width=\"6\" stroke-linecap=\"round\"/></svg>",
+     "text": "The warm, human part: one highlighted phrase, a callout, a soft section. It is a fill, never text, and it always carries dark text."},
+    {"name": "Orchid", "color": "orchid", "role": "where design meets data",
+     "glyph_svg": "<svg width=\"64\" height=\"40\" viewBox=\"0 0 64 40\" aria-hidden=\"true\"><path d=\"M10 28 L30 12 L52 26\" style=\"fill:none;stroke:var(--orchid)\" stroke-width=\"2.5\"/><g style=\"fill:var(--orchid)\"><circle cx=\"10\" cy=\"28\" r=\"5\"/><circle cx=\"30\" cy=\"12\" r=\"5\"/><circle cx=\"52\" cy=\"26\" r=\"5\"/></g></svg>",
+     "text": "The bridge between the two practices: tags, connections in diagrams, a third chart series. Use it as an accent, not a main color."},
+    {"name": "Ink", "color": "ink", "role": "the data",
+     "glyph_svg": "<svg width=\"64\" height=\"40\" viewBox=\"0 0 64 40\" aria-hidden=\"true\"><g style=\"fill:var(--chart-ink)\"><rect x=\"4\" y=\"24\" width=\"10\" height=\"14\" rx=\"2\"/><rect x=\"20\" y=\"16\" width=\"10\" height=\"22\" rx=\"2\"/><rect x=\"36\" y=\"20\" width=\"10\" height=\"18\" rx=\"2\"/><rect x=\"52\" y=\"6\" width=\"10\" height=\"32\" rx=\"2\"/></g></svg>",
+     "text": "Pipelines, charts, code and info states. If it was measured, it's ink. It's also the first chart series."}
+  ],
+  "personality": {
+    "caption": "How a client should feel reading a proposal, or an engineer opening the handoff file.",
+    "is": ["Thoughtful", "Warm", "Rigorous", "Plain-spoken", "Quietly confident"],
+    "is_not": ["Startup hype", "Pastel-cute", "Corporate grey", "Rainbow dashboards"]
+  },
+  "names": [
+    ["In headlines", "<b>Story and Structure</b>, with \"and\" spelled out and in lowercase"],
+    ["Short form", "<b>S&amp;S</b>, only where space is tight: favicons, avatars, file prefixes"],
+    ["In code", "Tokens have no prefix (<code>--forest</code>, <code>--primary</code>). Files start with <code>story-structure-</code>"],
+    ["Never", "\"Story &amp; Structure\" in running text, or \"StoryStructure\""]
+  ],
+  "roles": {"primary": "forest", "accent": "blush", "highlight": "orchid", "data": "ink"},
+  "color_rules": {
+    "forest": "Primary buttons, active nav, links and focus rings. In dark mode it lightens to sage and takes dark text.",
+    "blush": "One thread per view (see Signature). Fails as text in light mode at 1.3:1, so it is only ever a fill under dark text.",
+    "orchid": "Tags, diagram links and the third chart series. White text passes on it only just (4.9:1), so keep button text at 16px or larger.",
+    "ink": "Info notices, code accents and the first chart series. The heatmap ramp is built from it."
+  },
+  "charts": {
+    "series": [
+      {"key": "ink", "label": "primary measure: rows, events, runs"},
+      {"key": "forest", "label": "comparison: last period or target"},
+      {"key": "orchid", "label": "third series: design metrics"}
+    ],
+    "ramp": "ink",
+    "bars_label": "Example data · pipeline runs per month",
+    "heat_label": "Example data · events by hour",
+    "rules": [
+      "Series order is fixed: ink, forest, orchid. Colors follow the thing shown, never its rank.",
+      "Blush is never a chart series. It marks the one insight a chart is about, as an annotation band.",
+      "Axis labels, values and legends use text greys, never the series color.",
+      "Failed runs use the error red, always with a label."
+    ]
+  },
+  "signature": {
+    "nav": "Signature",
+    "title": "One story thread per view",
+    "lede": "Blush is the story. Each view gets one thread: a single highlighted phrase, one callout or one soft section. Everything else stays forest, ink and neutral, so the thread is what the eye follows.",
+    "do": {
+      "html": "<div class=\"ss-card\"><span class=\"eyebrow\">Case study · Logistics</span><h4 class=\"ss-h\">Report load time went from <mark class=\"thread\">40 seconds to 2</mark></h4><p class=\"cap\">We redesigned the dashboard and rebuilt the pipeline under it.</p><div><button class=\"btn primary\" type=\"button\">Read the case study</button></div></div>",
+      "caption": "One blush mark on the result that matters. The button stays forest."
+    },
+    "dont": {
+      "html": "<div class=\"ss-card\"><span class=\"eyebrow ss-pink\">Case study · Logistics</span><h4 class=\"ss-h\"><mark class=\"thread\">Report load time</mark> went from <mark class=\"thread\">40 seconds to 2</mark></h4><p class=\"cap ss-pink\">We redesigned the dashboard and rebuilt the pipeline under it.</p><div><button class=\"btn ss-pink-btn\" type=\"button\">Read the case study</button></div></div>",
+      "caption": "Two threads compete, blush text on the page drops to about 1.3:1, and white text on a blush button fails at about 1.4:1."
+    },
+    "css": "/* the story thread: one per view */\n.thread {\n  background: var(--accent-fill);\n  color: var(--on-accent);\n  padding: 0 .25em;\n  border-radius: 4px;\n}\n\n/* specimen card and the don't example */\n.ss-card { display: grid; gap: 10px; padding: 16px; border-radius: 12px; background: var(--page); border: 1px solid var(--divider); }\n.ss-h { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; }\n.ss-pink { color: var(--blush) !important; }\n.ss-pink-btn { background: var(--blush); color: #fff; }"
+  },
+  "type": {
+    "title": "Fraunces for the story, IBM Plex for the structure",
+    "lede": "A soft serif for headlines and pull quotes, where the studio speaks. IBM Plex Sans for interface and body text, and Plex Mono for code, SQL and numbers in tables. The two Plex faces share proportions, so data and prose sit together cleanly.",
+    "display": {"family": "Fraunces", "weights": [400, 600], "role": "Story · headlines", "sample": "Story and Structure", "chars": "Aa Bb Cc · Research that ships", "use": "Headlines, section titles and pull quotes. Never below 20px."},
+    "ui": {"family": "IBM Plex Sans", "weights": [400, 500, 600], "role": "Structure · interface", "sample": "Pipeline health", "chars": "Aa Bb Cc · 0123456789 · 1,284,906 rows", "use": "Interface, body text, buttons and KPI values."},
+    "mono": {"family": "IBM Plex Mono", "weights": [400, 500], "role": "Data · code", "sample": "fct_events", "chars": "SELECT project, COUNT(*) FROM fct_events", "use": "Code, SQL, column names and token names."},
+    "scale": [
+      {"label": "Display", "spec": "h1 · Fraunces 3rem / 600", "font": "display", "size": "3rem", "weight": 600, "line": 1.1, "sample": "Story and Structure"},
+      {"label": "Section", "spec": "h2 · Fraunces 1.85rem / 600", "font": "display", "size": "1.85rem", "weight": 600, "sample": "Research that ships"},
+      {"label": "Pull quote", "spec": "Fraunces 1.375rem / 400", "font": "display", "size": "1.375rem", "weight": 400, "line": 1.4, "sample": "“The numbers on screen are the numbers in the warehouse.”"},
+      {"label": "Card title", "spec": "h3 · Plex Sans 1.1rem / 600", "size": "1.1rem", "weight": 600, "sample": "Pipeline health"},
+      {"label": "KPI value", "spec": "Plex Sans 2.1rem / 400 · tabular", "size": "2.1rem", "tabular": true, "sample": "1,284,906"},
+      {"label": "Body", "spec": "Plex Sans 1rem / 400 · line 1.55", "line": 1.55, "sample": "We design the interface and build the data underneath it, so what people see on screen and what's in the warehouse always agree."},
+      {"label": "Caption", "spec": "Plex Sans 0.875rem · secondary", "size": "0.875rem", "muted": true, "sample": "Updated 17 Oct 2026 · source: fct_events"},
+      {"label": "Code", "spec": "Plex Mono 0.875rem", "font": "mono", "size": "0.875rem", "sample": "SELECT project, COUNT(*) FROM fct_events GROUP BY 1"}
+    ]
+  },
+  "layout": {
+    "title": "A 12-column grid on a 4px base",
+    "lede": "Marketing pages and case studies use a top bar over a 12-column grid, up to 1200px wide with 24px gutters. Product work and dashboards switch to a 260px sidebar. Below 768px everything stacks to one column.",
+    "shell": "site",
+    "shell_label": "12 columns · max 1200px · 24px gutters",
+    "radius": "0.5rem",
+    "facts": [
+      ["--radius", "0.5rem on buttons, inputs and notices. Cards use 12px, pills 999px."],
+      ["grid", "12 columns, 24px gutters, 1200px max. Case-study text runs 7 columns wide."],
+      ["breakpoint", "768px: one column, 16px side padding"],
+      ["dashboards", "260px sidebar on <code>--surface</code>, main column on <code>--page</code>"]
+    ]
+  },
+  "samples": {
+    "kpis": [
+      {"label": "Rows processed", "value": "1.28M", "delta": "+18%", "up": true},
+      {"label": "Failed runs", "value": "3", "delta": "−40%", "up": false}
+    ],
+    "tabs": ["Overview", "Research", "Pipelines", "Handoff"],
+    "segments": ["Weekly", "Monthly"],
+    "buttons": {"primary": "Start a project", "secondary": "See our work", "accent": "Book a call", "danger": "Delete draft"},
+    "input": {"label": "Work email", "placeholder": "you@company.com", "help": "We reply within two working days.", "error": "Enter an email address with an @."},
+    "notices": {
+      "info": "The pipeline refreshes every hour. Last run 14:00.",
+      "highlight": "Load time dropped from 40 seconds to 2 after the rebuild.",
+      "error": "Sync failed. Check the warehouse connection, then try again."
+    },
+    "rows": [["Discovery workshop", "done"], ["Data model review", "hover"], ["Prototype v2", "selected"]],
+    "progress": 62,
+    "tags": {"forest": "UX research", "blush": "Case study", "orchid": "Design system", "ink": "Data pipeline"}
+  },
+  "always": [
+    "Pair the error red with an icon and a word (\"Sync failed\"), never color alone.",
+    "Blush is a fill, never text. Put the darkest neutral on it.",
+    "Keep a legend or direct labels on any chart with two or more series.",
+    "Focus rings: a 2px outline in the forest text color, 2px offset.",
+    "Respect prefers-reduced-motion for any animation."
+  ],
+  "stat": ["1", "story thread per view"]
+}
