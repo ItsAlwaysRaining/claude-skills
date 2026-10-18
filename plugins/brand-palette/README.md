@@ -70,6 +70,29 @@ python3 build_brand.py brand.json --out brand.html    # build the page
 
 See [`examples/story-structure-brand.json`](examples/story-structure-brand.json) for a full brand spec, built on [`examples/story-structure-palette.json`](examples/story-structure-palette.json).
 
+## Brand Typography
+
+The third skill, **brand-typography**, picks fonts for a brand. Ask for "fonts for my bakery", "a body font to go with Fraunces" or "type that matches this logo". Give it any mix of a brand description, a palette, a logo or image, or fonts you've already chosen (it keeps those and builds around them). With no palette, it checks against greyscale.
+
+It shortlists three free pairings (Google Fonts, Fontshare, or an open-licence font file you supply) and publishes a specimen page. The page shows each option as a wordmark, on a web page with buttons and a form, in a printed document and on a business card, in a data table and a chart, and as a type scale. One option is marked as the pick. Each option has a readability table, with a fix next to anything that doesn't pass:
+
+- **Licence, languages and weights:** free for commercial use and logos, covers the brand's character sets, and has the weights the scale uses
+- **WCAG 2.2:** 1.4.3 contrast, 1.4.4 resize text, 1.4.8 visual presentation (AAA), and a Text spacing switch on the page to test 1.4.12
+- **APCA (WCAG 3 draft):** the minimum font size for each row's weight and contrast, on each background in both modes
+- **BDA Dyslexia Style Guide:** body size, line spacing, line length, sans serif body, no italics or capitals for reading text, letter and word spacing, and mirror letters (b/d, p/q)
+- **Legibility:** x-height at body size, how alike I/l/1, rn/m and cl/d look, the opening of c, tabular figures and a distinct zero
+
+[`check_type.py`](skills/brand-typography/scripts/check_type.py) fetches the fonts and measures all of this by reading the font files and rendering letter shapes. It uses standard-library Python, plus Pillow for the shape measurements. APCA's constants and font table are read from the published apca-w3 package at run time, pinned and checksum-verified, because APCA's licence covers WCAG web content only.
+
+```bash
+python3 check_type.py type.json                         # print the checks
+python3 check_type.py type.json --out type.html         # build the specimen page
+python3 check_type.py --font "Atkinson Hyperlegible Next"   # measure one font
+python3 check_type.py type.json --brand-type a --fonts-dir fonts   # option a as brand-builder's type block
+```
+
+brand-builder uses it for its Typography section, so a brand page's fonts are checked the same way.
+
 ## Install
 
 In Claude Code, run:
@@ -84,6 +107,7 @@ git clone https://github.com/ItsAlwaysRaining/claude-skills.git
 mkdir -p ~/.claude/skills
 cp -r claude-skills/plugins/brand-palette/skills/brand-palette ~/.claude/skills/
 cp -r claude-skills/plugins/brand-palette/skills/brand-builder ~/.claude/skills/   # optional; needs brand-palette next to it
+cp -r claude-skills/plugins/brand-palette/skills/brand-typography ~/.claude/skills/   # optional; needs brand-palette next to it
 ```
 
-It needs Python 3 and nothing else. No accounts or setup.
+It needs Python 3 and nothing else. No accounts or setup. brand-typography also needs internet access to fetch fonts (cached in `~/.cache/brand-typography`), and uses [Pillow](https://pypi.org/project/pillow/) (`pip install pillow`) for the letter-shape checks if it's installed.

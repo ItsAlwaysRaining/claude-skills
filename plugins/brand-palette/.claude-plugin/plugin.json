@@ -1,11 +1,11 @@
 {
   "name": "brand-palette",
-  "version": "1.1.0",
-  "description": "Build an accessible brand color palette with light and dark mode values, checked against WCAG 2.2 AA and simulated for color blindness, published as a swatch board. Then turn it into a full brand reference page with brand-builder: story and motifs, color, charts, a signature move, typography, layout, live components, accessibility notes and CSS tokens.",
+  "version": "1.2.0",
+  "description": "Build an accessible brand color palette with light and dark mode values, checked against WCAG 2.2 AA and simulated for color blindness, published as a swatch board. Then turn it into a full brand reference page with brand-builder: story and motifs, color, charts, a signature move, typography, layout, live components, accessibility notes and CSS tokens. Pick and check its fonts with brand-typography: three free pairings measured against WCAG 2.2, APCA, the BDA dyslexia style guide and letter-shape legibility, on a specimen page.",
   "author": {
     "name": "ItsAlwaysRaining"
   },
   "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
   "license": "MIT",
-  "keywords": ["color", "palette", "branding", "brand-guide", "design-system", "accessibility", "wcag", "dark-mode", "design-tokens"]
+  "keywords": ["color", "palette", "branding", "brand-guide", "design-system", "accessibility", "wcag", "dark-mode", "design-tokens", "typography", "fonts", "readability"]
 }
