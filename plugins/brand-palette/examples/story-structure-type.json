@@ -1,0 +1,42 @@
+{
+  "brand": "Story and Structure",
+  "brief": "A design and data studio: human and exact at the same time.",
+  "palette": "story-structure-palette.json",
+  "primary": "forest",
+  "languages": ["latin", "latin-ext"],
+  "assumptions": ["English and European clients, so Latin and Latin Extended."],
+  "options": [
+    {"id": "a", "name": "Soft serif + Plex", "pick": true, "character": "Warm headlines, engineered body.",
+     "why": "Fraunces carries the story; Plex Sans and Mono share proportions so prose and data sit together.",
+     "fonts": {"display": {"family": "Fraunces", "weights": [400, 600], "role": "Headlines"},
+               "ui": {"family": "IBM Plex Sans", "weights": [400, 500, 600], "role": "Interface and body"},
+               "mono": {"family": "IBM Plex Mono", "weights": [400, 500], "role": "Code and data"}},
+     "body": {"measure": 66, "paragraph_spacing": "1.5em"},
+     "scale": [
+       {"label": "Display", "font": "display", "size": "3rem", "weight": 600, "line": 1.1, "use": "heading"},
+       {"label": "Section", "font": "display", "size": "1.85rem", "weight": 600, "line": 1.2, "use": "heading"},
+       {"label": "Body", "font": "ui", "size": "1rem", "weight": 400, "line": 1.55, "use": "body"},
+       {"label": "Button", "font": "ui", "size": "0.9375rem", "weight": 600, "line": 1.2, "use": "ui", "color": "on-primary"},
+       {"label": "Caption", "font": "ui", "size": "0.875rem", "weight": 400, "line": 1.45, "use": "caption", "color": "muted"},
+       {"label": "Table figure", "font": "mono", "size": "0.875rem", "weight": 400, "line": 1.4, "use": "data"}
+     ]},
+    {"id": "b", "name": "One grotesk", "character": "Single family, all structure.",
+     "fonts": {"ui": {"family": "General Sans", "source": "fontshare", "weights": [400, 600]}},
+     "body": {"measure": 75},
+     "scale": [
+       {"label": "Display", "size": "3rem", "weight": 600, "line": 1.1, "use": "heading"},
+       {"label": "Body", "size": "15px", "weight": 400, "line": 1.4, "use": "body"},
+       {"label": "Caption", "size": "0.75rem", "weight": 300, "line": 1.4, "use": "caption", "color": "muted", "caps": true}
+     ]},
+    {"id": "c", "name": "Hyperlegible", "character": "Readability first.",
+     "fonts": {"display": {"family": "Literata", "weights": [600]}, "ui": {"family": "Atkinson Hyperlegible Next", "weights": [400, 700]},
+               "mono": {"family": "JetBrains Mono", "weights": [400]}},
+     "body": {"measure": 64, "paragraph_spacing": "2.4em", "letter_spacing": "0.03em"},
+     "scale": [
+       {"label": "Display", "font": "display", "size": "2.75rem", "weight": 600, "line": 1.15, "use": "heading"},
+       {"label": "Body", "size": "1.125rem", "weight": 400, "line": 1.6, "use": "body"},
+       {"label": "Caption", "size": "0.875rem", "weight": 400, "line": 1.5, "use": "caption", "color": "muted"},
+       {"label": "Data", "font": "mono", "size": "0.875rem", "weight": 400, "line": 1.4, "use": "data"}
+     ]}
+  ]
+}
