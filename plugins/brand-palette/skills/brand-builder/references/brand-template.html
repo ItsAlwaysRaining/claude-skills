@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>__TITLE__</title>
+__FONTS__
+<style>
+/* Generated tokens: the page is styled with the same values it documents. */
+/*__TOKENS__*/
+</style>
+<style>
+/* Layout: one 1120px reading column, sticky section nav, each section = header + live specimens
+   drawn with the brand's own tokens. Every color below is a token, so the theme toggle flips it all. */
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--page); color: var(--text); font: 16px/1.55 var(--font); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3, h4 { margin: 0; line-height: 1.2; text-wrap: balance; }
+h1, h2 { font-family: var(--font-display); font-weight: 600; }
+h2 { font-size: clamp(1.5rem, 3vw, 1.85rem); }
+h3 { font-size: 1.1rem; font-weight: 600; }
+h4 { font-size: 1rem; font-weight: 600; }
+p { margin: 0; max-width: 66ch; }
+code, .mono { font-family: var(--mono); font-size: .88em; }
+code { background: var(--raised); padding: .1em .35em; border-radius: 4px; overflow-wrap: anywhere; }
+a { color: var(--primary-text); }
+:focus-visible { outline: 2px solid var(--primary-text); outline-offset: 2px; }
+.eyebrow { font: 500 .72rem/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+.lede { color: var(--text-muted); font-size: 1.05rem; }
+.cap { color: var(--text-muted); font-size: .85rem; }
+
+/* nav */
+nav.top { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--page) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--divider); }
+nav.top .wrap { display: flex; align-items: center; gap: 12px; padding-block: 8px; }
+nav.top .links { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1; }
+nav.top .links a { flex: none; color: var(--text-muted); text-decoration: none; font-size: .85rem; padding: 5px 10px; border-radius: 999px; }
+nav.top .links a:hover { color: var(--text); background: var(--raised); }
+.theme { flex: none; display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.theme button { font: .78rem var(--font); background: none; border: 0; color: var(--text-muted); padding: 4px 10px; cursor: pointer; }
+.theme button[aria-pressed="true"] { background: var(--primary-surface); color: var(--primary-text); font-weight: 600; }
+
+/* hero */
+header.hero { padding-block: 56px 44px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 36px; align-items: center; }
+.hero-copy { display: grid; gap: 18px; min-width: 0; }
+.kicker { font-family: var(--mono); color: var(--text-muted); font-size: .85rem; }
+.hero h1 { font-size: clamp(2.6rem, 6vw, 4rem); letter-spacing: -.02em; }
+.hero h1 span { color: var(--primary-text); }
+.stats { display: flex; flex-wrap: wrap; gap: 10px 32px; padding-top: 20px; border-top: 1px solid var(--divider); }
+.stat b { display: block; font-size: 1.6rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.stat span { color: var(--text-muted); font-size: .82rem; }
+.art { border-radius: 16px; overflow: hidden; aspect-ratio: 5 / 4; background: var(--surface); border: 1px solid var(--divider); }
+.art svg { display: block; width: 100%; height: 100%; }
+
+section { padding-block: 52px; border-top: 1px solid var(--divider); display: grid; gap: 24px; scroll-margin-top: 50px; }
+section > header { display: grid; gap: 10px; }
+.frame { background: var(--surface); border: 1px solid var(--divider); border-radius: 14px; padding: 20px; min-width: 0; display: grid; gap: 12px; align-content: start; }
+.cols2, .cols3, .cols4 { display: grid; gap: 18px; }
+.cols2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cols3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.cols4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* brand */
+.motif { display: grid; gap: 10px; align-content: start; padding: 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--divider); min-width: 0; }
+.motif .glyph { height: 44px; display: flex; align-items: center; }
+.motif p { font-size: .9rem; color: var(--text-muted); }
+.motif .role { font: 500 .78rem var(--mono); }
+.voice { display: flex; flex-wrap: wrap; gap: 8px; }
+.voice span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 12px; font-size: .9rem; }
+.voice span.no { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--error); }
+dl.names, dl.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 8px 18px; font-size: .92rem; margin: 0; }
+dl dt { color: var(--text-muted); }
+dl.facts dt { font-family: var(--mono); font-size: .82rem; }
+dl dd { margin: 0; min-width: 0; }
+
+/* swatches */
+button.sw { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; min-width: 0; border-radius: 10px; align-content: start; }
+button.sw:focus-visible { outline: 2px solid var(--primary-text); outline-offset: 3px; }
+.chip-c { height: 64px; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--text) 12%, transparent); display: flex; align-items: flex-end; padding: 8px; font: 500 .8rem var(--mono); }
+.sw .nm { font-size: .88rem; font-weight: 600; }
+.sw .hx { font: .76rem var(--mono); color: var(--text-muted); }
+.sw .use { font-size: .8rem; color: var(--text-muted); }
+.neutrals { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 12px; }
+.brand-card { display: grid; gap: 14px; padding: 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--divider); min-width: 0; align-content: start; }
+.brand-card .hdr { display: grid; gap: 2px; }
+.brand-card .hdr .use { color: var(--text-muted); font-size: .88rem; }
+.big { height: 92px; border-radius: 10px; display: flex; align-items: flex-end; justify-content: space-between; padding: 10px 12px; font-weight: 600; }
+.big .r { font: 500 .78rem var(--mono); }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.steps .chip-c { height: 44px; }
+.rule { font-size: .84rem; color: var(--text-muted); border-top: 1px solid var(--divider); padding-top: 10px; }
+
+/* contrast table */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--divider); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 9px 14px; border-bottom: 1px solid var(--divider); vertical-align: middle; white-space: nowrap; }
+th { font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); background: var(--surface); }
+tr:last-child td { border-bottom: 0; }
+.pair { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: .85rem; box-shadow: inset 0 0 0 1px rgb(127 127 127 / .25); }
+.ratio { font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: .82rem; margin: 0 6px; }
+.badge { display: inline-block; font: 500 .7rem var(--mono); padding: 2px 8px; border-radius: 999px; border: 1px solid; }
+.badge.aaa { color: var(--primary-text); border-color: var(--primary-text); background: var(--primary-surface); }
+.badge.aa { color: var(--data-text); border-color: var(--data-text); background: var(--data-surface); }
+.badge.ui { color: var(--text-muted); border-color: var(--line); background: var(--raised); }
+.badge.no { color: var(--error-strong); border-color: var(--error); background: var(--error-surface); }
+
+/* charts */
+.ramp { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.ramp .chip-c { height: 56px; border-radius: 6px; justify-content: center; align-items: center; }
+.ramp .hx { text-align: center; font-size: .66rem; }
+.bars { display: flex; align-items: flex-end; gap: 8px; height: 150px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
+.bars span { flex: 1; border-radius: 4px 4px 0 0; background: var(--ramp-dim); min-width: 0; }
+.bars span.sel { background: var(--chart-sel); }
+.bar-x { display: flex; gap: 8px; font: .7rem var(--mono); color: var(--text-muted); }
+.bar-x span { flex: 1; text-align: center; min-width: 0; }
+.heat { display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 2px; }
+.heat i { aspect-ratio: 1; border-radius: 2px; display: block; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .88rem; color: var(--text-muted); align-items: center; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 7px; }
+ul.list { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: .92rem; }
+ul.list li::marker { color: var(--text-muted); }
+
+/* signature */
+.verdict { font: 600 .78rem var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+.verdict.ok { color: var(--primary-text); }
+.verdict.bad { color: var(--error-strong); }
+pre { margin: 0; overflow-x: auto; background: var(--page); border: 1px solid var(--divider); border-radius: 10px; padding: 14px 16px; font: .82rem/1.6 var(--mono); color: var(--text); }
+
+/* type */
+.font-card { display: grid; gap: 10px; padding: 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--divider); min-width: 0; align-content: start; }
+.font-card .spec { font-size: 2.4rem; line-height: 1.05; overflow-wrap: anywhere; }
+.font-card .chars { color: var(--text-muted); overflow-wrap: anywhere; }
+.scale { display: grid; border: 1px solid var(--divider); border-radius: 14px; overflow: hidden; }
+.srow { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 18px; align-items: baseline; padding: 14px 18px; border-bottom: 1px solid var(--divider); }
+.srow:last-child { border-bottom: 0; }
+.srow .lbl { display: grid; gap: 2px; font-size: .82rem; color: var(--text-muted); }
+.srow .lbl b { color: var(--text); font-weight: 600; font-size: .88rem; }
+.srow .lbl span { font-family: var(--mono); font-size: .74rem; }
+.srow .ex { min-width: 0; overflow-wrap: anywhere; }
+
+/* layout */
+.sp { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 12px; align-items: center; font: .8rem var(--mono); color: var(--text-muted); }
+.sp i { display: block; height: 12px; border-radius: 3px; background: var(--primary-soft); max-width: 100%; }
+.shell { display: grid; height: 220px; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; font: .72rem var(--mono); color: var(--text-muted); background: var(--page); }
+.shell.sidebar { grid-template-columns: 28% minmax(0, 1fr); }
+.shell.site { grid-template-rows: 34px minmax(0, 1fr); }
+.shell .sb { background: var(--surface); padding: 14px 10px; display: grid; gap: 6px; align-content: start; border-right: 1px solid var(--divider); }
+.shell .tb { background: var(--surface); border-bottom: 1px solid var(--divider); display: flex; align-items: center; gap: 8px; padding: 0 12px; }
+.shell .tb i { width: 36px; height: 8px; border-radius: 4px; background: var(--raised); display: block; }
+.shell .tb i.on { background: var(--primary); }
+.shell .sb i { display: block; height: 14px; border-radius: 4px; background: var(--raised); }
+.shell .sb i.on { background: var(--primary-soft); }
+.shell .mn { padding: 12px 14px; display: grid; gap: 8px; align-content: start; }
+.shell .grid12 { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; height: 100px; }
+.shell .grid12 i { background: var(--primary-surface); border: 1px dashed var(--primary-soft); border-radius: 2px; display: block; }
+.shell .mn .h { height: 16px; width: 55%; border-radius: 4px; background: var(--line); }
+
+/* components */
+.specimen { display: grid; gap: 12px; align-content: start; padding: 18px; border-radius: 12px; background: var(--page); border: 1px solid var(--divider); min-width: 0; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.btn { font: 600 .9rem var(--font); border-radius: var(--radius); padding: 8px 16px; cursor: pointer; border: 1px solid transparent; }
+.btn.primary { background: var(--primary-fill); color: var(--on-primary); }
+.btn.primary:hover { filter: brightness(1.08) saturate(1.05); }
+.btn.secondary { background: transparent; color: var(--primary-text); border-color: var(--primary-text); }
+.btn.secondary:hover { background: var(--primary-surface); }
+.btn.accent { background: var(--accent-fill); color: var(--on-accent); }
+.btn.accent:hover { filter: brightness(1.05); }
+.btn.danger { background: transparent; color: var(--error-strong); border-color: var(--error); }
+.btn:disabled { background: var(--raised); color: var(--text-muted); border-color: var(--divider); cursor: not-allowed; }
+.kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.kpiLabel { font-size: .875rem; color: var(--text-muted); }
+.kpiValue { font-size: 2.1rem; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.delta { display: inline-block; margin-top: 4px; padding: 0 8px; border-radius: 999px; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.delta.up { color: var(--primary-text); background: var(--primary-surface); }
+.delta.down { color: var(--error-strong); background: var(--error-surface); }
+.tabList { display: flex; gap: 16px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.tab { background: none; border: none; padding: 8px 0; cursor: pointer; color: var(--text); border-bottom: 2px solid transparent; margin-bottom: -1px; font: inherit; }
+.tab[aria-selected="true"] { color: var(--primary-text); border-bottom-color: var(--primary-text); font-weight: 600; }
+.segmented { display: inline-flex; width: fit-content; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.segment { background: none; border: none; padding: 4px 16px; cursor: pointer; font: inherit; font-size: .9rem; color: var(--text); }
+.segment + .segment { border-left: 1px solid var(--line); }
+.segment[aria-pressed="true"] { color: var(--primary-text); background: var(--primary-surface); font-weight: 600; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: .88rem; font-weight: 600; }
+.field input { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--text-muted); border-radius: var(--radius); padding: 8px 12px; }
+.field input::placeholder { color: var(--text-muted); }
+.field input:focus { outline: 2px solid var(--primary-text); outline-offset: 2px; }
+.field.bad input { border-color: var(--error); }
+.field .help { font-size: .82rem; color: var(--text-muted); }
+.field.bad .help { color: var(--error-strong); }
+.notice { padding: 12px 16px; border-radius: var(--radius); font-size: .95rem; }
+.notice.info { background: var(--data-surface); color: var(--data-text); }
+.notice.highlight { background: var(--accent-fill); color: var(--on-accent); }
+.notice.error { background: var(--error-surface); color: var(--error-strong); }
+.rows { display: grid; font-size: .9rem; border: 1px solid var(--divider); border-radius: 10px; overflow: hidden; }
+.rows div { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--divider); background: var(--surface); }
+.rows div:last-child { border-bottom: 0; }
+.rows .hover { background: var(--raised); }
+.rows .selected { background: var(--primary-surface); box-shadow: inset 3px 0 0 var(--primary); }
+.rows span:last-child { color: var(--text-muted); font-size: .8rem; font-family: var(--mono); }
+.progress { display: flex; align-items: center; gap: 12px; font-size: .85rem; font-variant-numeric: tabular-nums; }
+.progress .bar { flex: 1; height: 6px; min-width: 60px; background: var(--data-soft); border-radius: 3px; overflow: hidden; }
+.progress .bar > span { display: block; height: 100%; background: var(--chart-sel); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .8rem; padding: 2px 10px; border-radius: 999px; color: var(--text); }
+
+/* files */
+.file { display: grid; gap: 6px; padding: 14px; border-radius: 12px; background: var(--page); border: 1px solid var(--line); min-width: 0; align-content: start; }
+.file .path { font: 500 .8rem var(--mono); color: var(--primary-text); overflow-wrap: anywhere; }
+.file p { font-size: .86rem; color: var(--text-muted); }
+.guard { display: grid; gap: 8px; border: 1.5px solid var(--primary); background: var(--primary-surface); border-radius: 14px; padding: 18px; }
+.copybar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--text); color: var(--page); padding: 8px 14px; border-radius: 999px; font: .85rem var(--mono); z-index: 20; }
+footer { padding-block: 32px 56px; border-top: 1px solid var(--divider); color: var(--text-muted); font-size: .82rem; }
+
+@media (max-width: 900px) {
+  header.hero { grid-template-columns: minmax(0, 1fr); }
+  .art { max-width: 520px; }
+  .cols4, .cols3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .neutrals { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .cols2, .cols3, .cols4, .kpis { grid-template-columns: minmax(0, 1fr); }
+  .neutrals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ramp { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .srow { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .heat { gap: 1px; }
+}
+</style>
+<style>
+/* Signature move: from the brand spec, shown below as code too. */
+/*__SIGNATURE_CSS__*/
+</style>
+</head>
+<body>
+<nav class="top" aria-label="Sections">
+  <div class="wrap">
+    <div class="links" id="navlinks"></div>
+    <div class="theme" role="group" aria-label="Color theme">
+      <button type="button" data-set="auto">Auto</button><button type="button" data-set="light">Light</button><button type="button" data-set="dark">Dark</button>
+    </div>
+  </div>
+</nav>
+<main class="wrap" id="main"></main>
+<footer><div class="wrap" id="foot"></div></footer>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script id="brand-data" type="application/json">__DATA__</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('brand-data').textContent);
+  var S = D.spec, R = D.roles;
+  var root = document.documentElement;
+  var mq = window.matchMedia('(prefers-color-scheme: dark)');
+  var main = document.getElementById('main');
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function h(tag, cls, inner) { var e = el(tag, cls); e.innerHTML = inner; return e; }
+  // Text that differs by mode: both values ride on the element and applyMode() picks one.
+  function md(tag, cls, light, dark) { var e = el(tag, cls); e.setAttribute('data-light', light); e.setAttribute('data-dark', dark); return e; }
+  function mode() { return root.getAttribute('data-theme') || (mq.matches ? 'dark' : 'light'); }
+  function applyMode() {
+    var m = mode();
+    document.querySelectorAll('[data-light]').forEach(function (e) { e.textContent = e.getAttribute('data-' + m); });
+    document.querySelectorAll('[data-on-light]').forEach(function (e) { e.style.color = e.getAttribute('data-on-' + m); });
+    var set = root.getAttribute('data-theme') || 'auto';
+    document.querySelectorAll('.theme button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-set') === set ? 'true' : 'false'); });
+  }
+  var toastTimer;
+  function toast(msg) { var t = document.getElementById('toast'); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 1400); }
+  function copy(text, label) {
+    try { navigator.clipboard.writeText(text).then(function () { toast('Copied ' + label); }, function () { toast(text); }); } catch (e) { toast(text); }
+  }
+  // A swatch for a token: shows the active mode's hex and copies it.
+  function sw(token, values, name, use, chipText) {
+    var b = el('button', 'sw'); b.type = 'button';
+    var chip = el('div', 'chip-c'); chip.style.background = 'var(--' + token + ')';
+    if (chipText) { chip.textContent = chipText; }
+    b.appendChild(chip);
+    if (name) b.appendChild(el('span', 'nm', name));
+    b.appendChild(md('span', 'hx', values.light, values.dark));
+    if (use) b.appendChild(el('span', 'use', use));
+    b.setAttribute('aria-label', 'Copy ' + (name || token));
+    b.addEventListener('click', function () { var v = values[mode()]; copy(v, v); });
+    return b;
+  }
+  function section(id, n, eyebrow, title, lede) {
+    var s = el('section'); s.id = id;
+    var hd = el('header');
+    hd.appendChild(el('div', 'eyebrow', n + ' · ' + eyebrow));
+    hd.appendChild(el('h2', null, title));
+    if (lede) hd.appendChild(h('p', 'lede', lede));
+    s.appendChild(hd);
+    main.appendChild(s);
+    return s;
+  }
+  function list(items) { var u = el('ul', 'list'); items.forEach(function (t) { u.appendChild(h('li', null, t)); }); return u; }
+  function frame(title, child) { var f = el('div', 'frame'); if (title) f.appendChild(el('h3', null, title)); if (child) f.appendChild(child); return f; }
+  var byKey = {}; D.brands.forEach(function (b) { byKey[b.key] = b; });
+
+  // ---------- hero ----------
+  var hero = el('header', 'hero');
+  var copyCol = el('div', 'hero-copy');
+  if (S.kicker) copyCol.appendChild(el('div', 'kicker', S.kicker));
+  var h1 = el('h1');
+  var accent = S.title_accent && S.name.indexOf(S.title_accent) >= 0 ? S.title_accent : '';
+  if (accent) {
+    var i = S.name.indexOf(accent);
+    h1.appendChild(document.createTextNode(S.name.slice(0, i)));
+    h1.appendChild(el('span', null, accent));
+    h1.appendChild(document.createTextNode(S.name.slice(i + accent.length)));
+  } else h1.textContent = S.name;
+  copyCol.appendChild(h1);
+  if (S.lede) copyCol.appendChild(h('p', 'lede', S.lede));
+  var stats = el('div', 'stats');
+  D.stats.forEach(function (s) { var d = el('div', 'stat'); d.appendChild(el('b', null, s[0])); d.appendChild(el('span', null, s[1])); stats.appendChild(d); });
+  copyCol.appendChild(stats);
+  hero.appendChild(copyCol);
+  if (S.hero_svg) {
+    var art = h('div', 'art', S.hero_svg);
+    art.setAttribute('role', 'img'); art.setAttribute('aria-label', S.hero_label || S.name);
+    hero.appendChild(art);
+  }
+  main.appendChild(hero);
+
+  var nav = [];
+  var n = 0;
+  function add(id, label) { nav.push([id, label]); return ++n; }
+
+  // ---------- 1 brand ----------
+  var B = S.brand || {};
+  var hasBrand = B.title || (S.motifs && S.motifs.length) || S.personality || (S.names && S.names.length);
+  var s1 = hasBrand ? section('brand', add('brand', 'Brand'), 'Brand', B.title || 'What the brand is about', B.lede) : el('div');
+  if (S.motifs && S.motifs.length) {
+    var mg = el('div', 'cols4');
+    S.motifs.forEach(function (m) {
+      var c = el('div', 'motif');
+      if (m.glyph_svg) c.appendChild(h('div', 'glyph', m.glyph_svg));
+      c.appendChild(el('h3', null, m.name));
+      var role = el('div', 'role', '→ ' + m.role);
+      if (m.color && byKey[m.color]) role.style.color = 'var(--' + m.color + '-text)';
+      c.appendChild(role);
+      c.appendChild(h('p', null, m.text));
+      mg.appendChild(c);
+    });
+    s1.appendChild(mg);
+  }
+  var row2 = el('div', 'cols2');
+  if (S.personality) {
+    var pf = frame('Personality');
+    if (S.personality.caption) pf.appendChild(el('p', 'cap', S.personality.caption));
+    var yes = el('div', 'voice'); (S.personality.is || []).forEach(function (t) { yes.appendChild(el('span', null, t)); });
+    var no = el('div', 'voice'); (S.personality.is_not || []).forEach(function (t) { no.appendChild(el('span', 'no', t)); });
+    pf.appendChild(yes); pf.appendChild(no);
+    row2.appendChild(pf);
+  }
+  if (S.names && S.names.length) {
+    var dl = el('dl', 'names');
+    S.names.forEach(function (r) { dl.appendChild(el('dt', null, r[0])); dl.appendChild(h('dd', null, r[1])); });
+    row2.appendChild(frame('The name', dl));
+  }
+  if (row2.children.length) s1.appendChild(row2);
+
+  // ---------- 2 color ----------
+  var s2 = section('color', add('color', 'Color'), 'Color', 'Seven neutrals, ' + D.brands.length + ' brand colors, light and dark',
+    'The neutrals are tinted toward ' + esc(byKey[R.primary].name.toLowerCase()) + ' so they look chosen, not default. Every brand color has four steps: <b>Base</b> for buttons and brand moments, a <b>strong</b> step for hover (Dark in light mode, Bright in dark mode), a <b>soft</b> step for tags and fills, and <b>Surface</b> for tinted cards. Switch the theme at the top right to see both modes. Click any swatch to copy its hex.');
+  var ng = el('div', 'neutrals');
+  D.neutrals.forEach(function (x) { ng.appendChild(sw(x.token, x, x.name, x.use)); });
+  s2.appendChild(ng);
+  var bg = el('div', 'cols4');
+  D.brands.forEach(function (b) {
+    var card = el('div', 'brand-card');
+    var hdr = el('div', 'hdr'); hdr.appendChild(el('h3', null, b.name)); hdr.appendChild(el('span', 'use', b.usage)); card.appendChild(hdr);
+    var big = el('button', 'sw'); big.type = 'button'; big.setAttribute('aria-label', 'Copy ' + b.name + ' base');
+    var chip = el('div', 'big'); chip.style.background = 'var(--' + b.key + ')';
+    chip.setAttribute('data-on-light', b.modes.light.baseOn); chip.setAttribute('data-on-dark', b.modes.dark.baseOn);
+    chip.appendChild(el('span', null, 'Aa ' + b.name));
+    chip.appendChild(md('span', 'r', b.modes.light.baseOnRatio + ':1', b.modes.dark.baseOnRatio + ':1'));
+    big.appendChild(chip);
+    function baseNote(mm) {
+      var x = b.modes[mm];
+      return 'Base ' + x.base + ' · ' + (x.fillStep === 'base' ? x.onLabel.toLowerCase() : 'no text passes; buttons use ' + x.stepNames.strong + ' (' + x.onRatio + ':1)');
+    }
+    big.appendChild(md('span', 'hx', baseNote('light'), baseNote('dark')));
+    big.addEventListener('click', function () { var v = b.modes[mode()].base; copy(v, v); });
+    card.appendChild(big);
+    var st = el('div', 'steps');
+    ['strong', 'soft', 'surface'].forEach(function (s) {
+      var btn = sw(b.key + '-' + s, { light: b.modes.light[s], dark: b.modes.dark[s] });
+      btn.insertBefore(md('span', 'nm', b.modes.light.stepNames[s], b.modes.dark.stepNames[s]), btn.children[1]);
+      st.appendChild(btn);
+    });
+    card.appendChild(st);
+    if (b.rule) card.appendChild(h('p', 'rule', b.rule));
+    bg.appendChild(card);
+  });
+  s2.appendChild(bg);
+  var labels = { aaa: 'AAA', aa: 'AA', ui: 'UI only', no: 'below 3:1' };
+  var tw = el('div', 'tbl-wrap'); var tb = el('table');
+  tb.innerHTML = '<thead><tr><th>Pair</th><th>Light mode</th><th>Dark mode</th></tr></thead>';
+  var tbody = el('tbody');
+  D.contrast.forEach(function (r) {
+    var tr = el('tr'); tr.appendChild(el('td', null, r.label));
+    ['light', 'dark'].forEach(function (m) {
+      var c = r.cells[m];
+      tr.appendChild(h('td', null, '<span class="pair" style="background:' + c.bg + ';color:' + c.fg + '">Aa</span><span class="ratio">' + c.ratio.toFixed(2) + ':1</span><span class="badge ' + c.level + '">' + labels[c.level] + '</span>'));
+    });
+    tbody.appendChild(tr);
+  });
+  tb.appendChild(tbody); tw.appendChild(tb); s2.appendChild(tw);
+  s2.appendChild(el('p', 'cap', 'Measured with brand-palette\'s checker, never rounded up. AAA is 7:1, AA is 4.5:1, and UI marks and large text need 3:1. ' +
+    (S.error && byKey[S.error] ? byKey[S.error].name + ' doubles as the error color, so it never appears as a chart series.' : 'The error red is derived for status and is not a brand color.')));
+
+  // ---------- 3 charts ----------
+  var C = S.charts || {};
+  var s3 = section('charts', add('charts', 'Charts'), 'Charts', C.title || 'Chart colors are their own steps',
+    C.lede || 'Brand bases are tuned for buttons and text, which often makes them too light or too dark for chart marks. Charts use their own mid-tone steps instead, each at least 3:1 on the page and on cards, and spaced apart in lightness so they stay distinct under simulated color blindness.');
+  root.style.setProperty('--chart-sel', 'var(--chart-' + (C.ramp || R.data) + ', var(--' + R.data + '))');
+  var cg = el('div', 'cols3');
+  D.series.forEach(function (s, idx) {
+    var b = sw('chart-' + s.key, { light: s.modes.light.hex, dark: s.modes.dark.hex }, 'Series ' + (idx + 1) + ' · ' + s.name, s.label);
+    b.appendChild(md('span', 'use', s.modes.light.page + ':1 on page, ' + s.modes.light.card + ':1 on card', s.modes.dark.page + ':1 on page, ' + s.modes.dark.card + ':1 on card'));
+    var code = el('code', null, '--chart-' + s.key); var wrapc = el('span', 'use'); wrapc.appendChild(code); b.appendChild(wrapc);
+    cg.appendChild(b);
+  });
+  s3.appendChild(cg);
+  var rf = el('div', 'frame');
+  var rbar = el('div', 'copybar'); rbar.appendChild(el('h3', null, 'Heatmap ramp, low to high'));
+  rbar.appendChild(md('span', 'cap', 'one hue (' + D.rampFrom + ') · step 1 is ' + D.rampFirst.light + ':1 on the page', 'one hue (' + D.rampFrom + ') · step 1 is ' + D.rampFirst.dark + ':1 on the page'));
+  rf.appendChild(rbar);
+  var rp = el('div', 'ramp');
+  for (var ri = 0; ri < 10; ri++) {
+    var rb = sw('ramp-' + (ri + 1), { light: D.ramp.light[ri], dark: D.ramp.dark[ri] }, null, null, String(ri + 1));
+    rb.firstChild.setAttribute('data-on-light', D.rampOn.light[ri]); rb.firstChild.setAttribute('data-on-dark', D.rampOn.dark[ri]);
+    rp.appendChild(rb);
+  }
+  rf.appendChild(rp);
+  rf.appendChild(md('p', 'cap',
+    'Low values sit close to the page color and high values stand out, so the ramp runs light to dark in light mode. Unselected bars use --ramp-dim (' + D.dimRatio.light + ':1 on the page): context, not data.',
+    'Low values sit close to the page color and high values stand out, so the ramp runs dark to light in dark mode. Unselected bars use --ramp-dim (' + D.dimRatio.dark + ':1 on the page): context, not data.'));
+  s3.appendChild(rf);
+  var demo = el('div', 'cols2');
+  var bf = el('div', 'frame');
+  bf.appendChild(el('div', 'eyebrow', C.bars_label || 'Example data · per month'));
+  var bars = el('div', 'bars'); bars.setAttribute('role', 'img'); bars.setAttribute('aria-label', 'Example bar chart with one month selected');
+  [62, 88, 100, 70, 58, 44, 36, 30].forEach(function (v, i) { var sp = el('span', i === 2 ? 'sel' : null); sp.style.height = v + '%'; bars.appendChild(sp); });
+  bf.appendChild(bars);
+  bf.appendChild(h('div', 'bar-x', '<span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>'));
+  bf.appendChild(h('p', 'cap', 'The selected period is <code>--chart-' + esc(C.ramp || R.data) + '</code> and the rest drop to <code>--ramp-dim</code>.'));
+  demo.appendChild(bf);
+  var hf = el('div', 'frame');
+  hf.appendChild(el('div', 'eyebrow', C.heat_label || 'Example data · by hour of day'));
+  var heat = el('div', 'heat'); heat.setAttribute('role', 'img'); heat.setAttribute('aria-label', 'Example heatmap by hour of day');
+  for (var d = 0; d < 7; d++) for (var hr = 0; hr < 24; hr++) {
+    var base = Math.exp(-Math.pow((hr - 14) / 5, 2)), wk = d >= 5 ? 0.55 : 1, wob = ((d * 7 + hr * 13) % 5) / 25;
+    var v2 = Math.min(0.999, Math.max(0, (base * wk + wob) * 0.95));
+    var cell = el('i'); cell.style.background = 'var(--ramp-' + (Math.floor(v2 * 10) + 1) + ')'; heat.appendChild(cell);
+  }
+  hf.appendChild(heat);
+  hf.appendChild(h('div', 'bar-x', '<span style="text-align:left">0h</span><span>6h</span><span>12h</span><span>18h</span><span style="text-align:right">23h</span>'));
+  hf.appendChild(el('p', 'cap', 'Cells use the 10-step ramp with a 2px page-colored gap.'));
+  demo.appendChild(hf);
+  s3.appendChild(demo);
+  var lr = el('div', 'cols2');
+  var lg = el('div', 'legend-row');
+  D.series.forEach(function (s) { var sp = el('span'); var dot = el('span', 'dot'); dot.style.background = 'var(--chart-' + s.key + ')'; sp.appendChild(dot); sp.appendChild(document.createTextNode(s.name + (s.label ? ': ' + s.label : ''))); lg.appendChild(sp); });
+  lr.appendChild(frame('Series order', lg));
+  if (C.rules && C.rules.length) lr.appendChild(frame('Rules', list(C.rules)));
+  s3.appendChild(lr);
+
+  // ---------- 4 signature ----------
+  var G = S.signature;
+  if (G) {
+    var s4 = section('signature', add('signature', G.nav || 'Signature'), G.nav || 'Signature', G.title, G.lede);
+    var dd = el('div', 'cols2');
+    [['ok', 'Do', G.do], ['bad', "Don't", G.dont]].forEach(function (x) {
+      if (!x[2]) return;
+      var f = el('div', 'frame'); f.appendChild(el('div', 'verdict ' + x[0], x[1]));
+      f.appendChild(h('div', null, x[2].html)); if (x[2].caption) f.appendChild(h('p', 'cap', x[2].caption));
+      dd.appendChild(f);
+    });
+    s4.appendChild(dd);
+    if (G.css) s4.appendChild(el('pre', null, G.css.trim()));
+  }
+
+  // ---------- 5 type ----------
+  var T = S.type || {};
+  var s5 = section('type', add('type', 'Typography'), 'Typography', T.title || (D.fonts.display.family === D.fonts.ui.family ? D.fonts.ui.family + ' for everything, ' + D.fonts.mono.family + ' for code' : D.fonts.display.family + ', ' + D.fonts.ui.family + ' and ' + D.fonts.mono.family), T.lede);
+  var fg = el('div', D.fonts.display.family === D.fonts.ui.family ? 'cols2' : 'cols3');
+  [['display', '--font-display'], ['ui', '--font'], ['mono', '--mono']].forEach(function (x) {
+    var f = D.fonts[x[0]];
+    if (x[0] === 'display' && f.family === D.fonts.ui.family) return;
+    var c = el('div', 'font-card');
+    c.appendChild(h('div', 'eyebrow', esc(f.role || x[0]) + ' · <code>' + x[1] + '</code>'));
+    var spec = el('div', 'spec', f.sample || f.family); spec.style.fontFamily = 'var(' + x[1] + ')'; spec.style.fontWeight = f.sample_weight || 600;
+    if (x[0] === 'mono') spec.style.fontSize = '1.8rem';
+    c.appendChild(spec);
+    var ch = el('div', 'chars', f.chars || 'Aa Bb Cc · 0123456789'); ch.style.fontFamily = 'var(' + x[1] + ')'; c.appendChild(ch);
+    c.appendChild(h('p', 'cap', esc(f.family) + ', weights ' + (f.weights || [400]).join(', ') + '. ' + (f.use || '')));
+    fg.appendChild(c);
+  });
+  s5.appendChild(fg);
+  if (T.scale && T.scale.length) {
+    var sc = el('div', 'scale');
+    T.scale.forEach(function (r) {
+      var rw = el('div', 'srow');
+      rw.appendChild(h('div', 'lbl', '<b>' + esc(r.label) + '</b><span>' + esc(r.spec) + '</span>'));
+      var ex = el('div', 'ex', r.sample);
+      ex.style.fontSize = r.size || '1rem'; ex.style.fontWeight = r.weight || 400; ex.style.lineHeight = r.line || 1.3;
+      ex.style.fontFamily = 'var(' + ({ display: '--font-display', ui: '--font', mono: '--mono' }[r.font || 'ui']) + ')';
+      if (r.muted) ex.style.color = 'var(--text-muted)';
+      if (r.tabular) ex.style.fontVariantNumeric = 'tabular-nums';
+      rw.appendChild(ex); sc.appendChild(rw);
+    });
+    s5.appendChild(sc);
+  }
+
+  // ---------- 6 layout ----------
+  var L = S.layout || {};
+  var s6 = section('layout', add('layout', 'Layout'), 'Layout', L.title || 'Grid, spacing and shape', L.lede);
+  var lc = el('div', 'cols2');
+  var lf = el('div', 'frame');
+  var shell = el('div', 'shell ' + (L.shell === 'sidebar' ? 'sidebar' : 'site'));
+  shell.setAttribute('role', 'img'); shell.setAttribute('aria-label', L.shell === 'sidebar' ? 'Diagram: sidebar on the left, main column on the right' : 'Diagram: top bar above a 12-column content grid');
+  if (L.shell === 'sidebar') {
+    shell.innerHTML = '<div class="sb"><i class="on"></i><i></i><i></i><i></i><span>sidebar</span></div><div class="mn"><div class="h"></div><div class="grid12">' + new Array(13).join('<i></i>') + '</div><span>' + esc(L.shell_label || 'main column') + '</span></div>';
+  } else {
+    shell.innerHTML = '<div class="tb"><i class="on"></i><i></i><i></i><i></i></div><div class="mn"><div class="h"></div><div class="grid12">' + new Array(13).join('<i></i>') + '</div><span>' + esc(L.shell_label || '12 columns') + '</span></div>';
+  }
+  lf.appendChild(shell);
+  if (L.facts && L.facts.length) {
+    var fdl = el('dl', 'facts');
+    L.facts.forEach(function (r) { fdl.appendChild(el('dt', null, r[0])); fdl.appendChild(h('dd', null, r[1])); });
+    lf.appendChild(fdl);
+  }
+  lc.appendChild(lf);
+  var spf = frame('Spacing scale');
+  D.spacing.forEach(function (px, i) {
+    var r = h('div', 'sp', '<span>--space-' + (i + 1) + '</span><span style="display:flex;align-items:center;gap:10px"><i style="width:' + Math.min(px * 4, 260) + 'px"></i>' + px + 'px</span>');
+    spf.appendChild(r);
+  });
+  lc.appendChild(spf);
+  s6.appendChild(lc);
+
+  // ---------- 7 components ----------
+  var X = S.samples;
+  var s7 = section('components', add('components', 'Components'), 'Components', S.components_title || 'The pieces, live',
+    S.components_lede || 'Every specimen uses the role tokens (<code>--primary</code>, <code>--accent</code>, <code>--data</code>, <code>--highlight</code>), so moving a role to another brand color is a one-line change. The tabs, toggles and input are live.');
+  var kg = el('div', 'cols2');
+  function spec(label) { var s = el('div', 'specimen'); s.appendChild(el('div', 'eyebrow', label)); kg.appendChild(s); return s; }
+  var sb = spec('Buttons');
+  sb.appendChild(h('div', 'btn-row', '<button class="btn primary" type="button">' + esc(X.buttons.primary) + '</button><button class="btn secondary" type="button">' + esc(X.buttons.secondary) + '</button><button class="btn accent" type="button">' + esc(X.buttons.accent) + '</button>'));
+  sb.appendChild(h('div', 'btn-row', '<button class="btn danger" type="button">' + esc(X.buttons.danger) + '</button><button class="btn primary" type="button" disabled>Disabled</button>'));
+  sb.appendChild(h('p', 'cap', 'Primary is ' + esc(byKey[R.primary].name) + ' with ' + esc(byKey[R.primary].modes.light.onLabel.toLowerCase()) + ' in light mode. The accent button is ' + esc(byKey[R.accent].name) + ' and always carries the text color that passes on it.'));
+  var sk = spec('KPI cards');
+  var kp = el('div', 'kpis');
+  X.kpis.forEach(function (k) { kp.appendChild(h('div', null, '<div class="kpiLabel">' + esc(k.label) + '</div><div class="kpiValue">' + esc(k.value) + '</div><span class="delta ' + (k.up ? 'up' : 'down') + '">' + (k.up ? '↑ ' : '↓ ') + esc(k.delta) + '</span>')); });
+  sk.appendChild(kp);
+  sk.appendChild(el('p', 'cap', 'Up is ' + byKey[R.primary].name + ' and down is ' + (S.error && byKey[S.error] ? byKey[S.error].name : 'the error red') + ', each with an arrow, so color is never the only cue.'));
+  var stb = spec('Tabs and segmented control');
+  var tl = el('div', 'tabList'); tl.setAttribute('role', 'tablist');
+  X.tabs.forEach(function (t, i) { var b = el('button', 'tab', t); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', i === 0 ? 'true' : 'false'); tl.appendChild(b); });
+  tl.addEventListener('click', function (e) { if (e.target.classList.contains('tab')) tl.querySelectorAll('.tab').forEach(function (x) { x.setAttribute('aria-selected', x === e.target ? 'true' : 'false'); }); });
+  stb.appendChild(tl);
+  var sg = el('div', 'segmented');
+  X.segments.forEach(function (t, i) { var b = el('button', 'segment', t); b.type = 'button'; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false'); sg.appendChild(b); });
+  sg.addEventListener('click', function (e) { if (e.target.classList.contains('segment')) sg.querySelectorAll('.segment').forEach(function (x) { x.setAttribute('aria-pressed', x === e.target ? 'true' : 'false'); }); });
+  stb.appendChild(sg);
+  var sf = spec('Form field');
+  sf.appendChild(h('div', 'field', '<label for="f1">' + esc(X.input.label) + '</label><input id="f1" type="email" placeholder="' + esc(X.input.placeholder) + '"><span class="help">' + esc(X.input.help) + '</span>'));
+  sf.appendChild(h('div', 'field bad', '<label for="f2">' + esc(X.input.label) + '</label><input id="f2" type="email" value="not-an-email" aria-invalid="true" aria-describedby="f2h"><span class="help" id="f2h">⚠ ' + esc(X.input.error) + '</span>'));
+  sf.appendChild(el('p', 'cap', 'Input borders use the secondary text grey (the border grey is too faint to outline a field), and placeholders use secondary text too.'));
+  var sn = spec('Notices');
+  sn.appendChild(el('div', 'notice info', 'ⓘ ' + X.notices.info));
+  sn.appendChild(el('div', 'notice highlight', X.notices.highlight));
+  sn.appendChild(el('div', 'notice error', '⚠ ' + X.notices.error));
+  var sr = spec('Rows, progress and tags');
+  var rows = el('div', 'rows');
+  X.rows.forEach(function (r) { var d = el('div', r[1] === 'hover' || r[1] === 'selected' ? r[1] : null); d.appendChild(el('span', null, r[0])); d.appendChild(el('span', null, r[1])); rows.appendChild(d); });
+  sr.appendChild(rows);
+  sr.appendChild(h('div', 'progress', '<div class="bar"><span style="width:' + Number(X.progress) + '%"></span></div><span>' + Number(X.progress) + '%</span>'));
+  var tags = el('div', 'tags');
+  D.brands.forEach(function (b) { var t = el('span', 'tag', (X.tags && X.tags[b.key]) || b.name); t.style.background = 'var(--' + b.key + '-soft)'; tags.appendChild(t); });
+  sr.appendChild(tags);
+  s7.appendChild(kg);
+
+  // ---------- 8 accessibility ----------
+  var s8 = section('access', add('access', 'Accessibility'), 'Accessibility', 'Measured, not eyeballed',
+    'Contrast and color-blindness results come from brand-palette\'s checker: WCAG 2.2 ratios and OKLab distance (ΔEOK) under simulated protanopia, deuteranopia and tritanopia (Machado 2009).');
+  var ag = el('div', 'cols3');
+  ag.appendChild(frame('Passes', list(D.passes.map(esc))));
+  ag.appendChild(frame('Watch', list(D.watch.length ? D.watch.map(esc) : ['Nothing flagged.'])));
+  ag.appendChild(frame('Always', list(D.always)));
+  s8.appendChild(ag);
+
+  // ---------- 9 tokens ----------
+  var s9 = section('tokens', add('tokens', 'Tokens'), 'Tokens', 'Copy the whole system',
+    'CSS custom properties for both modes. They follow the system setting and also respond to <code>data-theme="light"</code> or <code>data-theme="dark"</code> on the root element. This page is styled with exactly these values.');
+  var cb = el('div', 'copybar'); cb.appendChild(el('span', 'cap', 'CSS custom properties · light and dark'));
+  var cbtn = el('button', 'btn primary', 'Copy tokens'); cbtn.type = 'button';
+  cbtn.addEventListener('click', function () { copy(D.css, 'tokens'); });
+  cb.appendChild(cbtn); s9.appendChild(cb);
+  var pre = el('pre', null, D.css); pre.style.maxHeight = '420px'; s9.appendChild(pre);
+
+  // ---------- 10 files (optional) ----------
+  if (S.files && S.files.length) {
+    var s10 = section('files', add('files', 'Where it lives'), 'Where it lives', S.files_title || 'The files that hold the brand', S.files_lede);
+    var fgd = el('div', 'cols3');
+    S.files.forEach(function (f) { var c = el('div', 'file'); c.appendChild(el('div', 'path', f.path)); c.appendChild(h('p', null, f.text)); fgd.appendChild(c); });
+    s10.appendChild(fgd);
+    if (S.change_process) { var g = el('div', 'guard'); g.appendChild(el('h3', null, 'Changing a color')); g.appendChild(h('p', null, S.change_process)); s10.appendChild(g); }
+  }
+
+  // nav + footer
+  var nl = document.getElementById('navlinks');
+  nav.forEach(function (x) { var a = el('a', null, x[1]); a.href = '#' + x[0]; nl.appendChild(a); });
+  document.getElementById('foot').textContent = S.footer || (S.name + ' brand reference · palette "' + D.paletteName + '" · built with brand-builder');
+
+  // theme
+  function setTheme(v) {
+    if (v === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', v);
+    try { localStorage.setItem('brand-theme', v); } catch (e) {}
+    applyMode();
+  }
+  // The spec can open the page in one mode (default_theme); a viewer's own choice wins.
+  var saved = null;
+  try { saved = localStorage.getItem('brand-theme'); } catch (e) {}
+  if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+  else if (saved !== 'auto' && (S.default_theme === 'light' || S.default_theme === 'dark')) root.setAttribute('data-theme', S.default_theme);
+  document.querySelectorAll('.theme button').forEach(function (b) { b.addEventListener('click', function () { setTheme(b.getAttribute('data-set')); }); });
+  if (mq.addEventListener) mq.addEventListener('change', applyMode);
+  applyMode();
+})();
+</script>
+</body>
+</html>
