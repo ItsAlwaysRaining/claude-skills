@@ -117,14 +117,15 @@ def em(value):
     return v / 16 if m.group(2) == "px" else v
 
 
-def colors(pal, primary_key):
-    """Per mode: the text colors and backgrounds the checks use."""
+def colors(pal, primary_key, fill=None):
+    """Per mode: the text colors and backgrounds the checks use. `fill` picks the primary step
+    buttons sit on in each mode ({"dark": "strong"}), like brand-builder's -fill token."""
     N = pal["neutrals"]
     brand = {b["key"]: b for b in pal["brand"]}
     prim = brand.get(primary_key) or pal["brand"][0]
     out = {}
     for m in MODES:
-        base = prim[m]["base"]
+        base = prim[m][(fill or {}).get(m, "base")]
         on = max([N["page"][m], N["text"][m], "#FFFFFF"], key=lambda c: cp.contrast(c, base))
         out[m] = {
             "fg": {"text": N["text"][m], "muted": N["muted"][m], "primary": base, "on-primary": on},
@@ -569,7 +570,7 @@ def option_html(o, rows, measured, spec, samples):
 
 def write_html(spec, pal, results, measured, base, out):
     tpl = (HERE.parent / "references" / "specimen-template.html").read_text()
-    C, _ = colors(pal, spec.get("primary"))
+    C, _ = colors(pal, spec.get("primary"), spec.get("fill"))
     samples = {**DEFAULT_SAMPLES, **(spec.get("samples") or {})}
     brand = spec.get("brand") or "Brand"
     summary = "".join(
@@ -687,7 +688,7 @@ def main():
     try:
         spec, pal, base = load(args.spec)
         APCA = apca_mod.APCA(CACHE)
-        C, _ = colors(pal, spec.get("primary"))
+        C, _ = colors(pal, spec.get("primary"), spec.get("fill"))
         measured = {}
         for o in spec["options"]:
             for f in o["fonts"].values():

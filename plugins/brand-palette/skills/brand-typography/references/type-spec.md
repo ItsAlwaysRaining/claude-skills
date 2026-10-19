@@ -11,6 +11,7 @@ A type spec is a JSON file that holds 1–3 typography options for one brand. Yo
 | `brief` | | One or two sentences on the brand, shown under the page title. |
 | `palette` | | Path to a brand-palette JSON, relative to this spec. Leave it out to check against greyscale. |
 | `primary` | | The palette `key` used for buttons and the reversed wordmark. Defaults to the first brand color. |
+| `fill` | | The primary step buttons sit on in each mode, e.g. `{"dark": "strong"}`. Defaults to `base`. Use it when no text passes on a mid-tone base, as brand-builder's `-fill` token does. |
 | `languages` | | Character sets the fonts must cover: `latin` (the default), `latin-ext`, `vietnamese`, `cyrillic`, `cyrillic-ext`, `greek`. |
 | `assumptions` | | Strings listing what you assumed, shown on the page. Always include them when the brief was thin. |
 | `wordmark` | | The name as it should be set in the wordmark specimen, if it differs from `brand`. |
