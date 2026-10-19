@@ -61,7 +61,13 @@ Claude writes the words and draws the art (the hero and motif SVGs) in a small b
 - chart steps that are at least 3:1 on the page and on cards, spaced apart in lightness so they stay distinct under simulated color blindness
 - the contrast table, the stats and the accessibility notes
 
-If there's no palette yet, it builds one first with brand-palette.
+You choose the type and the colors before it builds anything, fonts first:
+
+1. **Fonts:** it runs brand-typography and publishes three checked typography options on a specimen page, then waits for you to pick one.
+2. **Colors:** if you don't have a palette yet, it drafts three brand-palette directions, checks them, and shows them side by side in light and dark mode, set in your chosen fonts ([`compare_palettes.py`](skills/brand-palette/scripts/compare_palettes.py)). Then it waits for you to pick one.
+3. **Recheck:** it checks the chosen fonts again against the chosen palette, fixes the scale if needed, and only then builds the page.
+
+If you already named your fonts or have a palette, that step is skipped.
 
 ```bash
 python3 build_brand.py brand.json --check             # print the measurements
