@@ -63,6 +63,11 @@ table.checks td:last-child { min-width: 160px; }
 .ohead { display: flex; gap: 16px; justify-content: space-between; flex-wrap: wrap; align-items: flex-start; }
 .ohead > div:first-child { max-width: 72ch; }
 .tally { display: flex; flex-wrap: wrap; gap: 4px; }
+.guide { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; margin-top: 16px; }
+.guide details { flex-basis: 100%; min-width: 0; }
+.guide summary { cursor: pointer; font-size: .9rem; color: var(--muted); }
+.guide pre { margin: 8px 0 0; max-height: 360px; overflow: auto; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px; font: .8rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.copy { font: 600 .9rem ui-sans-serif, system-ui, sans-serif; background: var(--primary); color: var(--on-primary); border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
 .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 20px; }
 .font-card { background: var(--card); border-radius: 12px; padding: 16px; display: grid; gap: 8px; min-width: 0; }
 .font-card .spec { font-size: 2rem; line-height: 1.1; overflow-wrap: anywhere; }
@@ -142,6 +147,24 @@ __BODY__
   try { saved = localStorage.getItem(key) || "auto"; } catch (e) {}
   set(saved);
   document.querySelectorAll(".seg button").forEach(function (b) { b.addEventListener("click", function () { set(b.dataset.t); }); });
+  // Copy style guide: clipboard when allowed, otherwise open the panel and select the text
+  document.querySelectorAll(".copy").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var pre = document.getElementById(btn.dataset.target);
+      var note = document.getElementById(btn.id.replace("copy-", "copied-"));
+      function selectIt() {
+        pre.closest("details").open = true;
+        var r = document.createRange(); r.selectNodeContents(pre);
+        var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+        note.textContent = "Selected. Press ⌘C or Ctrl+C to copy.";
+      }
+      try {
+        navigator.clipboard.writeText(pre.textContent).then(function () {
+          note.textContent = "Copied. Paste it into a prompt or a project's instructions.";
+        }, selectIt);
+      } catch (e) { selectIt(); }
+    });
+  });
   var sp = document.getElementById("spacing");
   sp.addEventListener("click", function () {
     var on = sp.getAttribute("aria-pressed") !== "true";

@@ -427,7 +427,99 @@ def pick_row(o, use, fallback_font="ui"):
         next((r for r in o["scale"] if r.get("font", "ui") == fallback_font), o["scale"][0])
 
 
-def option_html(o, rows, measured, spec, samples):
+def style_guide(o, rows, measured, spec, C, pal):
+    """The option as a plain-text brief for Claude: fonts, how to load them, CSS for the scale,
+    the colors it was checked against, and the rules. Pasted into a prompt or a project's notes,
+    it lets Claude set new pages and artifacts in this type."""
+    brand = spec.get("brand") or "the brand"
+    f = o["fonts"]
+    roles = {"display": "--font-display", "ui": "--font-body", "mono": "--font-mono"}
+    lines = [f"# {brand} typography: {o['name']}", "",
+             f"Use these fonts and this type scale for anything made for {brand}: web pages, artifacts, documents and slides. "
+             "Every size, weight and color pairing below passed WCAG 2.2 AA and APCA checks; don't go smaller or lighter.", ""]
+    if o.get("why"):
+        lines += [o["why"], ""]
+    lines += ["## Fonts"]
+    google, other = [], []
+    for slot in SLOTS:
+        if slot not in f:
+            continue
+        ff, meas = f[slot], measured[f[slot]["family"]]
+        lic = F.LICENCES.get(meas["licence"], (meas["licence"] or "licence unknown", ""))[0]
+        ws = sorted({int(r.get("weight", 400)) for r in o["scale"] if r.get("font", "ui") == slot} | set(map(int, ff.get("weights", [])))) or [400]
+        src = {"google": "Google Fonts", "fontshare": "Fontshare", "file": "local file"}[meas["source"]]
+        lines.append(f'- {ff.get("role") or slot.title()}: **{ff["family"]}** ({src}, {lic}), weights {", ".join(map(str, ws))}.'
+                     + (f' {ff["use"]}' if ff.get("use") else ""))
+        (google if meas["source"] == "google" else other).append((ff["family"], ws, meas))
+    lines += ["", "## Loading the fonts"]
+    if google:
+        q = "&".join("family=" + fam.replace(" ", "+") + ":wght@" + ";".join(map(str, ws)) for fam, ws, _ in google)
+        lines += ["Google Fonts (works in Claude artifacts):", "```html",
+                  f'<link rel="stylesheet" href="https://fonts.googleapis.com/css2?{q}&display=swap">', "```"]
+    for fam, ws, meas in other:
+        if meas["source"] == "fontshare":
+            lines.append(f'{fam} is on Fontshare, not Google Fonts. On a website, load '
+                         f'`https://api.fontshare.com/v2/css?f[]={F.slug(fam, "-")}@{",".join(map(str, ws))}&display=swap`. '
+                         "In a Claude artifact, other font hosts are blocked, so inline the font files as @font-face data URIs.")
+        else:
+            lines.append(f"{fam} is a local font file: inline it as an @font-face data URI, or self-host it.")
+    lines += ["", "## CSS", "```css", ":root {"]
+    for slot in SLOTS:
+        if slot in f:
+            lines.append(f'  {roles[slot]}: {font_stack(f[slot], measured)};')
+    if "display" not in f:
+        lines.append(f'  --font-display: var(--font-body);')
+    if "mono" not in f:
+        lines.append(f'  --font-mono: var(--font-body);')
+    lines.append("}")
+    body = o.get("body") or {}
+    body_r = pick_row(o, "body")
+    lines += ["body {", f'  font-family: var(--font-body);', f'  font-size: {body_r["size"]};',
+              f'  font-weight: {body_r.get("weight", 400)};', f'  line-height: {body_r.get("line", 1.5)};', "}",
+              f'p {{ max-width: {body.get("measure", 66)}ch; margin: 0 0 {body.get("paragraph_spacing", "1em")}; }}']
+    for r in o["scale"]:
+        cls = re.sub(r"[^a-z0-9]+", "-", r["label"].lower()).strip("-")
+        decl = [f'font-family: var({roles.get(r.get("font", "ui"), "--font-body") if r.get("font", "ui") in f else "--font-body"})',
+                f'font-size: {r["size"]}', f'font-weight: {r.get("weight", 400)}', f'line-height: {r.get("line", 1.4)}']
+        if r.get("tracking"):
+            decl.append(f'letter-spacing: {r["tracking"]}')
+        if r.get("caps"):
+            decl.append("text-transform: uppercase")
+        if r.get("tabular") or r.get("use") == "data":
+            decl.append("font-variant-numeric: tabular-nums")
+        lines.append(f'.type-{cls} {{ {"; ".join(decl)}; }}  /* {r.get("use", "")} */')
+    lines += ["```", "", "## Colors these sizes were checked against"]
+    for m in MODES:
+        c = C[m]
+        lines.append(f'- {m.title()} mode: text {c["fg"]["text"]}, secondary text {c["fg"]["muted"]}, page {c["bg"]["page"]}, '
+                     f'card {c["bg"]["card"]}, button {c["fill"]["primary"]} with {c["fg"]["on-primary"]} labels.')
+    lines.append(f'Palette: {pal["name"]}{"" if pal.get("_source") else " (greyscale: recheck the sizes once the brand colors exist)"}.')
+    lines += ["", "## Rules"]
+    # smallest size at which the secondary text color passes APCA on every background, both modes
+    for w in (400, 600):
+        need = max(APCA.min_size(abs(APCA.lc(C[m]["fg"]["muted"], bg)), w) for m in MODES for bg in C[m]["bg"].values())
+        if need < apca_mod.NON_TEXT:
+            lines.append(f"- Secondary text color only at {math.ceil(need)}px or larger at weight {w}; smaller text uses the main text color.")
+    for r in o["scale"]:
+        c = r.get("color", "muted" if r.get("muted") else "text")
+        if c == "on-primary":
+            lines.append(f'- {r["label"]} labels sit on the button color above, in its label color, at {r["size"]} / {r.get("weight", 400)} or larger.')
+        elif c != "text":
+            lines.append(f'- {r["label"]} text uses the {"secondary text" if c == "muted" else c} color.')
+    lines += ["- Use bold for emphasis in reading text, not italics or capitals.",
+              "- Set sizes in rem so text follows the reader's browser setting.",
+              "- Use font-variant-numeric: tabular-nums wherever figures line up in columns."]
+    for fam_slot in ("display",):
+        if fam_slot in f and f[fam_slot].get("use"):
+            lines.append(f'- {f[fam_slot]["family"]}: {f[fam_slot]["use"]}')
+    watches = [r for r in rows if r["status"] == "watch" and r["fix"]]
+    if watches:
+        lines += ["", "## Known trade-offs"]
+        lines += [f'- {r["check"]}: {r["detail"]} Fix: {r["fix"]}' for r in watches]
+    return "\n".join(lines)
+
+
+def option_html(o, rows, measured, spec, samples, guide=""):
     S = samples
     brand = spec.get("wordmark") or spec.get("brand") or "Brand"
     f = o["fonts"]
@@ -506,6 +598,12 @@ def option_html(o, rows, measured, spec, samples):
   <div class="tally"><span class="badge pass">{c["pass"]} pass</span><span class="badge watch">{c["watch"]} watch</span>
   <span class="badge fail">{c["fail"]} fail</span><span class="badge test">{c["test"]} to test</span></div>
 </header>
+<div class="guide">
+  <button class="copy" type="button" id="copy-{esc(o["id"])}" data-target="guide-{esc(o["id"])}">Copy style guide</button>
+  <span class="cap copied" id="copied-{esc(o["id"])}" role="status" aria-live="polite"></span>
+  <details><summary>Style guide for Claude: paste it into a prompt or a project</summary>
+  <pre id="guide-{esc(o["id"])}" tabindex="0">{esc(guide)}</pre></details>
+</div>
 <div class="cards">{"".join(cards)}</div>
 
 <h3>Wordmark</h3>
@@ -589,8 +687,8 @@ def write_html(spec, pal, results, measured, base, out):
   <p class="cap">Colors: {esc(pal["name"])}{"" if pal.get("_source") else " (no palette given, so the checks use greyscale)"}.
   Checks: WCAG 2.2, APCA (apca-w3 {apca_mod.VERSION}, screen text), the British Dyslexia Association Dyslexia Style Guide (2023), and measured letter shapes.</p>
 </header>
-{"".join(option_html(o, results[o["id"]], measured, spec, samples) for o in spec["options"])}
-<footer class="cap">APCA results use the apca-w3 {apca_mod.VERSION} font lookup table (reference font Barlow), rounded down to its 5-Lc and 100-weight steps.
+{"".join(option_html(o, results[o["id"]], measured, spec, samples, style_guide(o, results[o["id"]], measured, spec, C, pal)) for o in spec["options"])}
+<footer class="cap">APCA results use the apca-w3 {apca_mod.VERSION} font lookup table (reference font Barlow), interpolated between its 5-Lc rows, with weights rounded down to the 100 step.
 Glyph likeness is the shared ink of two letters on one baseline; 80% or more is hard to tell apart. Letter shapes are measured at the regular weight.</footer>'''
     page = (tpl.replace("__TITLE__", esc(spec.get("page_title") or f"{brand} Type"))
                .replace("__FONTS__", google_link(spec))

@@ -72,6 +72,8 @@ python3 scripts/check_type.py <type.json> --out <brand>-type.html
 
 Don't edit the generated HTML by hand. Change the spec and build again. Google fonts load from Google Fonts. Fontshare and local fonts are inlined, so the page works as an artifact.
 
+Each option has a **Copy style guide** button. It copies a plain-text brief for Claude: the fonts and licences, how to load them (including in artifacts), CSS for the scale, the colors the sizes were checked against, the rules (such as the smallest size for secondary text) and the remaining trade-offs. The user can paste it into a prompt, a project's instructions or a CLAUDE.md, so new pages use the checked type. The same text shows in a panel under the button, for viewers whose clipboard is blocked.
+
 Save it in the user's working directory unless they named another place. If that directory is a skill or plugin repo, save it in the scratchpad instead. If the Artifact tool is available, publish the page as a private artifact with the icon `text` and a one-sentence description naming the brand and the pick. Republish to the same URL for changes. If the tool isn't available, give the file path and say to open it in a browser.
 
 ## Step 6: Report back
