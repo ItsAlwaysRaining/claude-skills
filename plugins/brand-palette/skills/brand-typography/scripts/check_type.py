@@ -340,6 +340,66 @@ def check_option(o, measured, spec, C):
     return sorted(out, key=lambda r: GROUPS.index(r["group"]))  # stable: fonts keep their order inside a group
 
 
+KIND = {"sans": "sans serif", "serif": "serif", "mono": "monospace", "display": "display face", "script": "script"}
+# how far apart two faces of the same kind must be on a measure to look different
+APART = {"width": (0.04, "width"), "weight": (0.04, "weight"), "contrast": (0.5, "stroke contrast"),
+         "aperture": (0.12, "letter openness"), "x_height": (0.03, "x-height")}
+
+
+def look(fam, measured):
+    m = measured[fam]
+    p = dict((m.get("shapes") or {}).get("profile") or {})
+    p["x_height"] = m["x_height"]
+    return m["category"], p
+
+
+def face_gap(a, b, measured):
+    """How two faces differ, in words: [] when they'd read as the same kind of face."""
+    if a == b:
+        return []
+    ka, pa = look(a, measured)
+    kb, pb = look(b, measured)
+    if ka != kb:
+        return [f"{KIND.get(ka, ka)} vs {KIND.get(kb, kb)}"]
+    diffs = [label for k, (gap, label) in APART.items()
+             if pa.get(k) is not None and pb.get(k) is not None and abs(pa[k] - pb[k]) >= gap]
+    # weight and openness are measured at the regular weight and fade at heading weights, so one
+    # of the differences has to be in the letters' shape: width or stroke contrast
+    shape = {APART["width"][1], APART["contrast"][1]}
+    return diffs if len(diffs) >= 2 and shape & set(diffs) else []
+
+
+def distinct_rows(spec, measured):
+    """Every pair of options must look noticeably different: a different kind of body face, a
+    different kind of headline face, or a headline face that differs on two measures. Fonts the
+    user chose ("given": true) are shared on purpose and skipped."""
+    opts = spec["options"]
+    out = []
+    for i in range(len(opts)):
+        for j in range(i + 1, len(opts)):
+            a, b = opts[i], opts[j]
+            name = f'{a["id"].upper()} vs {b["id"].upper()}'
+            reasons, same = [], []
+            for role, label in (("ui", "body"), ("display", "headlines")):
+                fa = a["fonts"].get(role) or a["fonts"]["ui"]
+                fb = b["fonts"].get(role) or b["fonts"]["ui"]
+                if fa.get("given") or fb.get("given"):
+                    continue
+                gap = face_gap(fa["family"], fb["family"], measured)
+                if gap:
+                    reasons.append(f'{label}: {fa["family"]} vs {fb["family"]} ({", ".join(gap)})')
+                else:
+                    ka = KIND.get(measured[fa["family"]]["category"], "")
+                    same.append(f'{label} {"both " + fa["family"] if fa["family"] == fb["family"] else "both " + ka + "s"}')
+            if reasons:
+                out.append(row("Options", name, "noticeably different", "pass", "Differ in " + "; ".join(reasons) + "."))
+            else:
+                out.append(row("Options", name, "noticeably different", "fail",
+                               f"Too alike: {', '.join(same) or 'the same fonts'}. At reading size these look like one option.",
+                               "Change one option's headline face to another kind (serif, sans, slab, mono), or give it a different kind of body face."))
+    return out
+
+
 def counts(rows):
     c = {"pass": 0, "watch": 0, "fail": 0, "test": 0}
     for r in rows:
@@ -666,7 +726,7 @@ def option_html(o, rows, measured, spec, samples, guide=""):
 </section>'''
 
 
-def write_html(spec, pal, results, measured, base, out):
+def write_html(spec, pal, results, measured, base, out, distinct=()):
     tpl = (HERE.parent / "references" / "specimen-template.html").read_text()
     C, _ = colors(pal, spec.get("primary"), spec.get("fill"))
     samples = {**DEFAULT_SAMPLES, **(spec.get("samples") or {})}
@@ -683,6 +743,9 @@ def write_html(spec, pal, results, measured, base, out):
   <h1>{esc(spec.get("title") or f"Type for {brand}")}</h1>
   {f'<p class="lede">{esc(spec["brief"])}</p>' if spec.get("brief") else ""}
   <table class="summary"><thead><tr><th>Option</th><th>Fonts</th><th>Checks</th></tr></thead><tbody>{summary}</tbody></table>
+  {('<div class="tablewrap"><table class="differ"><thead><tr><th>Pair</th><th>Different enough?</th><th>How they differ</th></tr></thead><tbody>'
+    + "".join(f'<tr><td>{esc(r["check"])}</td><td><span class="badge {r["status"]}">{"Yes" if r["status"] == "pass" else "No"}</span></td>'
+              f'<td>{esc(r["detail"])}</td></tr>' for r in distinct) + '</tbody></table></div>') if distinct else ""}
   {f'<details><summary>Assumptions</summary><ul>{assumptions}</ul></details>' if assumptions else ""}
   <p class="cap">Colors: {esc(pal["name"])}{"" if pal.get("_source") else " (no palette given, so the checks use greyscale)"}.
   Checks: WCAG 2.2, APCA (apca-w3 {apca_mod.VERSION}, screen text), the British Dyslexia Association Dyslexia Style Guide (2023), and measured letter shapes.</p>
@@ -744,8 +807,14 @@ def brand_type(spec, o, measured, base, fonts_dir):
 
 # ---------- main ----------
 
-def print_report(spec, pal, results):
+def print_report(spec, pal, results, distinct=()):
     print(f'Type for {spec.get("brand", "the brand")}  (colors: {pal["name"]}{"" if pal.get("_source") else ", greyscale default"})')
+    if distinct:
+        print("\n== Are the options noticeably different?")
+        for r in distinct:
+            print(f'    {"ok  " if r["status"] == "pass" else "FAIL"}  {r["check"]}: {r["detail"]}')
+            if r["fix"] and r["status"] != "pass":
+                print(f'          → {r["fix"]}')
     for o in spec["options"]:
         rows = results[o["id"]]
         c = counts(rows)
@@ -810,11 +879,13 @@ def main():
             print(f"error: {e}", file=sys.stderr)
             return 2
         return 0
-    print_report(spec, pal, results)
+    distinct = distinct_rows(spec, measured)
+    print_report(spec, pal, results, distinct)
     if args.out:
-        write_html(spec, pal, results, measured, base, args.out)
+        write_html(spec, pal, results, measured, base, args.out, distinct)
         print(f"\nWrote {args.out}")
-    return 1 if any(r["status"] == "fail" for rows in results.values() for r in rows) else 0
+    rows = [r for rs in results.values() for r in rs] + distinct
+    return 1 if any(r["status"] == "fail" for r in rows) else 0
 
 
 if __name__ == "__main__":

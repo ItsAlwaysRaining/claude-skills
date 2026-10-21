@@ -39,7 +39,7 @@ A type spec is a JSON file that holds 1–3 typography options for one brand. Yo
 
 - `id` is a short letter. Exactly one option has `"pick": true`.
 - `character` is a few words on how the option feels. `why` is one or two sentences on why it fits this brand.
-- `fonts`: `ui` is required. Leave out `display` for a one-family option, and leave out `mono` when nothing needs it. `weights` lists the weights to load beyond those the scale uses.
+- `fonts`: `ui` is required. Leave out `display` for a one-family option, and leave out `mono` when nothing needs it. `weights` lists the weights to load beyond those the scale uses. Add `"given": true` to a font the user chose, in every option that uses it, so the "noticeably different" check compares the other roles instead.
 - `body` describes the reading text. `measure` is the line length in characters (the `max-width` in ch). `paragraph_spacing`, `letter_spacing` and `word_spacing` are CSS lengths in em.
 
 ### Font sources

@@ -416,6 +416,39 @@ def spacing(font):
     return {"letter": gap / ink, "word": font.getlength(" ") / gap if gap > 0 else None, "ink_em": ink / PX, "gap_em": gap / PX}
 
 
+PROFILE_WORD = "hamburgefonstiv"
+
+
+def profile(font):
+    """What makes a face look like itself at a glance, measured on the regular weight:
+    width (average advance per letter, in em), weight (share of ink inside the letters' box),
+    stroke contrast (thickest vertical stroke of o over its thinnest horizontal one) and
+    the opening of c. Two fonts that differ on none of these read as the same font."""
+    width = font.getlength(PROFILE_WORD) / len(PROFILE_WORD) / PX
+    img = _render(font, PROFILE_WORD)
+    bbox = img.getbbox()
+    box = img.crop(bbox)
+    weight = box.histogram()[255] / (box.width * box.height)
+    o = _render(font, "o")
+    ob = o.getbbox()
+    o = o.crop(ob)
+    mid_y, mid_x = o.height // 2, o.width // 2
+    row = [o.getpixel((x, mid_y)) for x in range(o.width)]
+    col = [o.getpixel((mid_x, y)) for y in range(o.height)]
+
+    def first_run(px):
+        n = 0
+        for v in px:
+            if v:
+                n += 1
+            elif n:
+                break
+        return n
+    vert, horiz = first_run(row), first_run(col)
+    return {"width": round(width, 3), "weight": round(weight, 3),
+            "contrast": round(vert / horiz, 2) if horiz else None, "aperture": round(aperture(font, "c") or 0, 2)}
+
+
 def measure(spec, cache, base="."):
     f = fetch(spec, cache, base)
     t = Sfnt(f["regular"])
@@ -457,5 +490,6 @@ def measure(spec, cache, base="."):
         "mirrors": [{"a": a, "b": b, "likeness": round(likeness(font, a, b, flip=True), 2)} for a, b in MIRRORS],
         "aperture": {ch: round(aperture(font, ch) or 0, 2) for ch in "ce"},
         "spacing": {k: (round(v, 3) if v is not None else None) for k, v in spacing(font).items()},
+        "profile": profile(font),
     }
     return out

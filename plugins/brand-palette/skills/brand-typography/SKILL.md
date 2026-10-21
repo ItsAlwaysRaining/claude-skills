@@ -22,7 +22,15 @@ Pick the `languages` from the brief: `latin` by default, `latin-ext` for most Eu
 
 ## Step 2: Shortlist three options
 
-Make the three options genuinely different, not three versions of one idea. A useful spread:
+Make the three options look noticeably different at a glance, not three versions of one idea. Body sans faces look almost the same at reading size, so swapping one for another doesn't make a new option. Vary the **kind** of face instead: a serif or a sans for headlines, a sans or a serif for the body, one family or two. A spread that works:
+
+- one option with serif headlines over a sans body
+- one option that is all sans (a single family, hierarchy from weight and size)
+- one option with a different kind of body, such as a serif body under sans or slab headlines
+
+`check_type.py` tests every pair: two options must differ in the kind of body face, the kind of headline face, or a headline face that differs clearly on two measures (width, weight, stroke contrast, letter openness, x-height). Otherwise the pair fails. Fonts the user chose are shared on purpose; mark them `"given": true` and vary the other roles.
+
+Within that spread, cast the three roles like this:
 
 1. **The pick:** the best fit for the personality.
 2. **A quieter alternative:** more neutral or more readable, often a single family.
@@ -56,6 +64,7 @@ python3 scripts/check_type.py <type.json>
 
 It prints every check for every option. The groups are Licence, Languages, Weights, WCAG 2.2, APCA, BDA and Legibility, each marked ok, WATCH, FAIL or TEST, and each non-pass has a fix line.
 
+- **"Are the options noticeably different?" comes first.** If a pair fails, change one option's headline or body face to another kind, as the fix line says, before fixing anything else.
 - **FAIL means don't recommend it as it is.** Fix every failure in the spec and run again:
   - APCA or WCAG contrast: raise the size or weight the fix names, or move the row to the main text color. Muted text often needs 500 weight or a larger size to pass APCA.
   - A missing weight: use a weight the font has.
