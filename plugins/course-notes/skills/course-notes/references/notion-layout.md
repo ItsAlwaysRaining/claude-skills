@@ -186,18 +186,20 @@ A calendar at the top of the home page showing what the user learned each day. T
    - **Topic**: the class's short name, up to 3 words (e.g. `Product Design` for "Mastering Digital Product Design: UX Research & UI Design"). Use the same short name every day; save it as `calendar_name:` under the class in the config's "Known classes" cache the first time.
    - **Date**: today (`date:Date:start`, `date:Date:is_datetime` = 0).
    - **category** (if the calendar has it): `["class", "<subject tag>"]`, where the subject tag is the existing option that fits the class (`design` for Product Design). The tag list is under "Tags and note" in the learning-calendar skill's `references/calendar-entries.md`.
-   - **note** (if the calendar has it): 1–5 lowercase words naming today's lecture subjects, comma-separated (e.g. `aesthetics, balance`).
+   - **note** (if the calendar has it): 1–5 words naming the skills from today's lectures in terms an employer would recognize, comma-separated (e.g. `visual balance, composition`). The calendar is public: follow "Voice" and "Tags and note" in the learning-calendar skill's `references/calendar-entries.md` for the note, the summary and the subtopic bullets.
    - Icon: an emoji fitting the class.
    - Content:
      ```
      <callout icon="💬" color="purple_bg">
      	<One sentence on what today's lectures covered.>
      </callout>
-     ## 🔹 Subtopics {color="purple"}
+     <h2 color="purple">
+     🔹 Subtopics
+     </h2>
      ```
 4. **Add the lecture as a subtopic.** If the entry already has a subtopic covering this lecture's topic (a second lecture on the same subject usually fits), append its new points to that sub-page with `insert_content` and add the lecture link under its "📝 Related notes". Otherwise create a sub-page of the class entry (`create-pages` with parent `{"type": "page_id", "page_id": "<class entry id>"}`):
    - **title**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
-   - Content: bullets of the points covered, each with a one- or two-sentence sub-bullet, then `## 📝 Related notes {color="purple"}` and `- <mention-page url="<lecture page url>"/>`. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
+   - Content: bullets of the points covered, each with a one- or two-sentence sub-bullet, then a `<h2 color="purple">` "📝 Related notes" heading and `- <mention url="<lecture page url>"/>`. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
 5. Update the class entry's one-sentence summary if it no longer covers all of today's lectures. If the entry's `category` or `note` is blank, fill it as in step 3. Never overwrite values the user typed. If a new lecture's subject isn't in a note you wrote earlier today, add it (keep it under 5 words); leave the user's own note as it is.
 6. Keep summaries faithful to the lectures (Step 5 of SKILL.md) and no longer than two sentences, even after adding more notes to an entry.
 7. Record the class entry in the calendar history file, with the lecture under `notes:` and the subtopic under `subtopics:`.

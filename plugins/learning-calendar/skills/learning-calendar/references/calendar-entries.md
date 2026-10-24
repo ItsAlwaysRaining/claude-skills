@@ -11,9 +11,20 @@ The calendar database has four properties:
 - **Topic** (title): the umbrella entry's name, i.e. the class, computing concept or subject (up to 3 words), or a 1–2 word topic for a lone entry.
 - **Date** (date): the day learned, no time.
 - **category** (multi-select): 1–3 broad tags. See "Tags and note" below.
-- **note** (text): a short keyword hint of what the entry covered. See "Tags and note" below.
+- **note** (text): the skills the entry shows, in a few words. See "Tags and note" below.
 
 Older calendars may not have `category` or `note` yet. If the fetched schema lacks them, leave them out and don't add them unless the user asks.
+
+## Voice (the calendar is public)
+
+The calendar is a public Notion page, and people who might hire the user may read it. Write every note, summary and subtopic so it shows the skills the user is building. Keep it professional, but it should still sound like a curious person who enjoys making things, not like a résumé generator.
+
+- **Lead with the skill, then the evidence.** Name the skill in terms an employer would recognize, then show how it was used: "Applied a type scale across 10 mobile screens", not "fixed font sizes".
+- **Write about what was learned, not the tasks done.** Turn "renamed 659 layers" into the practice behind it: "Layer naming conventions that keep a large file navigable (659 layers renamed)". Numbers and concrete results are welcome as evidence.
+- **Personality, in moderation.** Write plainly, actively and warmly, with real curiosity: "Dug into why…", "Turns out…", "The fix was simpler than expected:". Use about one light touch per page. No slang, jokes at anyone's expense, emoji in the text, or exclamation marks.
+- **Be honest about AI.** When Claude or another AI tool did the work, say so. Working well with AI tools is itself a skill to show: "Directed Claude Code to audit…", "Used the Figma MCP to…". Never present AI-made work as done by hand.
+- **Make it readable to outsiders.** Explain a project the first time it appears on a page ("Rain in My Head, a music-listening dashboard"). Spell out internal shorthand. Leave out anything private: file paths, page or repo IDs, secrets, other people's names, and personal or health details unless the user asks for them.
+- **Keep the uncertainty out.** Question marks and "I think?" in the user's raw notes are reminders to themselves. Turn them into a statement of what was explored, or ask the user.
 
 ## Tags and note
 
@@ -40,12 +51,22 @@ The user fills these in by hand too, so match their style.
 - Reuse the existing options. Add a new one only when none fits, and mark it **new tag** in the draft so the user can say no.
 - Set the property as a JSON array: `"category": ["git", "automation"]`.
 
-**note.** 1–5 lowercase words, comma-separated, like a reminder to themselves. Either:
+**note.** 1–5 words naming the **skills** the entry shows, in the terms a job posting would use. Comma-separated, lowercase except proper names and acronyms (Figma, WCAG, CI/CD), with no full sentences and no punctuation at the end. Examples from the user's calendar:
 
-- the subtopics in plain words: `secrets, git issues`, `actions`, `skills`, `Claude Artifacts, Claude Monitoring` (keep proper names capitalised), or
-- the specific angle: `color perception`, `pollen counts`.
+| Instead of (a task or reminder) | Write (the skill) |
+|---|---|
+| `spotify: drill downs` | `interactive data visualization` |
+| `actions` | `CI/CD with GitHub Actions` |
+| `nav bar, text styles` | `navigation design, type systems` |
+| `rain: running locally` | `local development environments` |
+| `page layout, notes format` | `information architecture, documentation` |
+| `pollen: ambee api, errors` | `REST APIs, error handling` |
+| `figma mcp, run skill` | `AI design-to-code workflows` |
 
-For project work, name the project first: `spotify: drill downs`, `spotify app hosting options`. No full sentences and no trailing punctuation. Don't copy question marks from the user's notes (`mood?`); those show their own uncertainty.
+- Leave out project prefixes (`rain:`, `spotify:`, `pollen:`). The `project` tag already marks project work, and the project's name means nothing to a reader.
+- Prefer the broader, recognizable skill over the specific feature: `component design`, not `site header component`. Keep a precise term when it's a skill in its own right (`aesthetic-usability effect`, `8pt grid`).
+- Never use question marks or hedging (`mood?`). If the angle is unclear, ask the user.
+- Notes are rewritten only when the user asks. The rule below still applies.
 
 **Never overwrite the user's values.** Fill `category` or `note` only when it is blank. If an entry the user already tagged now has a subtopic that needs another tag, or a new subtopic the note doesn't mention, show the change in the draft as a suggestion and apply it only if they approve.
 
