@@ -21,7 +21,9 @@ Ask which Notion page the calendar should sit at the top of (e.g. "Learning"). I
 New databases land at the end of the page. Fetch the home page, then `replace_content` with this block first, followed by the page's existing content. Keep every `<page>` and `<database>` tag exactly as fetched, since dropping one deletes it.
 
 ```
-## 📅 What I'm Learning {color="purple"}
+<h2 color="purple">
+📅 What I'm Learning
+</h2>
 Each day's topics. Click one for a quick summary and links to that day's notes.
 <database ...the calendar's tag exactly as fetched...>Learning Calendar</database>
 ---

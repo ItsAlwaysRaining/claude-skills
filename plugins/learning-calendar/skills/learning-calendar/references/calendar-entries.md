@@ -2,7 +2,7 @@
 
 Read this before pushing approved topics (Step 3 of SKILL.md). Every entry should look the same, whether this skill or course-notes created it.
 
-Notion uses its own "enhanced Markdown". Before writing page content, read `notion://docs/enhanced-markdown-spec` once per session with the Notion fetch tool. Indent children with tabs, and escape `\ * ~ ` $ [ ] < > { } | ^` in plain text.
+Notion uses its own "enhanced Markdown". Before writing page content, read `notion://docs/enhanced-markdown-spec` once per session with the Notion fetch tool. Write colored headings as `<h2 color="purple">` blocks (heading text on its own line, then `</h2>`), never `## Heading {color="purple"}`: Notion now shows that attribute as literal text. Link pages with `<mention url="…"/>`. Indent children with tabs, and escape `\ * ~ ` $ [ ] < > { } | ^` in plain text.
 
 ## Schema
 
@@ -61,8 +61,10 @@ For project work, name the project first: `spotify: drill downs`, `spotify app h
 <callout icon="💬" color="purple_bg">
 	<One or two sentences: the approved summary.>
 </callout>
-## 📝 Related notes {color="purple"}
-- <mention-page url="<note page url>"/>
+<h2 color="purple">
+📝 Related notes
+</h2>
+- <mention url="<note page url>"/>
 ```
 
 With no notes to link, leave out the "Related notes" heading and list entirely. Several approved topics can go in one `create-pages` call.
@@ -73,7 +75,9 @@ This is the usual shape: class, Claude & AI, concept and subject entries are all
 
 1. Create the umbrella entry in the calendar as above. Its callout holds one sentence covering the whole group, then add any "📝 Related notes", then end the page with this heading:
    ```
-   ## 🔹 Subtopics {color="purple"}
+   <h2 color="purple">
+   🔹 Subtopics
+   </h2>
    ```
 2. Create each subtopic as a sub-page of the umbrella entry (`create-pages` with parent `{"type": "page_id", "page_id": "<umbrella entry id>"}`), so it doesn't appear on the calendar on its own:
    - properties: `"title": "<subtopic>"` (1–2 words). Sub-pages aren't calendar rows, so they have no Topic or Date.
@@ -126,7 +130,7 @@ covers_from: 2026-10-12
 
 Fetch the entry first, then use `update-page` with `update_content`:
 
-- **Add a link:** append `- <mention-page url="…"/>` after the last item under "📝 Related notes". If the entry has no such heading yet, add the heading and list after the callout.
+- **Add a link:** append `- <mention url="…"/>` after the last item under "📝 Related notes". If the entry has no such heading yet, add the heading and list after the callout.
 - **Change the summary:** replace the text inside the callout. Keep it to two sentences.
 - **Rename:** `update_properties` with the new `Topic`.
 - **Fill tags or note:** `update_properties` with `category` and/or `note`, only for fields the fetched entry has blank (see "Tags and note"). An approved change to a field the user filled replaces it with the approved value. Properties only change with the `update_properties` command: passing them alongside `update_content` silently does nothing, so make a separate call.

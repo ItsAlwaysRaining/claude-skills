@@ -46,14 +46,18 @@ Create under the home page (see "Creating pages"), icon = an emoji that fits the
 <callout icon="🎓" color="purple_bg">
 	**<Platform> course** · Notes generated from lecture transcripts with the course-notes skill. Each section below holds its lecture notes; every term lands in the glossary at the bottom.
 </callout>
-## 📚 Sections {color="purple"}
+<h2 color="purple">
+📚 Sections
+</h2>
 ```
 
 Then append the glossary heading with `insert_content` at the end:
 
 ```
 ---
-## 📖 Glossary {color="purple"}
+<h2 color="purple">
+📖 Glossary
+</h2>
 Every vocabulary term from this class. Search, sort, or filter by section.
 ```
 
@@ -73,7 +77,9 @@ Create it as described in "Creating pages". Title: `Section N: <Name>` when the 
 <callout icon="🧭" color="gray_bg">
 	<One sentence on what this section covers.>
 </callout>
-## Lectures {color="purple"}
+<h2 color="purple">
+Lectures
+</h2>
 ```
 
 ## Lecture page
@@ -84,15 +90,21 @@ Create it as described in "Creating pages". Title = lecture title (prefix the le
 <callout icon="<class emoji>" color="gray_bg">
 	**Class:** <class name> · **Section N:** <section name>
 </callout>
-## ✅ Key Takeaways {color="purple"}
+<h2 color="purple">
+✅ Key Takeaways
+</h2>
 <callout icon="⭐" color="green_bg">
 	- takeaway
 	- takeaway
 </callout>
-## 🔗 Resources Mentioned {color="purple"}
+<h2 color="purple">
+🔗 Resources Mentioned
+</h2>
 - bullets
 ---
-## 🔤 Vocabulary {color="purple"}
+<h2 color="purple">
+🔤 Vocabulary
+</h2>
 <table fit-page-width="true" header-row="true">
 	<colgroup>
 		<col color="purple_bg" width="220">
@@ -108,19 +120,27 @@ Create it as described in "Creating pages". Title = lecture title (prefix the le
 	</tr>
 </table>
 ---
-## 🧠 Main Concepts {color="purple"}
+<h2 color="purple">
+🧠 Main Concepts
+</h2>
 ### <Concept>
 <text and bullets>
 ---
-## 🛠️ How-to Steps {color="purple"}
+<h2 color="purple">
+🛠️ How-to Steps
+</h2>
 ### <Task> {toggle="true"}
 	1. Step
 	2. Step
-## ⌨️ Shortcuts & Settings {color="purple"}
+<h2 color="purple">
+⌨️ Shortcuts & Settings
+</h2>
 <table fit-page-width="true" header-row="true"> … Action | How, columns gray_bg width="220" and width="888"; shortcuts in `code` …</table>
 (code blocks for code/commands go here too)
 ---
-## 📌 Tips & Gotchas {color="purple"}
+<h2 color="purple">
+📌 Tips & Gotchas
+</h2>
 <callout icon="⚠️" color="orange_bg">
 	Warning text
 </callout>
@@ -128,7 +148,9 @@ Create it as described in "Creating pages". Title = lecture title (prefix the le
 	Tip text
 </callout>
 ---
-## ❓ Review Questions {color="purple"}
+<h2 color="purple">
+❓ Review Questions
+</h2>
 <details>
 <summary>1. Question?</summary>
 	Answer.
@@ -209,7 +231,9 @@ covers_from: 2026-10-12
 3. Add a calendar view: `create-view` with `database_id`, type `calendar`, name `Calendar`, configure `CALENDAR BY "Date"; SHOW "Topic"`. Rename the default table view to `All topics` with `SORT BY "Date" DESC`.
 4. The database lands at the end of the home page. Fetch the page and `replace_content` with this block first, followed by the existing content, keeping every `<page>` and `<database>` tag exactly as fetched:
    ```
-   ## 📅 What I'm Learning {color="purple"}
+   <h2 color="purple">
+   📅 What I'm Learning
+   </h2>
    Each day's topics. Click one for a quick summary and links to that day's notes.
    <database ...the calendar's tag as fetched...>Learning Calendar</database>
    ---
