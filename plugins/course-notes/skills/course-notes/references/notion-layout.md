@@ -46,14 +46,18 @@ Create under the home page (see "Creating pages"), icon = an emoji that fits the
 <callout icon="🎓" color="purple_bg">
 	**<Platform> course** · Notes generated from lecture transcripts with the course-notes skill. Each section below holds its lecture notes; every term lands in the glossary at the bottom.
 </callout>
-## 📚 Sections {color="purple"}
+<h2 color="purple">
+📚 Sections
+</h2>
 ```
 
 Then append the glossary heading with `insert_content` at the end:
 
 ```
 ---
-## 📖 Glossary {color="purple"}
+<h2 color="purple">
+📖 Glossary
+</h2>
 Every vocabulary term from this class. Search, sort, or filter by section.
 ```
 
@@ -73,7 +77,9 @@ Create it as described in "Creating pages". Title: `Section N: <Name>` when the 
 <callout icon="🧭" color="gray_bg">
 	<One sentence on what this section covers.>
 </callout>
-## Lectures {color="purple"}
+<h2 color="purple">
+Lectures
+</h2>
 ```
 
 ## Lecture page
@@ -84,15 +90,21 @@ Create it as described in "Creating pages". Title = lecture title (prefix the le
 <callout icon="<class emoji>" color="gray_bg">
 	**Class:** <class name> · **Section N:** <section name>
 </callout>
-## ✅ Key Takeaways {color="purple"}
+<h2 color="purple">
+✅ Key Takeaways
+</h2>
 <callout icon="⭐" color="green_bg">
 	- takeaway
 	- takeaway
 </callout>
-## 🔗 Resources Mentioned {color="purple"}
+<h2 color="purple">
+🔗 Resources Mentioned
+</h2>
 - bullets
 ---
-## 🔤 Vocabulary {color="purple"}
+<h2 color="purple">
+🔤 Vocabulary
+</h2>
 <table fit-page-width="true" header-row="true">
 	<colgroup>
 		<col color="purple_bg" width="220">
@@ -108,19 +120,27 @@ Create it as described in "Creating pages". Title = lecture title (prefix the le
 	</tr>
 </table>
 ---
-## 🧠 Main Concepts {color="purple"}
+<h2 color="purple">
+🧠 Main Concepts
+</h2>
 ### <Concept>
 <text and bullets>
 ---
-## 🛠️ How-to Steps {color="purple"}
+<h2 color="purple">
+🛠️ How-to Steps
+</h2>
 ### <Task> {toggle="true"}
 	1. Step
 	2. Step
-## ⌨️ Shortcuts & Settings {color="purple"}
+<h2 color="purple">
+⌨️ Shortcuts & Settings
+</h2>
 <table fit-page-width="true" header-row="true"> … Action | How, columns gray_bg width="220" and width="888"; shortcuts in `code` …</table>
 (code blocks for code/commands go here too)
 ---
-## 📌 Tips & Gotchas {color="purple"}
+<h2 color="purple">
+📌 Tips & Gotchas
+</h2>
 <callout icon="⚠️" color="orange_bg">
 	Warning text
 </callout>
@@ -128,7 +148,9 @@ Create it as described in "Creating pages". Title = lecture title (prefix the le
 	Tip text
 </callout>
 ---
-## ❓ Review Questions {color="purple"}
+<h2 color="purple">
+❓ Review Questions
+</h2>
 <details>
 <summary>1. Question?</summary>
 	Answer.
@@ -164,18 +186,20 @@ A calendar at the top of the home page showing what the user learned each day. T
    - **Topic**: the class's short name, up to 3 words (e.g. `Product Design` for "Mastering Digital Product Design: UX Research & UI Design"). Use the same short name every day; save it as `calendar_name:` under the class in the config's "Known classes" cache the first time.
    - **Date**: today (`date:Date:start`, `date:Date:is_datetime` = 0).
    - **category** (if the calendar has it): `["class", "<subject tag>"]`, where the subject tag is the existing option that fits the class (`design` for Product Design). The tag list is under "Tags and note" in the learning-calendar skill's `references/calendar-entries.md`.
-   - **note** (if the calendar has it): 1–5 lowercase words naming today's lecture subjects, comma-separated (e.g. `aesthetics, balance`).
+   - **note** (if the calendar has it): 1–5 words naming the skills from today's lectures in terms an employer would recognize, comma-separated (e.g. `visual balance, composition`). The calendar is public: follow "Voice" and "Tags and note" in the learning-calendar skill's `references/calendar-entries.md` for the note, the summary and the subtopic bullets.
    - Icon: an emoji fitting the class.
    - Content:
      ```
      <callout icon="💬" color="purple_bg">
      	<One sentence on what today's lectures covered.>
      </callout>
-     ## 🔹 Subtopics {color="purple"}
+     <h2 color="purple">
+     🔹 Subtopics
+     </h2>
      ```
 4. **Add the lecture as a subtopic.** If the entry already has a subtopic covering this lecture's topic (a second lecture on the same subject usually fits), append its new points to that sub-page with `insert_content` and add the lecture link under its "📝 Related notes". Otherwise create a sub-page of the class entry (`create-pages` with parent `{"type": "page_id", "page_id": "<class entry id>"}`):
    - **title**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
-   - Content: bullets of the points covered, each with a one- or two-sentence sub-bullet, then `## 📝 Related notes {color="purple"}` and `- <mention-page url="<lecture page url>"/>`. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
+   - Content: bullets of the points covered, each with a one- or two-sentence sub-bullet, then a `<h2 color="purple">` "📝 Related notes" heading and `- <mention url="<lecture page url>"/>`. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
 5. Update the class entry's one-sentence summary if it no longer covers all of today's lectures. If the entry's `category` or `note` is blank, fill it as in step 3. Never overwrite values the user typed. If a new lecture's subject isn't in a note you wrote earlier today, add it (keep it under 5 words); leave the user's own note as it is.
 6. Keep summaries faithful to the lectures (Step 5 of SKILL.md) and no longer than two sentences, even after adding more notes to an entry.
 7. Record the class entry in the calendar history file, with the lecture under `notes:` and the subtopic under `subtopics:`.
@@ -209,7 +233,9 @@ covers_from: 2026-10-12
 3. Add a calendar view: `create-view` with `database_id`, type `calendar`, name `Calendar`, configure `CALENDAR BY "Date"; SHOW "Topic"`. Rename the default table view to `All topics` with `SORT BY "Date" DESC`.
 4. The database lands at the end of the home page. Fetch the page and `replace_content` with this block first, followed by the existing content, keeping every `<page>` and `<database>` tag exactly as fetched:
    ```
-   ## 📅 What I'm Learning {color="purple"}
+   <h2 color="purple">
+   📅 What I'm Learning
+   </h2>
    Each day's topics. Click one for a quick summary and links to that day's notes.
    <database ...the calendar's tag as fetched...>Learning Calendar</database>
    ---

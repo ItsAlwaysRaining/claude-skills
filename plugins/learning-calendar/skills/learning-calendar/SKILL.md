@@ -68,9 +68,10 @@ Put each topic in the **first** bucket that fits:
 **Writing them up:**
 
 - **Umbrella names** are the class, concept or subject name (up to 3 words). **Subtopic names** are 1–2 words.
-- The umbrella's summary is one sentence covering the whole entry for that day.
-- Each entry gets 1–3 **category** tags (e.g. `git`, `claude, AI`, `class, design`, `project, web-dev`) and a short lowercase **note** of 1–5 words naming what it covered (`secrets, git issues`, `spotify: drill downs`). The tag list and note style are under "Tags and note" in `references/calendar-entries.md`. Read it before writing the draft.
-- Each subtopic gets a bullet list of the high-level points covered, each with a one- or two-sentence description as a sub-bullet. Draw them from what was actually discussed or taught, not general knowledge. For a topic from the user's list with nothing else to go on, write one plain point and mark it *(from your list; edit if you like)* in the draft.
+- **The calendar is public**, and people who might hire the user may read it. Write everything in the voice set out under "Voice" in `references/calendar-entries.md`: show the skills being built, keep a professional lean, and let the user's curiosity come through. Read that section and "Tags and note" before writing the draft.
+- The umbrella's summary is one sentence covering the whole entry for that day. It says what skill was built and how it was applied, e.g. "Built a reusable component library in Figma and used it to rebuild one dashboard at three screen sizes."
+- Each entry gets 1–3 **category** tags (e.g. `git`, `claude, AI`, `class, design`, `project, web-dev`) and a **note** of 1–5 words naming the skills it shows (`interactive data visualization`, `CI/CD with GitHub Actions`), with no project prefix.
+- Each subtopic gets a bullet list of the **skills or concepts** learned. Each bullet's bold label names the skill, and its sub-bullet gives one or two sentences on what it is and how it was applied. Write about the lesson, not a log of the edits made. Draw them from what was actually discussed or taught, not general knowledge. For a topic from the user's list with nothing else to go on, write one plain point and mark it *(from your list; edit if you like)* in the draft.
 - **One level deep only:** calendar entry → subtopic pages, and nothing below that. More detail goes into a subtopic's bullets, never into a deeper page.
 - Merge closely related subtopics within an entry rather than listing near-duplicates.
 
@@ -85,23 +86,23 @@ Show the calendar entries in chat as a numbered table, one row per umbrella entr
 
 | # | Entry | Kind | Tags | Note | Summary | Subtopics | Links |
 |---|---|---|---|---|---|---|---|
-| 1 | Product Design | class | class, design | aesthetics, balance | One sentence on the day's lectures. | 1a Aesthetics · 1b Balance | 3 lecture notes |
-| 2 | GitHub | concept | git | secrets, git issues | One sentence on the day's work. | 2a GitHub Secrets · 2b Issue Writing | none |
-| 3 | Claude & AI | Claude & AI | claude, AI | skills, monitor | One sentence. | 3a Claude Skills · 3b Claude Monitor | none |
-| 4 | CSS Grid | other | web-dev, design | grid layout | One sentence. | (none) | none |
+| 1 | Product Design | class | class, design | visual balance, composition | One sentence on the skills from the day's lectures. | 1a Aesthetics · 1b Balance | 3 lecture notes |
+| 2 | GitHub | concept | git | secrets management, issue writing | One sentence on the skill built and how it was applied. | 2a GitHub Secrets · 2b Issue Writing | none |
+| 3 | Claude & AI | Claude & AI | claude, AI | AI workflow automation | One sentence. | 3a Claude Skills · 3b Claude Monitor | none |
+| 4 | CSS Grid | other | web-dev, design | CSS grid layout | One sentence. | (none) | none |
 
 **1. Product Design** (from: notes · already on calendar)
 - **1a Aesthetics**
-  - **Point covered**: one or two sentences.
+  - **Skill or concept**: what it is and how it was applied, in one or two sentences.
 - **1b Balance**
-  - **Point covered**: one or two sentences.
+  - **Skill or concept**: what it is and how it was applied, in one or two sentences.
 
 **2. GitHub** (from: asked in spotify-music-analysis)
 - **2a GitHub Secrets**
-  - **Point covered**: one or two sentences.
+  - **Skill or concept**: what it is and how it was applied, in one or two sentences.
 …
 
-Edit anything: e.g. "drop 2b", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", "tag 2 as automation", "note 3: skills, hooks", or "add a link to my Figma notes".
+Edit anything: e.g. "drop 2b", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", "tag 2 as automation", "note 3: AI workflow automation", or "add a link to my Figma notes".
 Say **approve** to push these to the calendar.
 ```
 
