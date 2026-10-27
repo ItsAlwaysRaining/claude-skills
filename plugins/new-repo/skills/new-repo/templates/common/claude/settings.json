@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(gh pr merge*)",
+      "Bash(gh pr review * --approve*)",
+      "Bash(git push -f*)",
+      "Bash(git push --force*)",
+      "Bash(git push origin main*)",
+      "Bash(git push origin master*)",
+      "Bash(git push origin HEAD:main*)",
+      "Bash(git push origin HEAD:master*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-merge.py\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.github/scripts/harden-public.sh\" --check",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

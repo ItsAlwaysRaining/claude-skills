@@ -1,0 +1,19 @@
+name: User story
+description: A user story with acceptance criteria
+labels: [user-story]
+body:
+  - type: textarea
+    id: story
+    attributes:
+      label: Story
+      value: As a <role>, I want <goal> so that <benefit>.
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - AC-1:
+    validations:
+      required: true

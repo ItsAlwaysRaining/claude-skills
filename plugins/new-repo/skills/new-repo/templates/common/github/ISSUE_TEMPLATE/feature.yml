@@ -1,0 +1,21 @@
+name: Feature request
+description: Suggest a new feature or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What should happen?
+    validations:
+      required: true
+  - type: textarea
+    id: done
+    attributes:
+      label: How do we know it's done?
+      description: Acceptance criteria, one per line.

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "{{NODE_VERSION}}"
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; elif [ -f package.json ]; then npm install; fi
+      - name: Lint
+        run: |
+          if [ -f package.json ] && npm pkg get scripts.lint | grep -vq '{}'; then npm run lint; fi
+      - name: Run tests
+        run: |
+          if [ -f package.json ]; then {{TEST_COMMAND}}; else echo "No package.json yet"; fi

@@ -36,6 +36,12 @@
       "source": "./plugins/book-library",
       "description": "Add books to a Notion Library and move them between shelves, with a summary, a 'Why I Picked This Book' section, a notes sub-page, and a review section once finished.",
       "category": "productivity"
+    },
+    {
+      "name": "new-repo",
+      "source": "./plugins/new-repo",
+      "description": "Create a GitHub repo with PR-only rules, a Claude hook that blocks merging and pushing to main, issue templates, CI and Dependabot, plus branch protection and security checks once it's public.",
+      "category": "development"
     }
   ]
 }
