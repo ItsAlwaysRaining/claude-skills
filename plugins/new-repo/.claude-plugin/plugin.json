@@ -1,0 +1,11 @@
+{
+  "name": "new-repo",
+  "version": "1.0.0",
+  "description": "Create a new GitHub repo with a standard setup: PR-only workflow rules, a Claude hook that blocks merging and pushing to main, issue templates and labels, CI tests and Dependabot. Public repos also get branch protection, required CodeQL and dependency review, and secret scanning, applied automatically if a private repo later goes public. Supports Python and Node/TypeScript.",
+  "author": {
+    "name": "ItsAlwaysRaining"
+  },
+  "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
+  "license": "MIT",
+  "keywords": ["git", "github", "repo", "setup", "ci", "security", "branch-protection", "workflow"]
+}
