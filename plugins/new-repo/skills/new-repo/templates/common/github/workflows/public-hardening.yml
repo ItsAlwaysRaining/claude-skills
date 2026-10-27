@@ -1,0 +1,43 @@
+name: Public hardening
+
+# Runs when the repo changes from private to public, and can be run by hand.
+# Applying branch protection needs an admin token: add a fine-grained token with
+# "Administration: write" on this repo as the secret REPO_ADMIN_TOKEN to make it automatic.
+# Without it, the workflow opens an issue asking the owner to run the script.
+on:
+  public:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  harden:
+    runs-on: ubuntu-latest
+    env:
+      HAS_ADMIN_TOKEN: ${{ secrets.REPO_ADMIN_TOKEN != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply public-repo rules
+        id: apply
+        if: env.HAS_ADMIN_TOKEN == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.REPO_ADMIN_TOKEN }}
+        run: bash .github/scripts/harden-public.sh
+      - name: Ask the owner to apply them
+        if: ${{ !cancelled() && steps.apply.outcome != 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh issue create --label security \
+            --title "Repo is now public: protect main and turn on secret scanning" \
+            --body "This repo became public, but the public-repo rules could not be applied automatically.
+
+          Run this from a clone, as a repo admin:
+
+          \`\`\`bash
+          bash .github/scripts/harden-public.sh
+          \`\`\`
+
+          It turns on secret scanning with push protection and protects \`main\`: PRs required, CodeQL and dependency review required, enforced for admins, no force pushes or deletion."
