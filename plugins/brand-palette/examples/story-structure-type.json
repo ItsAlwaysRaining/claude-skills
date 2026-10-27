@@ -1,0 +1,356 @@
+{
+  "brand": "Story and Structure",
+  "title": "Type for Story and Structure",
+  "page_title": "Story and Structure Type",
+  "brief": "A design and data studio: we design the interface and build the pipeline behind it. The type has to feel human and exact at the same time: thoughtful, warm, rigorous, plain-spoken and quietly confident, never startup hype or corporate grey.",
+  "palette": "story-structure-palette.json",
+  "primary": "forest",
+  "languages": [
+    "latin",
+    "latin-ext"
+  ],
+  "assumptions": [
+    "Personality, palette and audience come from the Story and Structure brand spec and palette.",
+    "Latin Extended, so proposals and dashboards work for European clients.",
+    "The earlier draft pairing (Fraunces with IBM Plex) is option A, judged against two alternatives.",
+    "Dark-mode buttons sit on the strong forest step (#9ABAAA): no text color passes both WCAG and APCA on the mid-tone base (#7DA290).",
+    "Proposals and handoff files are read on screen and in print; dashboards are read in both light and dark mode.",
+    "Names, figures and table names on this page are examples."
+  ],
+  "samples": {
+    "headline": "Research that ships",
+    "paragraph": [
+      "We design the interface and build the data underneath it, so what people see on screen and what's in the warehouse always agree.",
+      "Every project starts with the story: who needs to know what, and when. Then we build the structure that keeps that story true as the data changes."
+    ],
+    "nav": [
+      "Work",
+      "Method",
+      "Writing",
+      "Contact"
+    ],
+    "buttons": [
+      "Book a discovery call",
+      "See the work"
+    ],
+    "input": {
+      "label": "Work email",
+      "placeholder": "you@company.com",
+      "help": "We reply within two working days."
+    },
+    "doc": {
+      "title": "Discovery report",
+      "subtitle": "What we heard, and what it means for the build",
+      "quote": "The numbers on screen are the numbers in the warehouse.",
+      "caption": "Figure 2 · Events by source, last 90 days"
+    },
+    "card": {
+      "name": "Sam Rivera",
+      "role": "Design and data lead",
+      "contact": "hello@example.com · +44 20 7946 0000"
+    },
+    "table": {
+      "caption": "Example data · pipeline runs by month",
+      "columns": [
+        "Month",
+        "Runs",
+        "Rows",
+        "Failed"
+      ],
+      "rows": [
+        [
+          "July",
+          "1,204",
+          "18,402,117",
+          "0.4%"
+        ],
+        [
+          "August",
+          "1,118",
+          "17,950,006",
+          "1.1%"
+        ],
+        [
+          "September",
+          "1,391",
+          "21,284,906",
+          "0.2%"
+        ],
+        [
+          "October",
+          "1,011",
+          "16,773,540",
+          "0.6%"
+        ]
+      ]
+    },
+    "chart": {
+      "title": "Pipeline runs by month",
+      "bars": [
+        [
+          "Jul",
+          1204
+        ],
+        [
+          "Aug",
+          1118
+        ],
+        [
+          "Sep",
+          1391
+        ],
+        [
+          "Oct",
+          1011
+        ]
+      ]
+    }
+  },
+  "options": [
+    {
+      "id": "a",
+      "name": "Soft serif and engineered sans",
+      "pick": true,
+      "character": "The story in a soft, warm serif; the structure in an engineered sans and its mono.",
+      "why": "Fraunces gives proposals and headlines a human voice. IBM Plex Sans and Plex Mono share proportions, so prose, SQL and table figures sit together cleanly, which is the studio's whole promise.",
+      "fonts": {
+        "display": {
+          "family": "Fraunces",
+          "role": "Story · headlines",
+          "use": "Headlines, section titles and pull quotes. Never below 20px."
+        },
+        "ui": {
+          "family": "IBM Plex Sans",
+          "role": "Structure · interface and body",
+          "use": "Body text, interface, buttons and labels."
+        },
+        "mono": {
+          "family": "IBM Plex Mono",
+          "role": "Data · code and figures",
+          "use": "SQL, table names, IDs and figures in tables."
+        }
+      },
+      "body": {
+        "measure": 66,
+        "paragraph_spacing": "2.4em"
+      },
+      "scale": [
+        {
+          "label": "Display",
+          "font": "display",
+          "size": "3rem",
+          "weight": 600,
+          "line": 1.1,
+          "use": "heading",
+          "sample": "Story and Structure"
+        },
+        {
+          "label": "Section",
+          "font": "display",
+          "size": "1.875rem",
+          "weight": 600,
+          "line": 1.2,
+          "use": "heading",
+          "sample": "Research that ships"
+        },
+        {
+          "label": "Pull quote",
+          "font": "display",
+          "size": "1.375rem",
+          "weight": 400,
+          "line": 1.4,
+          "use": "heading",
+          "sample": "“The numbers on screen are the numbers in the warehouse.”"
+        },
+        {
+          "label": "Body",
+          "size": "1.0625rem",
+          "weight": 400,
+          "line": 1.6,
+          "use": "body"
+        },
+        {
+          "label": "Button",
+          "size": "1rem",
+          "weight": 700,
+          "line": 1.2,
+          "use": "ui",
+          "color": "on-primary",
+          "sample": "Book a discovery call"
+        },
+        {
+          "label": "Caption",
+          "size": "1rem",
+          "weight": 500,
+          "line": 1.45,
+          "use": "caption",
+          "sample": "Updated 17 Oct 2026 · source: fct_events"
+        },
+        {
+          "label": "Table figure",
+          "font": "mono",
+          "size": "1rem",
+          "weight": 500,
+          "line": 1.4,
+          "use": "data",
+          "sample": "21,284,906 rows · 0.2% failed"
+        }
+      ]
+    },
+    {
+      "id": "b",
+      "name": "All sans, built to be read",
+      "character": "Quieter: one hyperlegible sans family for everything, no serif voice.",
+      "why": "Atkinson Hyperlegible Next was designed so every letter and figure stays distinct, which suits clients reading dense dashboards and long handoff docs. Weight and size carry the hierarchy instead of a second typeface.",
+      "fonts": {
+        "ui": {
+          "family": "Atkinson Hyperlegible Next",
+          "role": "Headlines, interface and body"
+        },
+        "mono": {
+          "family": "Atkinson Hyperlegible Mono",
+          "role": "Code and figures"
+        }
+      },
+      "body": {
+        "measure": 64,
+        "paragraph_spacing": "2.4em"
+      },
+      "scale": [
+        {
+          "label": "Display",
+          "size": "3rem",
+          "weight": 800,
+          "line": 1.05,
+          "use": "heading",
+          "tracking": "-0.02em",
+          "sample": "Story and Structure"
+        },
+        {
+          "label": "Section",
+          "size": "1.875rem",
+          "weight": 700,
+          "line": 1.15,
+          "use": "heading",
+          "sample": "Research that ships"
+        },
+        {
+          "label": "Body",
+          "size": "1.0625rem",
+          "weight": 400,
+          "line": 1.6,
+          "use": "body"
+        },
+        {
+          "label": "Button",
+          "size": "1rem",
+          "weight": 700,
+          "line": 1.2,
+          "use": "ui",
+          "color": "on-primary",
+          "sample": "Book a discovery call"
+        },
+        {
+          "label": "Caption",
+          "size": "1rem",
+          "weight": 500,
+          "line": 1.45,
+          "use": "caption",
+          "sample": "Updated 17 Oct 2026 · source: fct_events"
+        },
+        {
+          "label": "Table figure",
+          "font": "mono",
+          "size": "1rem",
+          "weight": 500,
+          "line": 1.4,
+          "use": "data",
+          "sample": "21,284,906 rows · 0.2% failed"
+        }
+      ]
+    },
+    {
+      "id": "c",
+      "name": "Condensed headlines, serif reading",
+      "character": "Bolder: the reverse of A. Tall condensed headlines set like a report's cover; a book serif carries the long read.",
+      "why": "Barlow Condensed gives proposals and case studies a plain-spoken, poster-like opening that fits a lot of words in a line. Literata sets the body like a well-made report, and JetBrains Mono keeps SQL and figures exact.",
+      "fonts": {
+        "display": {
+          "family": "Barlow Condensed",
+          "role": "Headlines",
+          "use": "Headlines and section titles, set large. Never for body text."
+        },
+        "ui": {
+          "family": "Literata",
+          "role": "Body and long reads"
+        },
+        "mono": {
+          "family": "JetBrains Mono",
+          "role": "Code, figures and interface labels"
+        }
+      },
+      "body": {
+        "measure": 64,
+        "paragraph_spacing": "2.5em"
+      },
+      "scale": [
+        {
+          "label": "Display",
+          "font": "display",
+          "size": "3.75rem",
+          "weight": 700,
+          "line": 1.0,
+          "use": "heading",
+          "tracking": "0",
+          "sample": "Story and Structure"
+        },
+        {
+          "label": "Section",
+          "font": "display",
+          "size": "2.25rem",
+          "weight": 600,
+          "line": 1.1,
+          "use": "heading",
+          "sample": "Research that ships"
+        },
+        {
+          "label": "Body",
+          "size": "1.125rem",
+          "weight": 400,
+          "line": 1.65,
+          "use": "body"
+        },
+        {
+          "label": "Button",
+          "size": "1.0625rem",
+          "weight": 700,
+          "line": 1.2,
+          "use": "ui",
+          "color": "on-primary",
+          "sample": "Book a discovery call",
+          "font": "display"
+        },
+        {
+          "label": "Caption",
+          "size": "1rem",
+          "weight": 500,
+          "line": 1.45,
+          "use": "caption",
+          "sample": "Updated 17 Oct 2026 · source: fct_events"
+        },
+        {
+          "label": "Table figure",
+          "font": "mono",
+          "size": "1rem",
+          "weight": 500,
+          "line": 1.4,
+          "use": "data",
+          "sample": "21,284,906 rows · 0.2% failed"
+        }
+      ]
+    }
+  ],
+  "fill": {
+    "dark": "strong"
+  }
+}

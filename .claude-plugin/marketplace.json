@@ -22,7 +22,7 @@
     {
       "name": "brand-palette",
       "source": "./plugins/brand-palette",
-      "description": "Build an accessible light and dark brand color palette, checked for contrast and color blindness, as a swatch board with plain-language notes.",
+      "description": "Build an accessible light and dark brand color palette, checked for contrast and color blindness, as a swatch board with plain-language notes, then turn it into a full brand reference page with brand-builder, and pick readable fonts with brand-typography.",
       "category": "design"
     },
     {
