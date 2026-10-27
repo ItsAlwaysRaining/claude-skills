@@ -3,3 +3,5 @@
 config.md
 Lecture_Notes/
 __pycache__/
+# Editor workspace files point at local paths
+*.code-workspace
