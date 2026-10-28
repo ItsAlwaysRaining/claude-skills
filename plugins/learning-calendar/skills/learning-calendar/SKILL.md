@@ -11,7 +11,7 @@ The user keeps a calendar in Notion of what they learn each day. Each day has a 
 
 Calendar settings are shared with the course-notes skill, so both write to the same calendar.
 
-1. Read `~/.claude/course-notes/config.md`. If it has `calendar_data_source`, use it, and note `home_page_id`, the "Known classes" cache, and any `## Topic groups`.
+1. Read `~/.claude/course-notes/config.md`. If it has `calendar_data_source`, use it, and note `home_page_id`, the "Known classes" cache, any `## Topic groups`, and any `## Area icons`.
 2. Otherwise read `~/.claude/learning-calendar/config.md` for the same keys.
 3. If neither has a calendar, set one up: read `references/calendar-setup.md`. Do this after the list is approved (Step 3), so the user isn't held up before they've seen anything.
 4. Read `learning-calendar-history.md` in the same folder as that config. It lists the calendar's entries for the last 10 days, so you can check what's already there without querying Notion (the free plan limits queries). The format and rules are in `references/calendar-entries.md` under "History file".
@@ -64,6 +64,8 @@ Put each topic in the **first** bucket that fits:
 **Concept and subject names.** Reuse the names already on the calendar (check the history file) so the same concept is named the same way every day: `Databases` every time, not `Database` one day and `DB Design` the next. Pick a new name only for a concept that isn't there yet.
 
 **Saved topic groups.** The config's `## Topic groups` section, one line each: `- <Umbrella topic>: <what belongs in it>`, holds groupings the user asked for. They take precedence over the buckets above. A saved group that falls inside a bucket (for example `Claude Skills`, which is about Claude) becomes a **subtopic** of that bucket's entry, collecting all its points, so the calendar doesn't get a second entry for it. Only save a new group when the user asks for one ("group all X together").
+
+**Area icons.** The config's `## Area icons` section, one line each: `- <Umbrella name>: <emoji>`, gives every umbrella entry a fixed icon, so an area looks the same on the calendar every day (`- GitHub: 🌿`). Use the listed emoji for a listed umbrella. For an umbrella not on the list, pick a fitting emoji that no other line uses, show it in the draft next to the entry's name, and after the push append its line to the section (create the section if the config has none). Subtopic pages aren't on the calendar, so they keep a free choice of emoji.
 
 **Writing them up:**
 

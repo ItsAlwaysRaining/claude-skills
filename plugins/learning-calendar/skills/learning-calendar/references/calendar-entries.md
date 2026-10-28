@@ -75,7 +75,7 @@ The user fills these in by hand too, so match their style.
 `create-pages` with parent `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}`:
 
 - properties: `"Topic": "<topic>"`, `"date:Date:start": "<YYYY-MM-DD>"`, `"date:Date:is_datetime": 0`, `"category": ["<tag>", …]`, `"note": "<note>"`
-- icon: an emoji that fits the topic
+- icon: the topic's emoji from the config's `## Area icons` list; for a topic not on the list, a fitting emoji no other area uses, added to the list after the push ("Area icons" in SKILL.md)
 - content:
 
 ```
