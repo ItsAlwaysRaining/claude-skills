@@ -42,6 +42,12 @@
       "source": "./plugins/new-repo",
       "description": "Create a GitHub repo with PR-only rules, a Claude hook that blocks merging and pushing to main, issue templates, CI and Dependabot, plus branch protection and security checks once it's public.",
       "category": "development"
+    },
+    {
+      "name": "wrap-up",
+      "source": "./plugins/wrap-up",
+      "description": "An end-of-day report across your projects: what needs a commit, push or PR, what's untracked, and a to-do list of what you discussed but didn't finish, with an option to turn those into GitHub issues.",
+      "category": "development"
     }
   ]
 }
