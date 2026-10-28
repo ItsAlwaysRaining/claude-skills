@@ -79,6 +79,9 @@ The user fills these in by hand too, so match their style.
 - content:
 
 ```
+<callout icon="💭" color="green_bg">
+	**My Thoughts:**
+</callout>
 <callout icon="💬" color="purple_bg">
 	<One or two sentences: the approved summary.>
 </callout>
@@ -88,13 +91,13 @@ The user fills these in by hand too, so match their style.
 - <mention url="<note page url>"/>
 ```
 
-With no notes to link, leave out the "Related notes" heading and list entirely. Several approved topics can go in one `create-pages` call.
+The green "My Thoughts:" callout is always the first block on the page. It's for the user to write in by hand, so leave it empty apart from the label, and never edit or replace what they've written there. With no notes to link, leave out the "Related notes" heading and list entirely. Several approved topics can go in one `create-pages` call.
 
 ## Group entry (umbrella topic with subtopics)
 
 This is the usual shape: class, Claude & AI, concept and subject entries are all group entries. Only a lone "other" topic uses the plain entry above.
 
-1. Create the umbrella entry in the calendar as above. Its callout holds one sentence covering the whole group, then add any "📝 Related notes", then end the page with this heading:
+1. Create the umbrella entry in the calendar as above, starting with the green "My Thoughts:" callout. Its summary callout holds one sentence covering the whole group, then add any "📝 Related notes", then end the page with this heading:
    ```
    <h2 color="purple">
    🔹 Subtopics
@@ -151,8 +154,9 @@ covers_from: 2026-10-12
 
 Fetch the entry first, then use `update-page` with `update_content`:
 
-- **Add a link:** append `- <mention url="…"/>` after the last item under "📝 Related notes". If the entry has no such heading yet, add the heading and list after the callout.
-- **Change the summary:** replace the text inside the callout. Keep it to two sentences.
+- **Add a link:** append `- <mention url="…"/>` after the last item under "📝 Related notes". If the entry has no such heading yet, add the heading and list after the purple summary callout.
+- **Change the summary:** replace the text inside the purple summary callout (never the green "My Thoughts:" one). Keep it to two sentences.
+- **Add "My Thoughts:" to an older entry:** if the fetched entry has no green "My Thoughts:" callout, insert it at the top of the page. Leave it alone if it's already there.
 - **Rename:** `update_properties` with the new `Topic`.
 - **Fill tags or note:** `update_properties` with `category` and/or `note`, only for fields the fetched entry has blank (see "Tags and note"). An approved change to a field the user filled replaces it with the approved value. Properties only change with the `update_properties` command: passing them alongside `update_content` silently does nothing, so make a separate call.
 

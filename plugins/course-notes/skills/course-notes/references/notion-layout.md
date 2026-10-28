@@ -188,8 +188,11 @@ A calendar at the top of the home page showing what the user learned each day. T
    - **category** (if the calendar has it): `["class", "<subject tag>"]`, where the subject tag is the existing option that fits the class (`design` for Product Design). The tag list is under "Tags and note" in the learning-calendar skill's `references/calendar-entries.md`.
    - **note** (if the calendar has it): 1–5 words naming the skills from today's lectures in terms an employer would recognize, comma-separated (e.g. `visual balance, composition`). The calendar is public: follow "Voice" and "Tags and note" in the learning-calendar skill's `references/calendar-entries.md` for the note, the summary and the subtopic bullets.
    - Icon: the class's emoji from the config's `## Area icons` list, keyed by its short name, so the class looks the same on the calendar every day. If the class isn't listed, pick a fitting emoji no other line uses and append `- <short name>: <emoji>` to that section (create it if missing). This is the list the learning-calendar skill uses too.
-   - Content:
+   - Content (the green "My Thoughts:" callout is always first and is left for the user to fill in; see the learning-calendar skill's `references/calendar-entries.md`, "New entry"):
      ```
+     <callout icon="💭" color="green_bg">
+     	**My Thoughts:**
+     </callout>
      <callout icon="💬" color="purple_bg">
      	<One sentence on what today's lectures covered.>
      </callout>
