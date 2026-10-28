@@ -1,0 +1,11 @@
+{
+  "name": "wrap-up",
+  "version": "1.0.0",
+  "description": "An end-of-day report across all your projects: what needs a commit, a push or a PR, what's untracked, where each project stands, and a to-do list of what you discussed but didn't get to, with an option to turn any of it into GitHub issues.",
+  "author": {
+    "name": "ItsAlwaysRaining"
+  },
+  "repository": "https://github.com/ItsAlwaysRaining/claude-skills",
+  "license": "MIT",
+  "keywords": ["git", "github", "issues", "workflow", "daily", "status"]
+}
