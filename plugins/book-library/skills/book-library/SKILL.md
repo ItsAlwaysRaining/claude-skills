@@ -62,6 +62,18 @@ Sections appear in this order. Only **My Review** depends on status: it is added
 
 Use the Notion enhanced-markdown syntax exactly as shown (tab-indented callout children). Don't put the title in the content and don't add trailing `<empty-block/>`s.
 
+## Creating pages (full width)
+
+Book pages and their notes sub-pages should open in full width. The Notion tools can't set that directly, but a duplicated page keeps it. So when `~/.claude/book-library/config.md` has `full_width_template_id` (or, if it doesn't, `~/.claude/course-notes/config.md` does), make each new page from that template instead of with `notion-create-pages`:
+
+1. `notion-duplicate-page` with the template's ID. One copy at a time: wait until it loads before starting the next, because simultaneous duplicates can leave one stuck as a blank, unmovable block.
+2. The duplicate finishes in the background: fetch the returned ID until it loads (a few tries).
+3. `notion-move-pages` the copy to its real parent: `{"type": "data_source_id", "data_source_id": "<Library data source id>"}` for a book, or `{"type": "page_id", "page_id": "<book page id>"}` for a notes page.
+4. `notion-update-page` with `update_properties` to set the title and the book's properties (for a notes page just the title), plus `icon`.
+5. `notion-update-page` with `replace_content` to swap the template's text for the page's layout.
+
+Everywhere below that says "create the page", use this when a template is set; the properties and layout stay the same. The notes page is still appended to the end of the book page, so "Placing the notes page" applies unchanged. If there's no template, or it's gone or a step fails, use `notion-create-pages` as written and tell the user at the end which new pages to set to full width by hand (••• → Full width). If the move or rename fails after the copy exists, tell the user where the stray copy is so they can delete it.
+
 ## Adding a book
 
 1. **Identify the book.** Get the exact title and author. If the title is ambiguous (several well-known books share it) ask which one; otherwise don't ask.

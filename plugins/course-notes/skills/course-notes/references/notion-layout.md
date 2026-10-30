@@ -29,7 +29,9 @@ Class, section, and lecture pages should open in full width. The Notion tools ca
 
 If there's no `full_width_template_id`, or the template is gone or a step fails, create the page with `create-pages` as usual, and at the end tell the user which new pages to set to full width by hand (••• → Full width). If the move or rename fails after the copy exists, tell the user where the stray copy is so they can delete it (the Notion tools can't delete pages).
 
-Database rows (glossary terms, calendar entries) are created directly; this applies only to the three page types.
+Database rows work the same way: `move-pages` accepts `{"type": "data_source_id", "data_source_id": "<id>"}` as the new parent, and the moved copy keeps its full width. Then set the row's properties with `update-page` (`update_properties`) in step 4. The learning-calendar and book-library skills use this for calendar entries and book pages.
+
+Glossary term rows are the one exception: they're created directly with `create-pages`. A lecture can add dozens of terms, and a duplicate-and-move for each would be slow and risky. Row pages open at the default width, but the glossary is read as a table.
 
 ## Placing new pages
 

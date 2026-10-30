@@ -31,6 +31,9 @@ Each day's topics. Click one for a quick summary and links to that day's notes.
 
 ## 4. Save the settings
 
+If neither config has a `full_width_template_id`, offer a full-width template: create a page called `Full-width template` under the home page with a short callout saying the skills copy it and it shouldn't be deleted. Ask the user to open it and turn on ••• → Full width, then save its ID as `full_width_template_id` alongside the other settings below. If they skip this, new pages use Notion's default width.
+
+
 - **If `~/.claude/course-notes/config.md` exists**, add these lines to its `## Notion` section so both skills share the calendar:
   ```
   calendar_database_id: <database id>
@@ -43,6 +46,7 @@ Each day's topics. Click one for a quick summary and links to that day's notes.
 
   home_page_title: <title>
   home_page_id: <id>
+  full_width_template_id: <id of the full-width template page, if set up>
   calendar_database_id: <id>
   calendar_data_source: collection://<id>
   ```
