@@ -70,6 +70,20 @@ The user fills these in by hand too, so match their style.
 
 **Never overwrite the user's values.** Fill `category` or `note` only when it is blank. If an entry the user already tagged now has a subtopic that needs another tag, or a new subtopic the note doesn't mention, show the change in the draft as a suggestion and apply it only if they approve.
 
+## Creating pages (full width)
+
+Every page this skill creates (calendar entries, umbrella entries and subtopic pages) should open in full width. The Notion tools can't set that directly, but a duplicated page keeps it. So when the config has a `full_width_template_id`, make each new page from that template instead of with `create-pages`:
+
+1. `duplicate-page` with the template's ID. The copy lands next to the template. Make one copy at a time: wait until it loads before starting the next, because simultaneous duplicates can leave one stuck as a blank, unmovable block.
+2. The duplicate finishes in the background: fetch the returned ID until it loads (a few tries).
+3. `move-pages` the copy to its real parent: `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}` for a calendar entry, or `{"type": "page_id", "page_id": "<umbrella entry id>"}` for a subtopic page.
+4. `update-page` with `update_properties` to set the title (for a calendar entry also `Topic`, `date:Date:start`, `date:Date:is_datetime`, `category`, `note`) and `icon`.
+5. `update-page` with `replace_content` to swap the template's text for the page's content.
+
+Everything below that says `create-pages` means this procedure when a template is set. The properties, icon and content stay the same. If there's no `full_width_template_id`, or the template is gone or a step fails, use `create-pages` as written, and at the end tell the user which new pages to set to full width by hand (••• → Full width). If the move or rename fails after the copy exists, tell the user where the stray copy is so they can delete it.
+
+Pages created this way are made one after another, so a draft with many subtopics takes longer than the single `create-pages` call. That is expected.
+
 ## New entry
 
 `create-pages` with parent `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}`:
