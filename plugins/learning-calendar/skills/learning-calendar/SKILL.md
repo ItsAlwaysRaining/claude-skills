@@ -14,7 +14,8 @@ Calendar settings are shared with the course-notes skill, so both write to the s
 1. Read `~/.claude/course-notes/config.md`. If it has `calendar_data_source`, use it, and note `home_page_id`, the "Known classes" cache, any `## Topic groups`, and any `## Area icons`.
 2. Otherwise read `~/.claude/learning-calendar/config.md` for the same keys.
 3. If neither has a calendar, set one up: read `references/calendar-setup.md`. Do this after the list is approved (Step 3), so the user isn't held up before they've seen anything.
-4. Read `learning-calendar-history.md` in the same folder as that config. It lists the calendar's entries for the last 10 days, so you can check what's already there without querying Notion (the free plan limits queries). The format and rules are in `references/calendar-entries.md` under "History file".
+4. Find `full_width_template_id` in the same config (the course-notes config has it if course-notes was set up). If the config has none, look for the other config, and if neither has one, tell the user at the end that new pages will open at the default width and how to add a template (see "Creating pages (full width)" in `references/calendar-entries.md`).
+5. Read `learning-calendar-history.md` in the same folder as that config. It lists the calendar's entries for the last 10 days, so you can check what's already there without querying Notion (the free plan limits queries). The format and rules are in `references/calendar-entries.md` under "History file".
 
 If the Notion tools aren't available, still build and approve the list, then give the user the approved list in chat and explain that Notion needs connecting (claude.ai → Settings → Connectors → Notion, or `claude mcp add --transport http notion https://mcp.notion.com/mcp`, then restart Claude).
 

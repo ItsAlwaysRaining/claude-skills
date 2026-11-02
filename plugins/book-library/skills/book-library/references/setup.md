@@ -31,11 +31,17 @@ Write `~/.claude/book-library/config.md`:
 data_source: collection://<id>
 database: <database URL>
 
+full_width_template_id: <id of the full-width template page, if set up>
+
 ## Property names
 <!-- only lines that differ from SKILL.md; delete the section if none -->
 - Author: Writer
 - Status: Shelf
 - Status options: TBR = To read, Currently Reading = Reading, Read = Finished, DNF = Abandoned
 ```
+
+## 5. Full-width template
+
+If the config (or `~/.claude/course-notes/config.md`) already has `full_width_template_id`, skip this. Otherwise offer it: create a page called `Full-width template` under the Bookshelf page (or the page the Library lives on) with a short callout saying the book-library skill copies it and it shouldn't be deleted. Ask the user to open it and turn on ••• → Full width, then add its ID to the config as `full_width_template_id: <id>`. If they skip this, new pages use Notion's default width.
 
 Then carry on with the user's original request.
