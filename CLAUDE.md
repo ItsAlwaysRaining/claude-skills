@@ -14,4 +14,6 @@ For every change:
 
 PRs are merged with a merge commit (squash is off), so every commit on the branch stays in main's history: keep commits small and clearly described.
 
-Never push to `main` or force-push.
+Never push to `main`.
+
+You may rebase a feature branch onto `origin/main` (for example to clear merge conflicts on a PR) and force-push it, on branches you created (`feature/`, `fix/`, `docs/`, `chore/`). Prefer `git push --force-with-lease`, which refuses to overwrite commits you haven't seen. Never force-push `main`.
