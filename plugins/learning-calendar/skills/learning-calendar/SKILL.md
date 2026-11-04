@@ -66,7 +66,7 @@ Put each topic in the **first** bucket that fits:
 
 **Saved topic groups.** The config's `## Topic groups` section, one line each: `- <Umbrella topic>: <what belongs in it>`, holds groupings the user asked for. They take precedence over the buckets above. A saved group that falls inside a bucket (for example `Claude Skills`, which is about Claude) becomes a **subtopic** of that bucket's entry, collecting all its points, so the calendar doesn't get a second entry for it. Only save a new group when the user asks for one ("group all X together").
 
-**Area icons.** The config's `## Area icons` section, one line each: `- <Umbrella name>: <emoji>`, gives every umbrella entry a fixed icon, so an area looks the same on the calendar every day (`- GitHub: 🌿`). Use the listed emoji for a listed umbrella. For an umbrella not on the list, pick a fitting emoji that no other line uses, show it in the draft next to the entry's name, and after the push append its line to the section (create the section if the config has none). Subtopic pages aren't on the calendar, so they keep a free choice of emoji.
+**Area icons.** The config's `## Area icons` section, one line each: `- <Umbrella name>: <emoji>`, gives every umbrella entry a fixed icon, so an area looks the same on the calendar every day (`- GitHub: 🌿`). Use the listed emoji for a listed umbrella. For an umbrella not on the list, pick a fitting emoji that no other line uses, show it in the draft next to the entry's name, and after the push append its line to the section (create the section if the config has none). Subtopic headings aren't calendar rows, so they keep a free choice of emoji.
 
 **Writing them up:**
 
@@ -102,11 +102,14 @@ Show the calendar entries in chat as a numbered table, one row per umbrella entr
 - **2a GitHub Secrets**: One or two plain sentences on the skill and how it was applied.
 …
 
-Edit anything: e.g. "drop 2b", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", "tag 2 as automation", "note 3: AI workflow automation", or "add a link to my Figma notes".
+**Your thoughts.** Each entry has a "My Thoughts" box that only the user writes in. Before anything is pushed, ask for them: "Want to add your thoughts to any of these? e.g. `thoughts 2: Worktrees keep biting me`." Keep the user's words exactly as typed (fix nothing, add nothing). Entries they skip are published with the box empty. Show a `thoughts` column or line for any entry that has some, so they can see what will go in.
+
+Edit anything: e.g. "drop 2b", "thoughts 2: …", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", "tag 2 as automation", "note 3: AI workflow automation", or "add a link to my Figma notes".
 Say **approve** to push these to the calendar.
 ```
 
 - **Kind** is class, Claude & AI, concept, a saved group, or other. **From** (after each entry's heading) says where its topics came from (your list / asked / covered here / notes / another session's project), so the user can judge them.
+- For an entry already on the calendar, fetch it and check its My Thoughts box. Text already there is the user's: never replace it. Show it in the draft and treat any new thoughts as an addition only if the user says so.
 - Flag entries and subtopics **already on the calendar** for that day. On push, they only get new subtopics, links or summary changes, never a duplicate entry.
 - For an entry already on the calendar, fetch it and show its current tags and note. Propose values only for blank fields. A change to a field the user filled is shown as a suggestion ("add `automation`?"), and a tag that isn't an existing option is marked **new tag**.
 - Apply each round of edits, then show the **whole updated table** again. Repeat until the user approves.
@@ -117,8 +120,9 @@ Say **approve** to push these to the calendar.
 
 Read `references/calendar-entries.md` for the exact entry format, then for each approved entry:
 
-- **New umbrella entry:** create the calendar entry (name, date, category tags, note, icon, one-sentence summary, any links), with each subtopic as a heading and note under "Subtopics" on its page.
+- **New umbrella entry:** create the calendar entry (name, date, category tags, note, icon, one-sentence summary, any links, and the user's thoughts if they gave any, with `Has my thoughts` ticked), with each subtopic as a heading and note under "Subtopics" on its page.
 - **Umbrella entry already on the calendar that day** (same or clearly same class, concept or subject, including entries the user added by hand): add only the subtopics it doesn't have yet (as headings with notes), extend the note of a subtopic it has, add any new note links, and fill its tags and note if they're blank (plus any approved suggestions).
+- **Thoughts on an existing entry:** if the user gave thoughts for an entry whose box is empty, put them in the box and tick `Has my thoughts`. If the box already has text, leave it alone.
 - **Entry with no subtopics** (a lone "other" topic): create it with the tags, note, summary and links, as a plain entry.
 - **Approved moves** of existing standalone entries under an umbrella: follow "Converting existing entries into a group" in `references/calendar-entries.md`. Never delete entries.
 After each successful create or update, record it in the history file (see "History file" in `references/calendar-entries.md`).
