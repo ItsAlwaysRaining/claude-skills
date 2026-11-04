@@ -72,17 +72,15 @@ The user fills these in by hand too, so match their style.
 
 ## Creating pages (full width)
 
-Every page this skill creates (calendar entries, umbrella entries and subtopic pages) should open in full width. The Notion tools can't set that directly, but a duplicated page keeps it. So when the config has a `full_width_template_id`, make each new page from that template instead of with `create-pages`:
+Every page this skill creates (calendar entries and umbrella entries) should open in full width. The Notion tools can't set that directly, but a duplicated page keeps it. So when the config has a `full_width_template_id`, make each new page from that template instead of with `create-pages`:
 
 1. `duplicate-page` with the template's ID. The copy lands next to the template. Make one copy at a time: wait until it loads before starting the next, because simultaneous duplicates can leave one stuck as a blank, unmovable block.
 2. The duplicate finishes in the background: fetch the returned ID until it loads (a few tries).
-3. `move-pages` the copy to its real parent: `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}` for a calendar entry, or `{"type": "page_id", "page_id": "<umbrella entry id>"}` for a subtopic page.
+3. `move-pages` the copy to its real parent: `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}` for a calendar entry.
 4. `update-page` with `update_properties` to set the title (for a calendar entry also `Topic`, `date:Date:start`, `date:Date:is_datetime`, `category`, `note`) and `icon`.
 5. `update-page` with `replace_content` to swap the template's text for the page's content.
 
 Everything below that says `create-pages` means this procedure when a template is set. The properties, icon and content stay the same. If there's no `full_width_template_id`, or the template is gone or a step fails, use `create-pages` as written, and at the end tell the user which new pages to set to full width by hand (••• → Full width). If the move or rename fails after the copy exists, tell the user where the stray copy is so they can delete it.
-
-Pages created this way are made one after another, so a draft with many subtopics takes longer than the single `create-pages` call. That is expected.
 
 ## New entry
 
@@ -111,28 +109,36 @@ The green "My Thoughts:" callout is always the first block on the page. It's for
 
 This is the usual shape: class, Claude & AI, concept and subject entries are all group entries. Only a lone "other" topic uses the plain entry above.
 
-1. Create the umbrella entry in the calendar as above, starting with the green "My Thoughts:" callout. Its summary callout holds one sentence covering the whole group, then add any "📝 Related notes", then end the page with this heading:
-   ```
-   <h2 color="purple">
-   🔹 Subtopics
-   </h2>
-   ```
-2. Create each subtopic as a sub-page of the umbrella entry (`create-pages` with parent `{"type": "page_id", "page_id": "<umbrella entry id>"}`), so it doesn't appear on the calendar on its own:
-   - properties: `"title": "<subtopic>"` (1–2 words). Sub-pages aren't calendar rows, so they have no Topic or Date.
-   - icon: an emoji that fits the subtopic
-   - content: a bullet list of the high-level points covered, each with a sub-bullet description of one or two sentences. No callout or extra headings. Add a "📝 Related notes" list at the end only if it has notes.
-     ```
-     - **<Point covered>**
-     	- <One or two sentences describing it.>
-     - **<Point covered>**
-     	- <One or two sentences describing it.>
-     ```
+Create the umbrella entry in the calendar as above, starting with the green "My Thoughts:" callout. Its summary callout holds one sentence covering the whole group, then add any "📝 Related notes". End the page with this heading, followed by one plain heading and one short note per subtopic:
 
-**Only one level deep.** The calendar entry is the top level and its subtopic pages are the only level below it. Never create a page inside a subtopic page. More detail on a subtopic means more bullets on that page, or another subtopic page next to it. (Links to lecture notes are fine; they're mentions, not sub-pages.)
+```
+<h2 color="purple">
+🔹 Subtopics
+</h2>
+### <Subtopic>
+<One or two sentences: the skill or concept, and how it was applied.>
 
-New sub-pages land at the end of the umbrella page, which is why "Subtopics" is the last section. To add a subtopic to an existing umbrella entry, just create another sub-page. To add to a subtopic that already exists, append bullets to its page with `insert_content` and skip points already there. If the umbrella page has no "Subtopics" heading yet, append it first with `insert_content`.
+### <Subtopic>
+<One or two sentences: the skill or concept, and how it was applied.>
+```
 
-**Converting existing entries into a group** (the user groups entries already on the calendar): use `move-pages` to move those entries under the umbrella entry, with new parent = `{"type": "page_id", "page_id": "<umbrella entry id>"}`. They leave the calendar. Never delete entries. Then rewrite each moved page into the subtopic bullet format above, and flatten anything nested inside it (move its pages up to the umbrella or turn them into bullets). If the umbrella was itself one of the topics, turn its old content into a subtopic page too, so every subtopic looks the same.
+Example:
+
+```
+### Nightly Export
+Scheduled a nightly data export with GitHub Actions and checked the output landed in the repo.
+```
+
+- **Subtopics are not pages.** No sub-pages, no icons, no properties. Each is a `###` heading (1–2 words, no color attribute) with a plain paragraph below it.
+- **The note is plain text**: one or two sentences, about 40 words at most, with no bullets, bold labels or nested blocks. Follow "Voice" above.
+- **A lecture or note link** goes at the end of that subtopic's note as `<mention url="…"/>`.
+- **Order**: "Subtopics" is the last section, so new subtopics are appended at the end of the page.
+
+To add a subtopic to an existing umbrella entry, append its heading and note with `insert_content`. To add to a subtopic that already exists, extend its note in place (keep it to three sentences) and skip anything it already says. If the umbrella page has no "Subtopics" heading yet, append it first.
+
+**Older entries with sub-pages.** Entries made before this change have subtopic sub-pages. Leave them as they are, and add new subtopics to those entries as headings with notes. Convert an old sub-page into a heading only when the user asks.
+
+**Converting existing entries into a group** (the user groups entries already on the calendar): for each entry, read its page and add a heading with a note to the umbrella entry (its points boiled down to one or two sentences, with any "Related notes" link kept as a mention). If the umbrella was itself one of the topics, turn its old content into a heading and note too. Never delete entries or move them: tell the user the originals are still on the calendar so they can delete them once they're happy with the result.
 
 ## History file (use instead of querying Notion)
 
@@ -153,7 +159,7 @@ covers_from: 2026-10-12
 2026-10-12 | Color Contrast | 3f8bd4600b798150b8d1c23425517313
 ```
 
-- One line per calendar entry, newest day first: date, topic, the entry's page ID, then `notes:` (IDs of linked note pages) and `subtopics:` (names of a group's sub-pages), each left off when empty.
+- One line per calendar entry, newest day first: date, topic, the entry's page ID, then `notes:` (IDs of linked note pages) and `subtopics:` (names of a group's subtopic headings), each left off when empty.
 - `covers_from` is the earliest day the log is complete for. Days before it may have entries the log doesn't know about.
 
 **Reading.** To find a day's entries, read the log:
