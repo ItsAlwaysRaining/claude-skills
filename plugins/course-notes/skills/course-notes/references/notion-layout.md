@@ -178,7 +178,7 @@ Add one row per vocabulary term to the class's Glossary data source (`create-pag
 
 ## Learning Calendar
 
-A calendar at the top of the home page showing what the user learned each day. To keep busy days readable, each class gets **one entry per day**, named with the class's short name, and each lecture topic is a **subtopic** sub-page inside it. Clicking the entry opens a one-sentence summary of the day's lectures and the subtopics. Update it after every lecture published to Notion. (The learning-calendar skill groups the user's other topics the same way: Claude & AI, and computing concepts such as App Hosting or GitHub.)
+A calendar at the top of the home page showing what the user learned each day. To keep busy days readable, each class gets **one entry per day**, named with the class's short name, and each lecture topic is a **subtopic** inside it, a heading with a short note on the entry's page. Clicking the entry opens a one-sentence summary of the day's lectures and the subtopics. Update it after every lecture published to Notion. (The learning-calendar skill groups the user's other topics the same way: Claude & AI, and computing concepts such as App Hosting or GitHub.)
 
 ### Adding today's lecture
 
@@ -188,7 +188,7 @@ A calendar at the top of the home page showing what the user learned each day. T
    - **Topic**: the class's short name, up to 3 words (e.g. `Product Design` for "Mastering Digital Product Design: UX Research & UI Design"). Use the same short name every day; save it as `calendar_name:` under the class in the config's "Known classes" cache the first time.
    - **Date**: today (`date:Date:start`, `date:Date:is_datetime` = 0).
    - **category** (if the calendar has it): `["class", "<subject tag>"]`, where the subject tag is the existing option that fits the class (`design` for Product Design). The tag list is under "Tags and note" in the learning-calendar skill's `references/calendar-entries.md`.
-   - **note** (if the calendar has it): 1–5 words naming the skills from today's lectures in terms an employer would recognize, comma-separated (e.g. `visual balance, composition`). The calendar is public: follow "Voice" and "Tags and note" in the learning-calendar skill's `references/calendar-entries.md` for the note, the summary and the subtopic bullets.
+   - **note** (if the calendar has it): 1–5 words naming the skills from today's lectures in terms an employer would recognize, comma-separated (e.g. `visual balance, composition`). The calendar is public: follow "Voice" and "Tags and note" in the learning-calendar skill's `references/calendar-entries.md` for the note, the summary and the subtopic notes.
    - Icon: the class's emoji from the config's `## Area icons` list, keyed by its short name, so the class looks the same on the calendar every day. If the class isn't listed, pick a fitting emoji no other line uses and append `- <short name>: <emoji>` to that section (create it if missing). This is the list the learning-calendar skill uses too.
    - Content (the green "My Thoughts:" callout is always first and is left for the user to fill in; see the learning-calendar skill's `references/calendar-entries.md`, "New entry"):
      ```
@@ -202,12 +202,16 @@ A calendar at the top of the home page showing what the user learned each day. T
      🔹 Subtopics
      </h2>
      ```
-4. **Add the lecture as a subtopic.** If the entry already has a subtopic covering this lecture's topic (a second lecture on the same subject usually fits), append its new points to that sub-page with `insert_content` and add the lecture link under its "📝 Related notes". Otherwise create a sub-page of the class entry (`create-pages` with parent `{"type": "page_id", "page_id": "<class entry id>"}`):
-   - **title**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
-   - Content: bullets of the points covered, each with a one- or two-sentence sub-bullet, then a `<h2 color="purple">` "📝 Related notes" heading and `- <mention url="<lecture page url>"/>`. Only one level deep, so never a page inside a subtopic (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
+4. **Add the lecture as a subtopic.** Subtopics are headings with a short note on the class entry's page, not sub-pages. If the entry already has a subtopic covering this lecture's topic (a second lecture on the same subject usually fits), extend that subtopic's note with `update_content` (three sentences at most) and add the lecture link to the end of it. Otherwise append a new subtopic after the last one with `insert_content`:
+   ```
+   ### <Subject>
+   <One or two plain sentences on the skill and how it was applied.> <mention url="<lecture page url>"/>
+   ```
+   - **Heading**: 1–2 words naming the subject (e.g. `Design Aesthetics`, `Figma Fills`), not the lecture title.
+   - **Note**: plain text, no bullets or bold labels (format: the learning-calendar skill's `references/calendar-entries.md`, "Group entry").
 5. Update the class entry's one-sentence summary if it no longer covers all of today's lectures. If the entry's `category` or `note` is blank, fill it as in step 3. Never overwrite values the user typed. If a new lecture's subject isn't in a note you wrote earlier today, add it (keep it under 5 words); leave the user's own note as it is.
 6. Keep summaries faithful to the lectures (Step 5 of SKILL.md) and no longer than two sentences, even after adding more notes to an entry.
-7. Record the class entry in the calendar history file, with the lecture under `notes:` and the subtopic under `subtopics:`.
+7. Record the class entry in the calendar history file, with the lecture under `notes:` and the subtopic heading under `subtopics:`.
 
 ### Calendar history file
 
@@ -223,7 +227,7 @@ covers_from: 2026-10-12
 2026-10-12 | Claude Skills | 3f8bd4600b7981acbdc0d6cde93f2f98 | subtopics: Brand Palette Skill
 ```
 
-- One line per entry, newest day first: date, topic, entry page ID, then `notes:` (linked note page IDs) and `subtopics:` (a group's sub-page names), each left off when empty. `covers_from` is the earliest day the log is complete for.
+- One line per entry, newest day first: date, topic, entry page ID, then `notes:` (linked note page IDs) and `subtopics:` (a group's subtopic heading names), each left off when empty. `covers_from` is the earliest day the log is complete for.
 - **Reading:** for today (or any day on or after `covers_from`) the log is the full list, so don't query. If the log is missing or doesn't cover the day, query `calendar_data_source` once for every entry from 9 days ago to today, write them all to the log, and set `covers_from` to 9 days ago. If that query is refused (usage limit), search the calendar data source instead and leave `covers_from` unchanged.
 - **Writing:** after each successful create or update, add or update the entry's line; never log a failed call. Then remove lines older than 10 days and move `covers_from` up to 9 days ago if it's older.
 - Entries the user adds by hand in Notion aren't in the log. If they mention one, search for it and add it.

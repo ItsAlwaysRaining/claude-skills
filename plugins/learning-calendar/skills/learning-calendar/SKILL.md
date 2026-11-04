@@ -5,7 +5,7 @@ description: Log what the user learned today, or on any of the past 7 days, to t
 
 # Learning Calendar
 
-The user keeps a calendar in Notion of what they learn each day. Each day has a few entries, one per class, one for Claude & AI, and one per computing concept or broad subject; clicking one opens a short summary, links to that day's notes, and the day's topics as subtopic pages inside it. This skill turns a day of questions, sessions and the user's own list into calendar entries, but **only after the user has approved the list**. The calendar is their record, so nothing goes on it they didn't sign off on.
+The user keeps a calendar in Notion of what they learn each day. Each day has a few entries, one per class, one for Claude & AI, and one per computing concept or broad subject; clicking one opens a short summary, links to that day's notes, and the day's topics as subtopics inside it, each a heading with a short note. This skill turns a day of questions, sessions and the user's own list into calendar entries, but **only after the user has approved the list**. The calendar is their record, so nothing goes on it they didn't sign off on.
 
 ## Step 0: Find the calendar
 
@@ -53,7 +53,7 @@ A topic is a subject the user learned about or worked in, named in **1–2 words
 
 ### Group topics into umbrella entries
 
-The user doesn't want a calendar day with 20 entries. **Grouping is the default:** sort every candidate topic into an **umbrella entry**, and keep the topics themselves as **subtopics** inside it (sub-pages of the entry, not calendar rows). A typical day should end up with a handful of entries, not one per topic.
+The user doesn't want a calendar day with 20 entries. **Grouping is the default:** sort every candidate topic into an **umbrella entry**, and keep the topics themselves as **subtopics** inside it (headings with a short note on the entry's own page, not calendar rows and not sub-pages). A typical day should end up with a handful of entries, not one per topic.
 
 Put each topic in the **first** bucket that fits:
 
@@ -74,8 +74,8 @@ Put each topic in the **first** bucket that fits:
 - **The calendar is public**, and people who might hire the user may read it. Write everything in the voice set out under "Voice" in `references/calendar-entries.md`: show the skills being built, keep a professional lean, and let the user's curiosity come through. Read that section and "Tags and note" before writing the draft.
 - The umbrella's summary is one sentence covering the whole entry for that day. It says what skill was built and how it was applied, e.g. "Built a reusable component library in Figma and used it to rebuild one dashboard at three screen sizes."
 - Each entry gets 1–3 **category** tags (e.g. `git`, `claude, AI`, `class, design`, `project, web-dev`) and a **note** of 1–5 words naming the skills it shows (`interactive data visualization`, `CI/CD with GitHub Actions`), with no project prefix.
-- Each subtopic gets a bullet list of the **skills or concepts** learned. Each bullet's bold label names the skill, and its sub-bullet gives one or two sentences on what it is and how it was applied. Write about the lesson, not a log of the edits made. Draw them from what was actually discussed or taught, not general knowledge. For a topic from the user's list with nothing else to go on, write one plain point and mark it *(from your list; edit if you like)* in the draft.
-- **One level deep only:** calendar entry → subtopic pages, and nothing below that. More detail goes into a subtopic's bullets, never into a deeper page.
+- Each subtopic is a heading (its name) with a **short note** below it in plain text: one or two sentences naming the skill or concept learned and how it was applied, with no bullets or bold labels. Write about the lesson, not a log of the edits made. Draw them from what was actually discussed or taught, not general knowledge. For a topic from the user's list with nothing else to go on, write one plain point and mark it *(from your list; edit if you like)* in the draft.
+- **No sub-pages.** Subtopics are headings on the entry's page, never pages of their own. If a subtopic needs more, it gets a second sentence in its note or a separate subtopic heading next to it.
 - Merge closely related subtopics within an entry rather than listing near-duplicates.
 
 **Entries already on the calendar that day.** If an umbrella entry already exists that day, new subtopics go into it. If standalone entries exist that now belong under an umbrella (for example from before this grouping rule), suggest in the draft moving them inside it, and do it only if the user approves (see "Converting existing entries into a group" in `references/calendar-entries.md`).
@@ -95,14 +95,11 @@ Show the calendar entries in chat as a numbered table, one row per umbrella entr
 | 4 | CSS Grid | other | web-dev, design | CSS grid layout | One sentence. | (none) | none |
 
 **1. Product Design** (from: notes · already on calendar)
-- **1a Aesthetics**
-  - **Skill or concept**: what it is and how it was applied, in one or two sentences.
-- **1b Balance**
-  - **Skill or concept**: what it is and how it was applied, in one or two sentences.
+- **1a Aesthetics**: One or two plain sentences on the skill and how it was applied.
+- **1b Balance**: One or two plain sentences on the skill and how it was applied.
 
 **2. GitHub** (from: asked in spotify-music-analysis)
-- **2a GitHub Secrets**
-  - **Skill or concept**: what it is and how it was applied, in one or two sentences.
+- **2a GitHub Secrets**: One or two plain sentences on the skill and how it was applied.
 …
 
 Edit anything: e.g. "drop 2b", "move 3b to 2", "rename 2 to Git & GitHub", "add Flexbox to 4", "merge 1a and 1b", "change 1's summary to …", "tag 2 as automation", "note 3: AI workflow automation", or "add a link to my Figma notes".
@@ -120,8 +117,8 @@ Say **approve** to push these to the calendar.
 
 Read `references/calendar-entries.md` for the exact entry format, then for each approved entry:
 
-- **New umbrella entry:** create the calendar entry (name, date, category tags, note, icon, one-sentence summary, any links), then each subtopic as a sub-page inside it.
-- **Umbrella entry already on the calendar that day** (same or clearly same class, concept or subject, including entries the user added by hand): add only the subtopics it doesn't have yet, append new points to subtopics it has, add any new note links, and fill its tags and note if they're blank (plus any approved suggestions).
+- **New umbrella entry:** create the calendar entry (name, date, category tags, note, icon, one-sentence summary, any links), with each subtopic as a heading and note under "Subtopics" on its page.
+- **Umbrella entry already on the calendar that day** (same or clearly same class, concept or subject, including entries the user added by hand): add only the subtopics it doesn't have yet (as headings with notes), extend the note of a subtopic it has, add any new note links, and fill its tags and note if they're blank (plus any approved suggestions).
 - **Entry with no subtopics** (a lone "other" topic): create it with the tags, note, summary and links, as a plain entry.
 - **Approved moves** of existing standalone entries under an umbrella: follow "Converting existing entries into a group" in `references/calendar-entries.md`. Never delete entries.
 After each successful create or update, record it in the history file (see "History file" in `references/calendar-entries.md`).
