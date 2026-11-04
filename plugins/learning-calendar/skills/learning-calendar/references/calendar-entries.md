@@ -6,12 +6,13 @@ Notion uses its own "enhanced Markdown". Before writing page content, read `noti
 
 ## Schema
 
-The calendar database has four properties:
+The calendar database has these properties:
 
 - **Topic** (title): the umbrella entry's name, i.e. the class, computing concept or subject (up to 3 words), or a 1–2 word topic for a lone entry.
 - **Date** (date): the day learned, no time.
 - **category** (multi-select): 1–3 broad tags. See "Tags and note" below.
 - **note** (text): the skills the entry shows, in a few words. See "Tags and note" below.
+- **Has my thoughts** (checkbox): ticked when the entry's green "My Thoughts" box has the user's own text in it. See "My Thoughts and the checkbox" below. Set it as `"Has my thoughts": "__YES__"` (or `"__NO__"`).
 
 Older calendars may not have `category` or `note` yet. If the fetched schema lacks them, leave them out and don't add them unless the user asks.
 
@@ -70,9 +71,28 @@ The user fills these in by hand too, so match their style.
 
 **Never overwrite the user's values.** Fill `category` or `note` only when it is blank. If an entry the user already tagged now has a subtopic that needs another tag, or a new subtopic the note doesn't mention, show the change in the draft as a suggestion and apply it only if they approve.
 
+## My Thoughts and the checkbox
+
+The green "My Thoughts:" callout is the user's space. Claude never writes its own text there.
+
+- **Before publishing, ask the user** whether they want to add thoughts to any entry (Step 2 of SKILL.md). Their words go in verbatim, on the lines after the "My Thoughts:" label inside the green callout, and the `Has my thoughts` checkbox is set to `__YES__` in the same create call.
+- **No thoughts:** leave the callout as just the label and the checkbox unticked (`__NO__`, or leave it off: a new row defaults to unticked).
+- **User filled it in later, by hand in Notion:** Claude can't see that without fetching the page. Whenever the skill fetches an entry for another reason and finds text under "My Thoughts:" while the box is unticked, tick it with `update_properties`. Only the user writes in the callout, so any text there counts, and a callout with just the label (or the label and blank space) does not.
+- **Never untick** a box the user ticked, and never edit or remove text in the callout.
+- Properties only change with `update_properties`, in a separate call from `update_content`.
+
+New-entry content with thoughts:
+
+```
+<callout icon="💭" color="green_bg">
+	**My Thoughts:**
+	<the user's text, verbatim>
+</callout>
+```
+
 ## Creating pages (full width)
 
-Every page this skill creates (calendar entries and umbrella entries) should open in full width. The Notion tools can't set that directly, but a duplicated page keeps it. So when the config has a `full_width_template_id`, make each new page from that template instead of with `create-pages`:
+Every page this skill creates (calendar entries) should open in full width. The quickest way: create the page with `create-pages`, then call `update-page` with `command: "update_properties"` and `full_width: true`. If that option is unavailable, a duplicated page keeps the template's width, so when the config has a `full_width_template_id`, make each new page from that template instead:
 
 1. `duplicate-page` with the template's ID. The copy lands next to the template. Make one copy at a time: wait until it loads before starting the next, because simultaneous duplicates can leave one stuck as a blank, unmovable block.
 2. The duplicate finishes in the background: fetch the returned ID until it loads (a few tries).
@@ -86,7 +106,7 @@ Everything below that says `create-pages` means this procedure when a template i
 
 `create-pages` with parent `{"type": "data_source_id", "data_source_id": "<calendar_data_source without collection://>"}`:
 
-- properties: `"Topic": "<topic>"`, `"date:Date:start": "<YYYY-MM-DD>"`, `"date:Date:is_datetime": 0`, `"category": ["<tag>", …]`, `"note": "<note>"`
+- properties: `"Topic": "<topic>"`, `"date:Date:start": "<YYYY-MM-DD>"`, `"date:Date:is_datetime": 0`, `"category": ["<tag>", …]`, `"note": "<note>"`, and `"Has my thoughts": "__YES__"` only when the user gave thoughts
 - icon: the topic's emoji from the config's `## Area icons` list; for a topic not on the list, a fitting emoji no other area uses, added to the list after the push ("Area icons" in SKILL.md)
 - content:
 
